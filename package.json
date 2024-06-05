@@ -17,21 +17,7 @@
   "homepage": "https://themeselection.com/products/materio-free-mui-react-nextjs-admin-template/",
   "keywords": [
     "react",
-    "javascript",
-    "admin",
-    "dashboard",
-    "material-design",
-    "nextjs",
-    "material-ui",
-    "admin-dashboard",
-    "free",
-    "mui",
-    "admin-template",
-    "admin-panel",
-    "freebies",
-    "nextjs-template",
-    "react-dashboard",
-    "themeselection"
+    "javascript"
   ],
   "scripts": {
     "dev": "next dev",
@@ -49,7 +35,6 @@
     "@mui/material": "^5.15.19",
     "@popperjs/core": "^2.11.8",
     "apexcharts-clevision": "^3.28.5",
-    "babel-eslint": "^10.1.0",
     "clsx": "^2.1.1",
     "mdi-material-ui": "^7.9.1",
     "next": "^14.2.3",
