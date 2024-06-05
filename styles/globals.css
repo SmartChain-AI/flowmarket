@@ -22,3 +22,11 @@ code:not([class*='language-']):after {
 code[class*='language-'] {
   padding: 0;
 }
+
+a{
+  text-decoration: none;
+}
+
+.MuiListItem-root{
+  display: block !important;
+}
