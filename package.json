@@ -33,6 +33,8 @@
     "@emotion/styled": "^11.11.5",
     "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.19",
+    "@onflow/fcl": "^1.10.1",
+    "@onflow/types": "^1.4.0",
     "@popperjs/core": "^2.11.8",
     "@yr/monotone-cubic-spline": "^1.0.3",
     "apexcharts": "^3.49.1",
