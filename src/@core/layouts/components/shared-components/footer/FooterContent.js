@@ -16,7 +16,7 @@ const FooterContent = () => {
           ❤️
         </Box>
         {` by `}
-        <Link target='_blank' href='https://themeselection.com/'>
+        <Link target='_blank' href='https://flowmarket.io/'>
           ThemeSelection
         </Link>
       </Typography>
@@ -28,7 +28,7 @@ const FooterContent = () => {
           >
             MIT License
           </Link>
-          <Link target='_blank' href='https://themeselection.com/'>
+          <Link target='_blank' href='https://flowmarket.io/'>
             More Themes
           </Link>
           <Link
