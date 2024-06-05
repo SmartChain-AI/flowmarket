@@ -40,6 +40,7 @@
     "apexcharts": "^3.49.1",
     "apexcharts-clevision": "^3.28.5",
     "clsx": "^2.1.1",
+    "google-protobuf": "^3.21.2",
     "mdi-material-ui": "^7.9.1",
     "next": "^14.2.3",
     "nprogress": "^0.2.0",
