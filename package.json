@@ -34,6 +34,8 @@
     "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.19",
     "@popperjs/core": "^2.11.8",
+    "@yr/monotone-cubic-spline": "^1.0.3",
+    "apexcharts": "^3.49.1",
     "apexcharts-clevision": "^3.28.5",
     "clsx": "^2.1.1",
     "mdi-material-ui": "^7.9.1",
