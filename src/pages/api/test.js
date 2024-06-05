@@ -1,4 +1,4 @@
-import "../../../../flowmarket-copy/src/flow/config"
+import "/flow/config"
 
 /*import * as fcl from "@onflow/fcl"*/
 
