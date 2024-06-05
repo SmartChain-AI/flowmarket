@@ -1,5 +1,5 @@
 // Flow
-import "/flow/config"
+import "./src/flow/config"
 //import * as fcl from "@onflow/fcl"
 import { block } from "@onflow/fcl"
 import { Response } from 'next/server'

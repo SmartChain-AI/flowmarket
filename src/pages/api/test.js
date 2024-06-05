@@ -1,4 +1,4 @@
-import "/flow/config"
+import "./src/flow/config"
 
 /*import * as fcl from "@onflow/fcl"*/
 
