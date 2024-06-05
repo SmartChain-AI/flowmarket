@@ -1,20 +1,20 @@
 {
-  "name": "materio-mui-react-nextjs-admin-template-free",
-  "description": "Most Powerful & Comprehensive Free MUI React NextJS Admin Dashboard Template built for developers! 🚀",
+  "name": "flowmarket",
+  "description": "Flow Market 🚀",
   "license": "MIT",
   "version": "1.0.0",
   "author": {
-    "name": "FlowMarket",
-    "url": "https://themeselection.com/"
+    "name": "Cryp70",
+    "url": "https://flowmarket.io/"
   },
   "bugs": {
-    "url": "https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free/issues"
+    "url": "https://github.com/SmartChain-AI/flowmarket/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free.git"
+    "url": "https://github.com/SmartChain-AI/flowmarket.git"
   },
-  "homepage": "https://themeselection.com/products/materio-free-mui-react-nextjs-admin-template/",
+  "homepage": "https://flowmarket.io",
   "keywords": [
     "react",
     "javascript"
