@@ -38,7 +38,6 @@
     "build": "next build",
     "start": "next start",
     "export": "next export",
-    "lint": "eslint --fix \"src/**/*.{js,jsx}\"",
     "format": "prettier --write \"src/**/*.{js,jsx}\""
   },
   "dependencies": {
@@ -63,12 +62,6 @@
     "react-popper": "^2.3.0"
   },
   "devDependencies": {
-    "eslint": "^9.4.0",
-    "eslint-config-next": "14.2.3",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-alias": "^1.1.2",
-    "eslint-import-resolver-typescript": "^3.6.1",
-    "eslint-plugin-import": "^2.29.1",
     "next-transpile-modules": "^10.0.1",
     "prettier": "3.3.1"
   }
