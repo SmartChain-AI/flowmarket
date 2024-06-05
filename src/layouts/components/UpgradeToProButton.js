@@ -53,7 +53,7 @@ const BuyNowButton = () => {
           }
         }}
       >
-        Upgrade To Pro
+        Settings
       </Button>
       <Fade in={open} timeout={700}>
         <Box
@@ -77,29 +77,9 @@ const BuyNowButton = () => {
                 FlowMarket - React Admin Template
               </Typography>
               <Typography sx={{ mb: 4 }} variant='body2'>
-                FlowMarket Admin is the most developer friendly & highly customizable Admin Dashboard Template based on MUI
-                and NextJS.
+                FlowMarket Admin 
               </Typography>
-              <Typography sx={{ mb: 4 }} variant='body2'>
-                Click on below buttons to explore PRO version.
-              </Typography>
-              <Button
-                component='a'
-                sx={{ mr: 4 }}
-                target='_blank'
-                variant='contained'
-                href='https://demos.themeselection.com/materio-mui-react-nextjs-admin-template/landing/'
-              >
-                Demo
-              </Button>
-              <Button
-                component='a'
-                target='_blank'
-                variant='outlined'
-                href='https://flowmarket.io/'
-              >
-                Download
-              </Button>
+
             </CardContent>
           </Paper>
         </Box>
