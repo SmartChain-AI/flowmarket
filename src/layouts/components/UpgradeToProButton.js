@@ -43,7 +43,7 @@ const BuyNowButton = () => {
         onMouseEnter={handleOpen}
         onMouseLeave={handleClose}
         ref={e => setReferenceElement(e)}
-        href='https://themeselection.com/products/materio-mui-react-nextjs-admin-template/'
+        href='https://flowmarket.io/'
         sx={{
           backgroundColor: '#ff3e1d',
           boxShadow: '0 1px 20px 1px #ff3e1d',
@@ -68,16 +68,16 @@ const BuyNowButton = () => {
             <a
               target='_blank'
               rel='noreferrer'
-              href='https://themeselection.com/products/materio-mui-react-nextjs-admin-template/'
+              href='https://flowmarket.io/'
             >
               <img width='100%' alt='materio-pro-banner' src='/images/misc/materio-pro-banner.png' />
             </a>
             <CardContent>
               <Typography sx={{ mb: 4 }} variant='h6'>
-                Materio - React Admin Template
+                FlowMarket - React Admin Template
               </Typography>
               <Typography sx={{ mb: 4 }} variant='body2'>
-                Materio Admin is the most developer friendly & highly customizable Admin Dashboard Template based on MUI
+                FlowMarket Admin is the most developer friendly & highly customizable Admin Dashboard Template based on MUI
                 and NextJS.
               </Typography>
               <Typography sx={{ mb: 4 }} variant='body2'>
@@ -96,7 +96,7 @@ const BuyNowButton = () => {
                 component='a'
                 target='_blank'
                 variant='outlined'
-                href='https://themeselection.com/products/materio-mui-react-nextjs-admin-template/'
+                href='https://flowmarket.io/'
               >
                 Download
               </Button>
