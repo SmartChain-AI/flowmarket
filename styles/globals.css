@@ -30,3 +30,8 @@ a{
 .MuiListItem-root{
   display: block !important;
 }
+
+.nav-header{
+  display: flex !important;
+  width: 100%;
+}
