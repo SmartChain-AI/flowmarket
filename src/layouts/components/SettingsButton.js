@@ -1,4 +1,3 @@
-// ** React Import
 import { useState } from 'react'
 
 // ** MUI Imports
@@ -12,8 +11,8 @@ import CardContent from '@mui/material/CardContent'
 // ** Third Party Imports
 import { usePopper } from 'react-popper'
 
-const BuyNowButton = () => {
-  // ** States
+const SettingsButton = () => {
+
   const [open, setOpen] = useState(false)
   const [popperElement, setPopperElement] = useState(null)
   const [referenceElement, setReferenceElement] = useState(null)
@@ -33,20 +32,19 @@ const BuyNowButton = () => {
 
   return (
     <Box
-      className='upgrade-to-pro-button mui-fixed'
+      className='mui-fixed'
       sx={{ right: theme => theme.spacing(20), bottom: theme => theme.spacing(10), zIndex: 11, position: 'fixed' }}
     >
       <Button
-        component='a'
+        component='button'
         target='_blank'
         variant='contained'
         onMouseEnter={handleOpen}
         onMouseLeave={handleClose}
         ref={e => setReferenceElement(e)}
-        href='https://flowmarket.io/'
         sx={{
-          backgroundColor: '#ff3e1d',
-          boxShadow: '0 1px 20px 1px #ff3e1d',
+          backgroundColor: 'black',
+          boxShadow: '0 1px 10px 1px white',
           '&:hover': {
             boxShadow: 'none',
             backgroundColor: '#e6381a'
@@ -65,21 +63,11 @@ const BuyNowButton = () => {
           sx={{ pb: 4, minWidth: theme => (theme.breakpoints.down('sm') ? 400 : 300) }}
         >
           <Paper elevation={9} sx={{ borderRadius: 1, overflow: 'hidden' }}>
-            <a
-              target='_blank'
-              rel='noreferrer'
-              href='https://flowmarket.io/'
-            >
-              <img width='100%' alt='materio-pro-banner' src='/images/misc/materio-pro-banner.png' />
-            </a>
             <CardContent>
               <Typography sx={{ mb: 4 }} variant='h6'>
-                FlowMarket - React Admin Template
+                FlowMarket settings
               </Typography>
-              <Typography sx={{ mb: 4 }} variant='body2'>
-                FlowMarket Admin 
-              </Typography>
-
+              <img width='200' alt='ufcstrike-logo' src='/images/logos/ufcstrike.png' />
             </CardContent>
           </Paper>
         </Box>
@@ -88,4 +76,4 @@ const BuyNowButton = () => {
   )
 }
 
-export default BuyNowButton
+export default SettingsButton

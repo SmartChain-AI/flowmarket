@@ -10,7 +10,7 @@ import VerticalLayout from 'src/@core/layouts/VerticalLayout'
 import VerticalNavItems from 'src/navigation/vertical'
 
 // ** Component Import
-import UpgradeToProButton from './components/UpgradeToProButton'
+import SettingsButton from './components/SettingsButton'
 import VerticalAppBarContent from './components/vertical/AppBarContent'
 
 // ** Hook Import
@@ -30,15 +30,15 @@ const UserLayout = ({ children }) => {
    */
   const hidden = useMediaQuery(theme => theme.breakpoints.down('lg'))
 
-  const UpgradeToProImg = () => {
+  const UFCStrikeImg = () => {
     return (
-      <Box sx={{ mx: 'auto' }}>
+      <Box sx={{ mx: 'auto', textAlign: 'center' }}>
         <a
           target='_blank'
           rel='noreferrer'
           href='https://flowmarket.io/'
         >
-          <img width={230} alt='upgrade to premium' src={`/images/misc/upgrade-banner-${settings.mode}.png`} />
+          <img width={125} alt='UFC Strike' src={`/images/logos/ufcstrike.png`} />
         </a>
       </Box>
     )
@@ -50,7 +50,7 @@ const UserLayout = ({ children }) => {
       settings={settings}
       saveSettings={saveSettings}
       verticalNavItems={VerticalNavItems()} // Navigation Items
-      afterVerticalNavMenuContent={UpgradeToProImg}
+      beforeVerticalNavMenuContent={UFCStrikeImg}
       verticalAppBarContent={(
         props // AppBar Content
       ) => (
@@ -63,7 +63,7 @@ const UserLayout = ({ children }) => {
       )}
     >
       {children}
-      <UpgradeToProButton />
+      <SettingsButton />
     </VerticalLayout>
   )
 }
