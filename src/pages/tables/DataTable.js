@@ -6,7 +6,7 @@ import Button from '@mui/material/Button'
 
 export default function DataTable({ dataz }) {
 
-  if (!dataz[0]['Moment Name']) return
+  if (!dataz) return
 
   const [data, setData] = React.useState(dataz)
   const columnHelper = createColumnHelper()
