@@ -4,7 +4,7 @@ import { createColumnHelper, flexRender, getCoreRowModel, getSortedRowModel, get
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 
-export function DataTable({ dataz }) {
+export default function DataTable({ dataz }) {
 
   if (!dataz[0]['Moment Name']) return
 
