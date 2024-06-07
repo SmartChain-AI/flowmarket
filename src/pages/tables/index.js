@@ -24,7 +24,6 @@ import React, { useState, useEffect } from "react";
 
 import { DataTable } from "./DataTable";
 
-//import MiniStatistics from "./MiniStatistics.js";
 import * as fcl from '@onflow/fcl';
 //import { block } from "@onflow/fcl"
 import "../../flow/config"
