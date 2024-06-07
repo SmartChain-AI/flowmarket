@@ -15,6 +15,7 @@ import VerticalAppBarContent from './components/vertical/AppBarContent'
 
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
+import { useTheme } from '@mui/material/styles'
 
 const UserLayout = ({ children }) => {
   // ** Hooks
@@ -30,6 +31,9 @@ const UserLayout = ({ children }) => {
    */
   const hidden = useMediaQuery(theme => theme.breakpoints.down('lg'))
 
+  const theme = useTheme()
+  const imageSrc = theme.palette.mode
+
   const UFCStrikeImg = () => {
     return (
       <Box sx={{ mx: 'auto', textAlign: 'center' }}>
@@ -38,7 +42,7 @@ const UserLayout = ({ children }) => {
           rel='noreferrer'
           href='https://flowmarket.io/'
         >
-          <img width={125} alt='UFC Strike' src={`/images/logos/ufcstrike.png`} />
+          <img width={125} className={imageSrc === 'dark' ? 'logo-image-dark':'logo-image'} alt='UFC Strike' src={`/images/logos/ufcstrike.png`} />
         </a>
       </Box>
     )

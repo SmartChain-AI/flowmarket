@@ -35,3 +35,14 @@ a{
   display: flex !important;
   width: 100%;
 }
+
+.logo-image {
+  width: 125px !important;
+  border-radius: 15px;
+  filter: invert(1);
+}
+
+.logo-image-dark {
+  width: 125px !important;
+  border-radius: 15px;
+}
