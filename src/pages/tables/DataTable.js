@@ -16,7 +16,7 @@ export default function DataTable({ dataz }) {
 
   const url_nftinf = 'https://market-api.ufcstrike.com/sets/';
   let count = 0;
-
+/*
   async function burned(setid){
     let tk = 0;
     const token = await fetch(url_nftinf+setid+'/circulation')// getting calls for the same editions in a collection.  eg my alex volkanovskis call this 12 times. unnecessary
@@ -26,7 +26,7 @@ export default function DataTable({ dataz }) {
     }).catch(console.error);
 console.info(tk)
   }
-
+*/
   const defaultColumns = [
     columnHelper.accessor('Image', {
       cell: info => <img

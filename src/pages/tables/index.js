@@ -18,8 +18,6 @@ import TableCollapsible from 'src/views/tables/TableCollapsible'
 import TableStickyHeader from 'src/views/tables/TableStickyHeader'
 import CardAccountFloorValue from 'src/views/cards/CardAccountFloorValue'
 
-
-
 import React, { useState, useEffect } from "react";
 
 import { DataTable } from "./DataTable";
