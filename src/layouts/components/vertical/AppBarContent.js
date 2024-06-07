@@ -33,6 +33,7 @@ const AppBarContent = props => {
             <Menu />
           </IconButton>
         ) : null}
+        {/*
         <TextField
           size='small'
           sx={{ '& .MuiOutlinedInput-root': { borderRadius: 4 } }}
@@ -44,6 +45,7 @@ const AppBarContent = props => {
             )
           }}
         />
+      */  }
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
         {hiddenSm ? null : (
@@ -54,7 +56,7 @@ const AppBarContent = props => {
             sx={{ mr: 4, display: 'flex' }}
             href='https://flowmarket.io'
           >
-            yo
+            Heyo
           </Box>
         )}
         <ModeToggler settings={settings} saveSettings={saveSettings} />

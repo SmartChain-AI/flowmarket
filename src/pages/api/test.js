@@ -94,7 +94,7 @@ export default async function handler(req, res) {
     });
   }
 
-  const filteredUsers = filterUsersByBH('0xd3ca96e2cc6124aa');
+  const filteredUsers = filterUsersByBH("0xf2400730a594918b");
 
   trannies(filteredUsers)
 

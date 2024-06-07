@@ -36,6 +36,7 @@
     "@onflow/fcl": "^1.10.1",
     "@onflow/types": "^1.4.0",
     "@popperjs/core": "^2.11.8",
+    "@tanstack/react-table": "^8.17.3",
     "@yr/monotone-cubic-spline": "^1.0.3",
     "apexcharts": "^3.49.1",
     "apexcharts-clevision": "^3.28.5",

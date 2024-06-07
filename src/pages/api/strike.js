@@ -36,7 +36,7 @@ export default async function handler(req, res) {
   };
 
   const yo = await fetch('https://market-api.ufcstrike.com/sets/', sets_requestOptions)
-  response = new Response(response.body, response);
+  const response = new Response(yo.body, yo);
   // Set CORS headers
 
   response.headers.set("Access-Control-Allow-Origin", url.origin);
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
   // Append to/Add Vary header so browser will cache response correctly
   response.headers.append("Vary", "Origin");
 
-  const done =  yo
+  const done =  response
 console.info(response)
 
 

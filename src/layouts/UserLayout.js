@@ -37,13 +37,7 @@ const UserLayout = ({ children }) => {
   const UFCStrikeImg = () => {
     return (
       <Box sx={{ mx: 'auto', textAlign: 'center' }}>
-        <a
-          target='_blank'
-          rel='noreferrer'
-          href='https://flowmarket.io/'
-        >
           <img width={125} className={imageSrc === 'dark' ? 'logo-image-dark':'logo-image'} alt='UFC Strike' src={`/images/logos/ufcstrike.png`} />
-        </a>
       </Box>
     )
   }
@@ -67,7 +61,9 @@ const UserLayout = ({ children }) => {
       )}
     >
       {children}
-      <SettingsButton />
+      {/*
+        <SettingsButton />
+      */}
     </VerticalLayout>
   )
 }
