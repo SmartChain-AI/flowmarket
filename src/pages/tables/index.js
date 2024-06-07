@@ -20,7 +20,7 @@ import CardAccountFloorValue from 'src/views/cards/CardAccountFloorValue'
 
 import React, { useState, useEffect } from "react";
 
-import { DataTable } from "./DataTable";
+import DataTable from "./DataTable";
 
 import * as fcl from '@onflow/fcl';
 //import { block } from "@onflow/fcl"
