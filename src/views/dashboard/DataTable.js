@@ -1,8 +1,24 @@
 import * as React from 'react'
-
 import { createColumnHelper, flexRender, getCoreRowModel, getSortedRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import Chip from '@mui/material/Chip'
+import Table from '@mui/material/Table'
+import TableRow from '@mui/material/TableRow'
+import TableHead from '@mui/material/TableHead'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import Typography from '@mui/material/Typography'
+import TableContainer from '@mui/material/TableContainer'
+import ArrowDownBoldCircle from 'mdi-material-ui/ArrowDownBoldCircle'
+import ArrowUpBoldCircle from 'mdi-material-ui/ArrowUpBoldCircle'
+import TableCog from 'mdi-material-ui/TableCog'
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Stack from '@mui/material/Stack';
+import Checkbox from '@mui/material/Checkbox';
 
 export default function DataTable({ dataz }) {
 
@@ -14,19 +30,19 @@ export default function DataTable({ dataz }) {
   const [columnOrder, setColumnOrder] = React.useState([])
   const [sorting, setSorting] = React.useState([])
 
-  const url_nftinf = 'https://market-api.ufcstrike.com/sets/';
+  //  const url_nftinf = 'https://market-api.ufcstrike.com/sets/';
   let count = 0;
-/*
-  async function burned(setid){
-    let tk = 0;
-    const token = await fetch(url_nftinf+setid+'/circulation')// getting calls for the same editions in a collection.  eg my alex volkanovskis call this 12 times. unnecessary
-    .then((response) => response.json())
-    .then((data) => {
-      tk = data
-    }).catch(console.error);
-console.info(tk)
-  }
-*/
+  /*
+    async function burned(setid){
+      let tk = 0;
+      const token = await fetch(url_nftinf+setid+'/circulation')// getting calls for the same editions in a collection.  eg my alex volkanovskis call this 12 times. unnecessary
+      .then((response) => response.json())
+      .then((data) => {
+        tk = data
+      }).catch(console.error);
+  console.info(tk)
+    }
+  */
   const defaultColumns = [
     columnHelper.accessor('Image', {
       cell: info => <img
@@ -50,14 +66,17 @@ console.info(tk)
     }),
     columnHelper.accessor('Floor Price', {
       header: 'Floor',
-      id: 'floor',
+     // id: 'floor',
       cell: info => '$' + info.renderValue(),
+      size: 50,
     }),
     columnHelper.accessor('Serial', {
       header: () => 'Serial',
+      size: 100,
     }),
     columnHelper.accessor('Mintage', {
       header: () => 'Mintage',
+      size: 100,
     }),
     columnHelper.accessor('Series', {
       header: 'Series',
@@ -75,14 +94,14 @@ console.info(tk)
       header: 'Listed Price',
       cell: info => info.renderValue() ? '$' + Number(info.renderValue()) : null,
     }),
-   // columnHelper.accessor('Burned', {
+    // columnHelper.accessor('Burned', {
     //  header: 'Burned',
     //  cell: info => <>{burned(info.getValue())}</>,
-   // }),
-   // columnHelper.accessor('Received', {
-   //   header: 'Received',
-   //   cell: info => info.getValue(),
-   // })
+    // }),
+    columnHelper.accessor('Received', {
+      header: 'Received',
+      cell: info => info.getValue(),
+    })
   ]
 
   const [columns] = React.useState(() => [...defaultColumns])
@@ -112,36 +131,51 @@ console.info(tk)
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
   })
-
+ /*async function fetchnftinf(nftid) {
+    if(!count || !dataz[0]['Moment Name']){return}
+    count = count + 1
+    const tarr = dataz
+     dataz.forEach(element => {
+     const response = fetch(url_nftinf+element.set_id+'/circulation')
+    const response = await fetch(url_nftinf + nftid + '/circulation')
+      .then((response) => response.json())
+      .then((data) => {
+         console.info(data)
+        let found = dataz?.find(item => item.set_id === nftid)
+         // Number(found.burnedCount)
+         element.Burned = data.burnedCount
+        console.info(data)
+        return
+      }).catch(console.error);
+    return response
+      });
+    console.info(dataz)
+  }*/
   return (
     <Box className="table-cont" sx={{
       'width': 'inherit'
     }}>
       <Box sx={{
-        'width': '100%',
-        'display': 'flex',
-        'justify-content': 'space-between',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
       }}>
-       {/*
         <Accordion allowToggle sx={{
           'maxWidth': 'max-content',
           'textAlign': 'left',
           'display': 'inline-block'
         }}>
-          <AccordionItem>
-            <h2>
-              <AccordionButton sx={{
+          <AccordionSummary>
+            <Box>
+              <TableCog sx={{
                 'borderRadius': '15px'
-              }}>
-                <Box as='span' textAlign='left'>
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>
+              }} />
+            </Box>
+            </AccordionSummary>
+            <AccordionDetails pb={4}>
               <Box className="inline-block border border-black shadow rounded">
                 <Box className="px-1 border-b border-black">
-                  <Stack spacing={[1, 5]} direction={['column', 'row']}>
+                  <Stack spacing={[1, 5]} direction={['column', 'column']}>
                     {table.getAllLeafColumns().map(column => {
                       return (
                         <Box key={column.id} className="px-1">
@@ -159,16 +193,14 @@ console.info(tk)
                   </Stack>
                 </Box >
               </Box >
-            </AccordionPanel>
-          </AccordionItem>
+            </AccordionDetails>
         </Accordion>
-        */}
       </Box>
       <Box>
-        <table variant='simple' size='lg' style={{ fontSize: '0.7em' }} className="dragscroll">
-          <thead>
+        <Table stickyHeader aria-label='sticky table' className="OwnedMomentsTable">
+          <TableHead>
             {table.getHeaderGroups().map(headerGroup => (
-              <tr key={headerGroup.id}>
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <th key={header.id} colSpan={header.colSpan} className="prevent-select">
                     {header.isPlaceholder ? null : (
@@ -193,17 +225,17 @@ console.info(tk)
                           header.getContext()
                         )}
                         {{
-                       //   asc: <ArrowUpIcon />,
-                     //     desc: <ArrowDownIcon />,
+                          asc: <ArrowDownBoldCircle className="sortdesc" />,
+                          desc: <ArrowUpBoldCircle className="sortasc" />,
                         }[header.column.getIsSorted()] ?? null}
                       </Box>
                     )}
                   </th>
                 ))}
-              </tr>
+              </TableRow>
             ))}
-          </thead>
-          <tbody>
+          </TableHead>
+          <TableBody>
             {table.getRowModel().rows.map(row => (
               <tr key={row.id}>
                 {row.getVisibleCells().map(cell => (
@@ -213,7 +245,7 @@ console.info(tk)
                 ))}
               </tr>
             ))}
-          </tbody>
+          </TableBody>
           <tfoot>
             {table.getFooterGroups().map(footerGroup => (
               <tr key={footerGroup.id}>
@@ -230,7 +262,7 @@ console.info(tk)
               </tr>
             ))}
           </tfoot>
-        </table>
+        </Table>
         <Box className="flex items-center" sx={{
           'maxWidth': 'max-content',
           'textAlign': 'right',
@@ -245,21 +277,21 @@ console.info(tk)
             {'<<'}
           </Button>
           <Button
-            className="border rounded" marginLeft='1'
+            className="border rounded"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             {'<'}
           </Button>
           <Button
-            className="border rounded" marginLeft='1'
+            className="border rounded"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
             {'>'}
           </Button>
           <Button
-            className="border rounded" marginLeft='1'
+            className="border rounded"
             onClick={() => table.lastPage()}
             disabled={!table.getCanNextPage()}
           >

@@ -1,25 +1,47 @@
-// ** MUI Imports
+import { useEffect } from 'react'
 import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
+//import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import InputAdornment from '@mui/material/InputAdornment'
+//import InputAdornment from '@mui/material/InputAdornment'
 
 // ** Icons Imports
 import Menu from 'mdi-material-ui/Menu'
-import Magnify from 'mdi-material-ui/Magnify'
+//import Magnify from 'mdi-material-ui/Magnify'
 
 // ** Components
 import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
-import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
-import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
+//import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
+//import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
+  import * as fcl from "@onflow/fcl"
 
 const AppBarContent = props => {
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
-
   // ** Hook
   const hiddenSm = useMediaQuery(theme => theme.breakpoints.down('sm'))
+
+
+  fcl.config({
+    "discovery.wallet": "https://fcl-discovery.onflow.org/mainnet/authn", // Endpoint set to Testnet
+  })
+
+  useEffect(() => {
+     
+    let value = localStorage.getItem("flowmarket.mode") || ""
+     //  getlocalstore = JSON.parse(getlocalstore)
+   settings.mode = value
+   console.info(value)
+  }, [])
+
+
+
+  useEffect(() => {
+    localStorage.setItem("flowmarket", JSON.stringify({
+      "mode": settings.mode
+    })
+    )
+  })
 
   return (
     <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -48,20 +70,11 @@ const AppBarContent = props => {
       */  }
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
-        {hiddenSm ? null : (
-          <Box
-            component='a'
-            target='_blank'
-            rel='noreferrer'
-            sx={{ mr: 4, display: 'flex' }}
-            href='https://flowmarket.io'
-          >
-            Heyo
-          </Box>
-        )}
         <ModeToggler settings={settings} saveSettings={saveSettings} />
+        {/*
         <NotificationDropdown />
         <UserDropdown />
+        */}
       </Box>
     </Box>
   )

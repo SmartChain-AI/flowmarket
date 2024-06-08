@@ -1,6 +1,5 @@
 export default async function handler(req, res) {
 
-  const proxyUrl = 'http://104.131.4.61:8080/';
   const url_sets = 'https://market-api.ufcstrike.com/search/sets';
 
   const sets_requestOptions = {
