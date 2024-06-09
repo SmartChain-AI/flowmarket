@@ -267,10 +267,11 @@ export default function DataTable({ dataz }) {
           </tfoot>
         </Table>
         <Box className="flex items-center" sx={{
-          'maxWidth': 'max-content',
           'textAlign': 'center',
           'display': 'inline-block',
-          'fontSize': '0.7em'
+          'fontSize': '0.7em',
+          'justifyContent': 'center',
+          'width':'100%'
         }}>
           <Button
             className="border rounded"
