@@ -312,10 +312,6 @@ export default function DataTable({ dataz }) {
             p:0
           }}
             value={table.getState().pagination.pageSize}
-            onChange={e => {
-              console.info(e.target.value)
-            //  table.setPageSize(Number(e.value.value))
-            }}
           >
             {[10, 25, 50, 100, 500].map(pageSize => (
               <MenuItem key={pageSize} value={pageSize} onClick={()=>{table.setPageSize(Number(pageSize))}}>
