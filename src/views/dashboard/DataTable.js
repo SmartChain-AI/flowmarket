@@ -200,7 +200,10 @@ export default function DataTable({ dataz }) {
         </Accordion>
       </Box>
       <Box>
-        <Table stickyHeader aria-label='sticky table' className="OwnedMomentsTable">
+        <Table stickyHeader aria-label='sticky table'
+        className="OwnedMomentsTable"
+        sx={{marginTop:4}}
+        >
           <TableHead>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>

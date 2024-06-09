@@ -50,34 +50,39 @@ a {
 }
 
 #address {
-  padding-left: 20px;
+  padding-left: 15px;
   /*-webkit-box-shadow: 0 0 0 100px #312d4b inset;
   box-shadow: 0 0 0 100px #312d4b inset;
      border-radius:unset */
+     font-size: 0.7em;
 }
 
 /* TABLE */
 .table-cont {
   font-size: 0.7em;
 }
+
 .OwnedMomentsTable {
   display: block !important;
   overflow-x: auto;
-  margin-top:20px
 }
+
 .MuiTableHead-root {
   white-space: nowrap;
   padding: 10px;
-  font-size:1.2em !important
+  font-size: 1.2em !important
 }
+
 th:nth-child(2) {
-  text-align:left;
+  text-align: left;
   padding-left: 10px;
 }
+
 td {
   min-width: 75px;
   padding: 5px;
 }
+
 td:nth-child(2)>div {
   padding-left: 10px;
   width: 250px;
@@ -85,12 +90,15 @@ td:nth-child(2)>div {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 td:nth-child(n+2) {
   text-align: center;
 }
-.sortdesc,.sortasc {
+
+.sortdesc,
+.sortasc {
   font-size: 1.2em !important;
-  vertical-align:text-bottom;
+  vertical-align: text-bottom;
 }
 
 .moment-image {
@@ -102,11 +110,10 @@ td:nth-child(n+2) {
   margin: 2px;
 }
 
-.MuiButton-endIcon{
-  width:10px
+.MuiButton-endIcon {
+  width: 10px
 }
 
-.moment-name
-{
-text-align: left;
+.moment-name {
+  text-align: left;
 }
