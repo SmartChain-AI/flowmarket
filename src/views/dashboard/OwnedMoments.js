@@ -266,7 +266,12 @@ try{
   return (
     <>
       <Card mt='1rem' className="main-cont">
-        <Box sx={{ flexDirection: 'column', width: '100%', textAlign: 'center', margin: '20px' }}>
+        <Box sx={{
+            flexDirection: 'column',
+            width: '100%',
+            textAlign: 'center',
+            padding: 2
+          }}>
           <Box width={{
             base: '100%', // 0-48em
             md: '50%', // 48em-80em,
@@ -279,7 +284,7 @@ try{
                 '& .MuiOutlinedInput-root': {
                  // borderRadius: 1,
                 },
-                paddingRight:2,
+                marginRight:2,
               fontSize:'0.7em',
               }}
               id="address"
