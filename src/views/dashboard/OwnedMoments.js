@@ -171,11 +171,11 @@ export default function OwnedMoments(props) {
 
   }
 
-  async function getBlockH(){
-    const yep = await fcl.getBlock({'height':'62705811'})
+  async function getBlockH() {
+    const yep = await fcl.getBlock({ 'height': '62705811' })
     console.info(yep)
 
-}
+  }
 
   async function submitaddy(value) {
     //  let erra = document.getElementById('error-cont');
@@ -187,44 +187,63 @@ export default function OwnedMoments(props) {
     setIsDone(false);
     let getlocalstore = localStorage.getItem('flowmarket')
     getlocalstore = JSON.parse(getlocalstore)
-   
+
     const fk = await getBlockH()
     console.info(fk)
-try{
-    if (getlocalstore) {
-      if (getlocalstore.user.address === sa.value) {
-        setAccnt({
-          'im': getlocalstore.user.accava,
-          'usname': getlocalstore.user.accname
-        })
+    try {
+      if (getlocalstore) {
+        if (getlocalstore.user.address === sa.value) {
+          setAccnt({
+            'im': getlocalstore.user.accava,
+            'usname': getlocalstore.user.accname
+          })
+        } else {
+          fetchaccinf(sa.value)
+        }
       } else {
         fetchaccinf(sa.value)
       }
-    } else {
-      fetchaccinf(sa.value)
-    }
-  }catch{}
+    } catch { }
   }
 
   function localStore(address, totalz, allmoments) {
     let getlocalstore = localStorage.getItem('flowmarket')
     getlocalstore = JSON.parse(getlocalstore)
-  /*  if (getlocalstore) {
-      if (getlocalstore.user.address === address) { // Mutating Data
-        console.log('Mutating Data')
-        let tmparr = getlocalstore
-        tmparr.user.graphdata.date = new Date()
-        tmparr.user.graphdata.total = totalz
-        tmparr.user.moments = allmoments
-        if (!getlocalstore.user.accname) { // Storage exists but no name
-          tmparr.user.graphdata.accname = accnt.usname
+    /*  if (getlocalstore) {
+        if (getlocalstore.user.address === address) { // Mutating Data
+          console.log('Mutating Data')
+          let tmparr = getlocalstore
+          tmparr.user.graphdata.date = new Date()
+          tmparr.user.graphdata.total = totalz
+          tmparr.user.moments = allmoments
+          if (!getlocalstore.user.accname) { // Storage exists but no name
+            tmparr.user.graphdata.accname = accnt.usname
+          }
+          if (!getlocalstore.user.accava) { // Storage exists but no avatar
+            tmparr.user.graphdata.accava = accnt.im
+          }
+          localStorage.setItem("flowmarket", JSON.stringify(tmparr))
+        } else { // Different Address
+          console.log('Different Address')
+          localStorage.setItem("flowmarket", JSON.stringify({
+            "user": {
+              "address": address,
+              "graphdata": {
+                "date": new Date(),
+                "total": totalz
+              },
+              "moments": allmoments,
+              "accname": accnt.usname,
+              "accava": accnt.im
+            }
+          }
+          ));
         }
-        if (!getlocalstore.user.accava) { // Storage exists but no avatar
-          tmparr.user.graphdata.accava = accnt.im
-        }
-        localStorage.setItem("flowmarket", JSON.stringify(tmparr))
-      } else { // Different Address
-        console.log('Different Address')
+      } else { // New Storage
+        console.log('New Storage')
+  
+        // CHECK FOR usname AND im IN THE NEXT ONE
+  
         localStorage.setItem("flowmarket", JSON.stringify({
           "user": {
             "address": address,
@@ -233,79 +252,60 @@ try{
               "total": totalz
             },
             "moments": allmoments,
-            "accname": accnt.usname,
-            "accava": accnt.im
+            //   "accname": accnt.usname,
+            // "accava": accnt.im
           }
         }
-        ));
-      }
-    } else { // New Storage
-      console.log('New Storage')
-
-      // CHECK FOR usname AND im IN THE NEXT ONE
-
-      localStorage.setItem("flowmarket", JSON.stringify({
-        "user": {
-          "address": address,
-          "graphdata": {
-            "date": new Date(),
-            "total": totalz
-          },
-          "moments": allmoments,
-          //   "accname": accnt.usname,
-          // "accava": accnt.im
-        }
-      }
-      ))
-    }*/
+        ))
+      }*/
     return
   }
 
- fetchsets()
+  fetchsets()
 
   return (
     <>
       <Card mt='1rem' className="main-cont">
         <Box sx={{
-            flexDirection: 'column',
-            width: '100%',
-            textAlign: 'center',
-            padding: 2
-          }}>
+          flexDirection: 'column',
+          width: '100%',
+          textAlign: 'center',
+          margin: 2
+        }}>
           <Box width={{
             base: '100%', // 0-48em
             md: '50%', // 48em-80em,
             xl: '25%', // 80em+
           }}>
             <Stack spacing={[2, 5]} direction={['row', 'row']}>
-            <TextField
-              size='small'
-              sx={{ 
-                '& .MuiOutlinedInput-root': {
-                 // borderRadius: 1,
-                },
-                marginRight:2,
-              fontSize:'0.7em',
-              }}
-              id="address"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <Magnify fontSize='small' />
-                  </InputAdornment>
-                )
-              }}
-              placeholder="Wallet Address"
-            /><LoadingButton
+              <TextField
+                size='small'
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    // borderRadius: 1,
+                  },
+                  //paddingRight: 1,
+                  fontSize: '0.7em',
+                }}
+                id="address"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <Magnify fontSize='small' />
+                    </InputAdornment>
+                  )
+                }}
+                placeholder="Wallet Address"
+              /><LoadingButton
                 color="secondary"
                 onClick={() => { submitaddy() }}
                 loading={isDataLoading}
                 variant="outlined"
                 size="small"
-             //  sx={{m:'10px'}} 
+              //  sx={{m:'10px'}} 
               >Submit
               </LoadingButton>
-              </Stack>
+            </Stack>
             <Box id="error-cont"></Box>
           </Box>
           <Box width={{
@@ -329,7 +329,7 @@ try{
       {!isDone ? (
         <></>
       ) : (
-        <Card className="main-cont" sx={{ mt:4}}>
+        <Card className="main-cont" sx={{ mt: 4 }}>
           <Box sx={{ flexDirection: 'column' }}>
             {dataz ? (<><DataTable dataz={dataz} /></>) : (<></>)}
           </Box>
