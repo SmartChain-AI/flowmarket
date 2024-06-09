@@ -10,7 +10,7 @@ const FooterContent = () => {
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Typography sx={{ mr: 2,fontSize:'0.7em',marginLeft:100 }}>
+      <Typography sx={{ fontSize:'0.7em', width:'100%', textAlign:'center' }}>
         {`© ${new Date().getFullYear()} Flowmarket`}
       </Typography>
     </Box>

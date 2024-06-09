@@ -5,6 +5,7 @@ import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Chip from '@mui/material/Chip'
 import Table from '@mui/material/Table'
+import Select from '@mui/material/Select'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
@@ -266,7 +267,7 @@ export default function DataTable({ dataz }) {
         </Table>
         <Box className="flex items-center" sx={{
           'maxWidth': 'max-content',
-          'textAlign': 'right',
+          'textAlign': 'center',
           'display': 'inline-block',
           'fontSize': '0.7em'
         }}>
@@ -304,9 +305,10 @@ export default function DataTable({ dataz }) {
               {table.getPageCount().toLocaleString()}
             </strong>
           </Box >
-          {/*
           <Select sx={{
-            'fontSize': '1em'
+            'fontSize': '1em',
+            marginTop:2,
+            p:0
           }}
             value={table.getState().pagination.pageSize}
             onChange={e => {
@@ -319,7 +321,6 @@ export default function DataTable({ dataz }) {
               </option>
             ))}
           </Select>
-          */}
         </Box>
       </Box>
     </TableContainer>

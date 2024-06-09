@@ -287,7 +287,7 @@ export default function OwnedMoments(props) {
                 '& .MuiOutlinedInput-root': {
                  // borderRadius: 1,
                 },
-                marginRight:2,
+                paddingRight:2,
               fontSize:'0.7em',
               }}
               id="address"
