@@ -90,18 +90,18 @@ export default function DataTable({ dataz }) {
       header: 'Set',
       cell: info => info.renderValue(),
     }),
-    columnHelper.accessor('Listed Price', {
+    columnHelper.accessor('Listed', {
       header: 'Listed Price',
-      cell: info => info.renderValue() ? '$' + Number(info.renderValue()) : null,
+      cell: info => info.renderValue() ? '$' + info.renderValue() : 'N/A',
     }),
     // columnHelper.accessor('Burned', {
     //  header: 'Burned',
     //  cell: info => <>{burned(info.getValue())}</>,
     // }),
-    columnHelper.accessor('Received', {
-      header: 'Received',
-      cell: info => info.getValue(),
-    })
+   // columnHelper.accessor('Received', {
+   //   header: 'Received',
+   //   cell: info => info.getValue(),
+  //  })
   ]
 
   const [columns] = React.useState(() => [...defaultColumns])
@@ -152,15 +152,16 @@ export default function DataTable({ dataz }) {
     console.info(dataz)
   }*/
   return (
-    <Box className="table-cont" sx={{
-      'width': 'inherit'
+    <TableContainer className="table-cont" sx={{
+      'width': 'inherit',
+      m:4
     }}>
       <Box sx={{
         width: '100%',
         display: 'flex',
         justifyContent: 'space-between',
       }}>
-        <Accordion allowToggle sx={{
+        <Accordion allowtoggle="true" sx={{
           'maxWidth': 'max-content',
           'textAlign': 'left',
           'display': 'inline-block'
@@ -168,7 +169,7 @@ export default function DataTable({ dataz }) {
           <AccordionSummary>
             <Box>
               <TableCog sx={{
-                'borderRadius': '15px'
+                //'borderRadius': '15px'
               }} />
             </Box>
             </AccordionSummary>
@@ -179,7 +180,7 @@ export default function DataTable({ dataz }) {
                     {table.getAllLeafColumns().map(column => {
                       return (
                         <Box key={column.id} className="px-1">
-                          <Checkbox size='md' colorScheme='green' defaultChecked
+                          <Checkbox size='medium'
                             {...{
                               type: 'checkbox',
                               checked: column.getIsVisible(),
@@ -297,7 +298,7 @@ export default function DataTable({ dataz }) {
           >
             {'>>'}
           </Button>
-          <Box margin='1'>Page&nbsp;
+          <Box sx={{textAlign:'center'}}>Page&nbsp;
             <strong>
               {table.getState().pagination.pageIndex + 1} of{' '}
               {table.getPageCount().toLocaleString()}
@@ -321,6 +322,6 @@ export default function DataTable({ dataz }) {
           */}
         </Box>
       </Box>
-    </Box>
+    </TableContainer>
   )
 }

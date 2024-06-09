@@ -14,7 +14,7 @@ import DotsVertical from 'mdi-material-ui/DotsVertical'
 
 const TotalEarning = ({ amount, other }) => {
   return (
-    <Card>
+    <Card sx={{textAlign:'left', mt:4}}>
       <CardHeader
         title='Account Floor Value'
         titleTypographyProps={{ sx: { lineHeight: '1.6 !important', letterSpacing: '0.15px !important' } }}
@@ -25,8 +25,7 @@ const TotalEarning = ({ amount, other }) => {
         }
       />
       <CardContent sx={{ pt: theme => `${theme.spacing(2.25)} !important` }}>
-        <Box sx={{ mb: 1.5, display: 'flex', alignItems: 'center' }}>
-          {other ? (<>
+        <Box>{other.usname ? (<>
            {
            /* <Box pb="2" w='75px' sx={{ display: 'inline-flex' }}>
             <img src={other.im} alt="" width="50" height="50" />
@@ -40,7 +39,8 @@ const TotalEarning = ({ amount, other }) => {
         </>
         ) : (
           <></>
-        )}
+        )}</Box>
+        <Box sx={{ mb: 1.5, display: 'flex', alignItems: 'center' }}>
           <Box pt="4">
             <Box sx={{ display: 'inline-flex' }} ps="2">
               <Typography variant='h4' sx={{ fontWeight: 600, fontSize: '2.125rem !important' }}>
@@ -48,12 +48,12 @@ const TotalEarning = ({ amount, other }) => {
           </Typography>
           </Box>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', color: 'success.main' }}>
+          {/*<Box sx={{ display: 'flex', alignItems: 'center', color: 'success.main' }}>
             <MenuUp sx={{ fontSize: '1.875rem', verticalAlign: 'middle' }} />
             <Typography variant='body2' sx={{ fontWeight: 600, color: 'success.main' }}>
               10%
             </Typography>
-          </Box>
+          </Box>*/}
         </Box>
       </CardContent>
     </Card>

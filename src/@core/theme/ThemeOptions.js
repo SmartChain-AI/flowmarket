@@ -1,15 +1,21 @@
-// ** MUI Theme Provider
 import { deepmerge } from '@mui/utils'
-
-// ** Theme Override Imports
+import { useEffect,useState } from 'react'
 import palette from './palette'
 import spacing from './spacing'
 import shadows from './shadows'
 import breakpoints from './breakpoints'
 
 const themeOptions = settings => {
-  // ** Vars
-  const { mode, themeColor } = settings
+    const [mode, setMode] = useState();
+
+   useEffect(() => {
+
+    let value = JSON.parse(localStorage.getItem('flowmarket')) || { mode: 'light' }
+    settings.mode = value.mode
+    setMode(value.mode);
+  }, [settings])
+
+  const { themeColor } = settings
 
   const themeConfig = {
     palette: palette(mode, themeColor),

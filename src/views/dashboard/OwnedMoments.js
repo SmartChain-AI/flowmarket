@@ -9,9 +9,9 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import Magnify from 'mdi-material-ui/Magnify'
-import CardAccountFloorValue from 'src/views/cards/CardAccountFloorValue'
 import LoadingButton from '@mui/lab/LoadingButton';
 import TotalEarning from 'src/views/dashboard/TotalEarning'
+import Stack from '@mui/material/Stack';
 
 import React, { useState, useEffect } from "react";
 
@@ -108,6 +108,7 @@ export default function OwnedMoments(props) {
           }
 
           // const heyo = receivedinf(moment.deposit_block_height)
+          console.log(moment.listing_price)
           azza.push({
             'id': uid,
             'athlete_name': moment.metadata['ATHLETE NAME'],
@@ -122,7 +123,7 @@ export default function OwnedMoments(props) {
             'Image': moment.set_id,
             'Burned': moment.set_id,
             'Floor Price': lp,
-            'Listed Price': moment.listing_price,
+            'Listed': moment.listing_price,
             'Received': moment.deposit_block_height,
             'nft_id': moment.nft_id
           })
@@ -173,7 +174,13 @@ export default function OwnedMoments(props) {
 
   }
 
-  function submitaddy(value) {
+  async function getBlockH(){
+  //  const yep = await fcl.getBlock({'height':'62705811'})
+    //console.info(yep)
+
+}
+
+  async function submitaddy(value) {
     //  let erra = document.getElementById('error-cont');
     //   erra.innerHTML = '';
     let sa = document.getElementById('address')
@@ -183,6 +190,15 @@ export default function OwnedMoments(props) {
     setIsDone(false);
     let getlocalstore = localStorage.getItem('ufcstrikefloor')
     getlocalstore = JSON.parse(getlocalstore)
+
+
+   const fk = await getBlockH()
+   
+    console.info(fk)
+
+
+
+
     if (getlocalstore) {
       if (getlocalstore.user.address === sa.value) {
         setAccnt({
@@ -200,7 +216,7 @@ export default function OwnedMoments(props) {
   function localStore(address, totalz, allmoments) {
     let getlocalstore = localStorage.getItem('ufcstrikefloor')
     getlocalstore = JSON.parse(getlocalstore)
-    console.info(getlocalstore)
+    //console.info(getlocalstore)
     if (getlocalstore) {
       if (getlocalstore.user.address === address) { // Mutating Data
         console.log('Mutating Data')
@@ -253,7 +269,7 @@ export default function OwnedMoments(props) {
     return
   }
 
-  fetchsets()
+ fetchsets()
 
   return (
     <>
@@ -264,9 +280,15 @@ export default function OwnedMoments(props) {
             md: '50%', // 48em-80em,
             xl: '25%', // 80em+
           }}>
+            <Stack spacing={[2, 5]} direction={['row', 'row']}>
             <TextField
               size='small'
-              sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+              sx={{ 
+                '& .MuiOutlinedInput-root': {
+                 // borderRadius: 1,
+                },
+              fontSize:'0.7em',
+              }}
               id="address"
               InputProps={{
                 startAdornment: (
@@ -276,18 +298,16 @@ export default function OwnedMoments(props) {
                 )
               }}
               placeholder="Wallet Address"
-            />
-            <Box m='10px'>
-              <LoadingButton
+            /><LoadingButton
                 color="secondary"
                 onClick={() => { submitaddy() }}
                 loading={isDataLoading}
-                loadingPosition="end"
-                endIcon={<></>}
-                variant="contained"
+                variant="outlined"
+                size="small"
+             //  sx={{m:'10px'}} 
               >Submit
               </LoadingButton>
-            </Box>
+              </Stack>
             <Box id="error-cont"></Box>
           </Box>
           <Box width={{
@@ -299,7 +319,7 @@ export default function OwnedMoments(props) {
           >
             {dataz ? (<>
               <Grid container>
-                <Grid item xs={12} sm={6} md={6}>
+                <Grid item xs={12} sm={6} md={8}>
                   <TotalEarning amount={totalz ? (<>${totalz}</>) : (<></>)}
                     other={accnt} />
                 </Grid>
@@ -311,7 +331,7 @@ export default function OwnedMoments(props) {
       {!isDone ? (
         <></>
       ) : (
-        <Card className="main-cont">
+        <Card className="main-cont" sx={{ mt:4}}>
           <Box sx={{ flexDirection: 'column' }}>
             {dataz ? (<><DataTable dataz={dataz} /></>) : (<></>)}
           </Box>

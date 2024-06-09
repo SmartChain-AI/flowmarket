@@ -1,7 +1,8 @@
+
 const themeConfig = {
   // ** Layout Configs
   templateName: 'FlowMarket' /* App Name */,
-  mode: 'dark' /* light | dark */,
+  //mode: 'light' /* light | dark */,
   contentWidth: 'boxed' /* full | boxed */,
   // ** Routing Configs
   routingLoader: true /* true | false */,
