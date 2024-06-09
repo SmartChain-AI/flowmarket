@@ -265,7 +265,7 @@ export default function OwnedMoments(props) {
 
   return (
     <>
-      <Card mt='1rem' className="main-cont">
+      <Card className="main-cont">
         <Box sx={{
           flexDirection: 'column',
           width: '100%',
@@ -296,7 +296,8 @@ export default function OwnedMoments(props) {
                   )
                 }}
                 placeholder="Wallet Address"
-              /><LoadingButton
+              />
+              <LoadingButton
                 color="secondary"
                 onClick={() => { submitaddy() }}
                 loading={isDataLoading}
