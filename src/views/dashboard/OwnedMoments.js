@@ -168,13 +168,11 @@ export default function OwnedMoments(props) {
         //    'usname': data.data.getPublicAccountWithAvatar.username
         //  })
       }).catch(console.error);
-
   }
 
   async function getBlockH() {
     const yep = await fcl.getBlock({ 'height': '62705811' })
     console.info(yep)
-
   }
 
   async function submitaddy(value) {
@@ -277,7 +275,7 @@ export default function OwnedMoments(props) {
             md: '50%', // 48em-80em,
             xl: '25%', // 80em+
           }}>
-            <Stack spacing={[2, 5]} direction={['row', 'row']}>
+            <Stack spacing={[2]} direction={['row']}>
               <TextField
                 size='small'
                 sx={{
