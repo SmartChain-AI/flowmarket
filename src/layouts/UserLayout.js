@@ -1,24 +1,14 @@
-// ** MUI Imports
 import Box from '@mui/material/Box'
 import useMediaQuery from '@mui/material/useMediaQuery'
-
-// ** Layout Imports
-// !Do not remove this Layout import
 import VerticalLayout from 'src/@core/layouts/VerticalLayout'
-
-// ** Navigation Imports
 import VerticalNavItems from 'src/navigation/vertical'
-
-// ** Component Import
-import SettingsButton from './components/SettingsButton'
+import SettingsDrawer from 'src/layouts/components/SettingsDrawer'
 import VerticalAppBarContent from './components/vertical/AppBarContent'
-
-// ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
 import { useTheme } from '@mui/material/styles'
 
 const UserLayout = ({ children }) => {
-  // ** Hooks
+
   const { settings, saveSettings } = useSettings()
 
   /**
@@ -30,14 +20,13 @@ const UserLayout = ({ children }) => {
    *  ! Do not change this value unless you know what you are doing. It can break the template.
    */
   const hidden = useMediaQuery(theme => theme.breakpoints.down('lg'))
-
   const theme = useTheme()
   const imageSrc = theme.palette.mode
 
   const UFCStrikeImg = () => {
     return (
       <Box sx={{ mx: 'auto', textAlign: 'center' }}>
-          <img width={125} className={imageSrc === 'dark' ? 'logo-image-dark':'logo-image'} alt='UFC Strike' src={`/images/logos/ufcstrike.png`} />
+        <img width={125} height={125} className={imageSrc === 'dark' ? 'logo-image-dark' : 'logo-image'} alt='UFC Strike' src={`/images/logos/ufcstrike.png`} />
       </Box>
     )
   }
@@ -61,9 +50,14 @@ const UserLayout = ({ children }) => {
       )}
     >
       {children}
+      <Box
+        className='mui-fixed'
+        sx={{ right: theme => theme.spacing(20), bottom: theme => theme.spacing(10), zIndex: 11, position: 'fixed' }}
+      >
       {/*
-        <SettingsButton />
-      */}
+        <SettingsDrawer />
+*/}
+      </Box>
     </VerticalLayout>
   )
 }

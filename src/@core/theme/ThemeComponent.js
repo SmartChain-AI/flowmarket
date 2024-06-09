@@ -1,13 +1,10 @@
 import CssBaseline from '@mui/material/CssBaseline'
 import GlobalStyles from '@mui/material/GlobalStyles'
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles'
-import { useEffect, useState } from 'react'
 import themeConfig from 'src/configs/themeConfig'
 import overrides from './overrides'
 import typography from './typography'
-
 import themeOptions from './ThemeOptions'
-
 import GlobalStyling from './globalStyles'
 
 const ThemeComponent = props => {

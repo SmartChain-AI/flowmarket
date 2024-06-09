@@ -20,6 +20,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Stack from '@mui/material/Stack';
 import Checkbox from '@mui/material/Checkbox';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function DataTable({ dataz }) {
 
@@ -160,19 +161,19 @@ export default function DataTable({ dataz }) {
       <Box sx={{
         width: '100%',
         display: 'flex',
-        justifyContent: 'space-between',
+       // justifyContent: 'space-between',
+        justifyContent:"flex-end"
       }}>
-        <Accordion allowtoggle="true" sx={{
+        <Accordion
+        allowtoggle="true"
+        sx={{
           'maxWidth': 'max-content',
           'textAlign': 'left',
           'display': 'inline-block'
-        }}>
+        }}
+        >
           <AccordionSummary>
-            <Box>
-              <TableCog sx={{
-                //'borderRadius': '15px'
-              }} />
-            </Box>
+              <TableCog />
             </AccordionSummary>
             <AccordionDetails pb={4}>
               <Box className="inline-block border border-black shadow rounded">
@@ -312,13 +313,14 @@ export default function DataTable({ dataz }) {
           }}
             value={table.getState().pagination.pageSize}
             onChange={e => {
-              table.setPageSize(Number(e.target.value))
+              console.info(e.target.value)
+            //  table.setPageSize(Number(e.value.value))
             }}
           >
             {[10, 25, 50, 100, 500].map(pageSize => (
-              <option key={pageSize} value={pageSize}>
+              <MenuItem key={pageSize} value={pageSize} onClick={()=>{table.setPageSize(Number(pageSize))}}>
                 Show {pageSize}
-              </option>
+              </MenuItem>
             ))}
           </Select>
         </Box>

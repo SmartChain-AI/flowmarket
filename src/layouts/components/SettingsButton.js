@@ -1,15 +1,12 @@
 import { useState } from 'react'
-
-// ** MUI Imports
 import Box from '@mui/material/Box'
 import Fade from '@mui/material/Fade'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
-
-// ** Third Party Imports
 import { usePopper } from 'react-popper'
+import Cog from 'mdi-material-ui/Cog'
 
 const SettingsButton = () => {
 
@@ -51,7 +48,7 @@ const SettingsButton = () => {
           }
         }}
       >
-        Settings
+        <Cog fontSize='medium' />
       </Button>
       <Fade in={open} timeout={700}>
         <Box

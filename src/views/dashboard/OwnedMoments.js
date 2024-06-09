@@ -5,16 +5,13 @@ import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import Magnify from 'mdi-material-ui/Magnify'
 import LoadingButton from '@mui/lab/LoadingButton';
 import TotalEarning from 'src/views/dashboard/TotalEarning'
 import Stack from '@mui/material/Stack';
-
 import React, { useState, useEffect } from "react";
-
 import DataTable from "./DataTable";
 
 import * as fcl from '@onflow/fcl';
@@ -175,8 +172,8 @@ export default function OwnedMoments(props) {
   }
 
   async function getBlockH(){
-  //  const yep = await fcl.getBlock({'height':'62705811'})
-    //console.info(yep)
+    const yep = await fcl.getBlock({'height':'62705811'})
+    console.info(yep)
 
 }
 
@@ -188,17 +185,12 @@ export default function OwnedMoments(props) {
     azza = []
     setIsDataLoading(true);
     setIsDone(false);
-    let getlocalstore = localStorage.getItem('ufcstrikefloor')
+    let getlocalstore = localStorage.getItem('flowmarket')
     getlocalstore = JSON.parse(getlocalstore)
-
-
-   const fk = await getBlockH()
    
+    const fk = await getBlockH()
     console.info(fk)
-
-
-
-
+try{
     if (getlocalstore) {
       if (getlocalstore.user.address === sa.value) {
         setAccnt({
@@ -211,13 +203,13 @@ export default function OwnedMoments(props) {
     } else {
       fetchaccinf(sa.value)
     }
+  }catch{}
   }
 
   function localStore(address, totalz, allmoments) {
-    let getlocalstore = localStorage.getItem('ufcstrikefloor')
+    let getlocalstore = localStorage.getItem('flowmarket')
     getlocalstore = JSON.parse(getlocalstore)
-    //console.info(getlocalstore)
-    if (getlocalstore) {
+  /*  if (getlocalstore) {
       if (getlocalstore.user.address === address) { // Mutating Data
         console.log('Mutating Data')
         let tmparr = getlocalstore
@@ -230,10 +222,10 @@ export default function OwnedMoments(props) {
         if (!getlocalstore.user.accava) { // Storage exists but no avatar
           tmparr.user.graphdata.accava = accnt.im
         }
-        localStorage.setItem("ufcstrikefloor", JSON.stringify(tmparr))
+        localStorage.setItem("flowmarket", JSON.stringify(tmparr))
       } else { // Different Address
         console.log('Different Address')
-        localStorage.setItem("ufcstrikefloor", JSON.stringify({
+        localStorage.setItem("flowmarket", JSON.stringify({
           "user": {
             "address": address,
             "graphdata": {
@@ -252,7 +244,7 @@ export default function OwnedMoments(props) {
 
       // CHECK FOR usname AND im IN THE NEXT ONE
 
-      localStorage.setItem("ufcstrikefloor", JSON.stringify({
+      localStorage.setItem("flowmarket", JSON.stringify({
         "user": {
           "address": address,
           "graphdata": {
@@ -265,7 +257,7 @@ export default function OwnedMoments(props) {
         }
       }
       ))
-    }
+    }*/
     return
   }
 
