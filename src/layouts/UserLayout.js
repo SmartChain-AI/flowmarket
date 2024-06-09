@@ -6,6 +6,7 @@ import SettingsDrawer from 'src/layouts/components/SettingsDrawer'
 import VerticalAppBarContent from './components/vertical/AppBarContent'
 import { useSettings } from 'src/@core/hooks/useSettings'
 import { useTheme } from '@mui/material/styles'
+import Fade from '@mui/material/Fade';
 
 const UserLayout = ({ children }) => {
 
@@ -26,7 +27,9 @@ const UserLayout = ({ children }) => {
   const UFCStrikeImg = () => {
     return (
       <Box sx={{ mx: 'auto', textAlign: 'center' }}>
+        <Fade in={true} timeout={2000}>
         <img width={125} height={125} className={imageSrc === 'dark' ? 'logo-image-dark' : 'logo-image'} alt='UFC Strike' src={`/images/logos/ufcstrike.png`} />
+      </Fade>
       </Box>
     )
   }
