@@ -54,14 +54,15 @@ const Error500 = () => {
           </Typography>
           <Typography variant='body2'>Oops, something went wrong!</Typography>
         </BoxWrapper>
-        <Img height='487' alt='error-illustration' src='/images/pages/500.png' />
         <Button variant='contained' sx={{ px: 5.5 }}>
           <Link passHref href='/'>
             Back to Home
           </Link>
         </Button>
       </Box>
-      <FooterIllustrations image={<TreeIllustration alt='tree' src='/images/pages/tree-3.png' />} />
+      {/*
+        <FooterIllustrations image={<TreeIllustration alt='tree' src='/images/pages/tree-3.png' />} />
+     */ }
     </Box>
   )
 }

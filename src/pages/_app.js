@@ -1,30 +1,13 @@
-// ** Next Imports
 import Head from 'next/head'
 import { Router } from 'next/router'
-
-// ** Loader Import
 import NProgress from 'nprogress'
-
-// ** Emotion Imports
 import { CacheProvider } from '@emotion/react'
-
-// ** Config Imports
 import themeConfig from 'src/configs/themeConfig'
-
-// ** Component Imports
 import UserLayout from 'src/layouts/UserLayout'
 import ThemeComponent from 'src/@core/theme/ThemeComponent'
-
-// ** Contexts
 import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsContext'
-
-// ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
-
-// ** React Perfect Scrollbar Style
 import 'react-perfect-scrollbar/dist/css/styles.css'
-
-// ** Global css styles
 import '../../styles/globals.css'
 
 const clientSideEmotionCache = createEmotionCache()
@@ -60,7 +43,6 @@ const App = props => {
         <meta name='keywords' content='flow, blockchain, $flow, ufc, strike, ufc strike, flow blockchain' />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-
       <SettingsProvider>
         <SettingsConsumer>
           {({ settings }) => {

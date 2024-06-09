@@ -1,6 +1,4 @@
-// ** Next Import
 import Link from 'next/link'
-
 import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
@@ -8,10 +6,6 @@ import Box from '@mui/material/Box'
 
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
-// ** Demo Imports
-import FooterIllustrations from 'src/views/pages/misc/FooterIllustrations'
-
-// ** Styled Components
 const BoxWrapper = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     width: '90vw'
@@ -43,14 +37,12 @@ const Error401 = () => {
           </Typography>
           <Typography variant='body2'>You don&prime;t have permission to access this page. Go Home!</Typography>
         </BoxWrapper>
-        <Img height='487' alt='error-illustration' src='/images/pages/401.png' />
-        <Button variant='contained' sx={{ px: 5.5 }}>
+        <Button variant='contained' sx={{ px: 5.5, m:4 }}>
           <Link passHref href='/'>
             Back to Home
           </Link>
         </Button>
       </Box>
-      <FooterIllustrations />
     </Box>
   )
 }
