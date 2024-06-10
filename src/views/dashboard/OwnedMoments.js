@@ -102,7 +102,7 @@ export default function OwnedMoments(props) {
             mname = moment.name.replace("/|/g", " ")
           }
 
-           const heyo = receivedinf(moment.deposit_block_height)
+          const heyo = receivedinf(moment.deposit_block_height)
 
           azza.push({
             'id': uid,
@@ -132,30 +132,34 @@ export default function OwnedMoments(props) {
         localStore(input, total, sorted);
       })
       .catch(console.error);
-
+    let counter = 0
     async function receivedinf(block_height) {
-      const sleepNow = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
-      await sleepNow(1000)
+      if (counter > 0) {
+        return
+      }
+      counter = counter + 1
+      // sleepNow = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+      // await sleepNow(1000)
       //console.info(block_height)
-        const yep = await fetch('https://rest-mainnet.onflow.org/v1/blocks?height='+block_height)
-        .then((results)=>{
-         console.info(results)
-         })
-        return yep
+      const yep = await fetch('https://rest-mainnet.onflow.org/v1/blocks?height=' + block_height)
+        .then((results) => {
+          console.info(results)
+        })
+      return yep
     }
   }, [setsDataz])
 
   async function fetchaccinf(userid) {
     const response = await fetch(url_accinf + '?ids=' + userid)
       .then((response) => {
-       return response.json()
+        return response.json()
       }).catch(console.error);
 
-      console.info(response.username)
-        setAccnt({
-             'im': response.avatar??"",
-            'usname': response.username??""
-        })
+    console.info(response.username)
+    setAccnt({
+      'im': response.avatar ?? "",
+      'usname': response.username ?? ""
+    })
   }
 
   async function getBlockH() {
@@ -165,7 +169,7 @@ export default function OwnedMoments(props) {
 
   async function submitaddy(value) {
     let sa = document.getElementById('address')
-    if(sa.value === "" || !sa.value.startsWith("0x")){
+    if (sa.value === "" || !sa.value.startsWith("0x")) {
       return
     }
     setInput(sa.value)
@@ -176,15 +180,15 @@ export default function OwnedMoments(props) {
     getlocalstore = JSON.parse(getlocalstore)
     //const fk = await getBlockH()
     fetchaccinf(sa.value)
-setAccnt()
-setTotal()
+    setAccnt()
+    setTotal()
 
     try {
       if (getlocalstore) {
         if (getlocalstore.user.address === sa.value) {
           setAccnt({
-            'im': getlocalstore.user.accava??"",
-            'usname': getlocalstore.user.accname??""
+            'im': getlocalstore.user.accava ?? "",
+            'usname': getlocalstore.user.accname ?? ""
           })
         } else {
           fetchaccinf(sa.value)
@@ -198,41 +202,22 @@ setTotal()
   function localStore(address, totalz, allmoments) {
     let getlocalstore = localStorage.getItem('flowmarket')
     getlocalstore = JSON.parse(getlocalstore)
-      if (getlocalstore) {
-        if (getlocalstore.user.address === address) { // Mutating Data
-          console.log('Mutating Data')
-          let tmparr = getlocalstore
-          tmparr.user.graphdata.date = new Date()
-          tmparr.user.graphdata.total = totalz
-          tmparr.user.moments = allmoments
-          if (!getlocalstore.user.accname) { // Storage exists but no name
-            tmparr.user.graphdata.accname = accnt.usname
-          }
-          if (!getlocalstore.user.accava) { // Storage exists but no avatar
-            tmparr.user.graphdata.accava = accnt.im
-          }
-          localStorage.setItem("flowmarket", JSON.stringify(tmparr))
-        } else { // Different Address
-          console.log('Different Address')
-          localStorage.setItem("flowmarket", JSON.stringify({
-            "user": {
-              "address": address,
-              "graphdata": {
-                "date": new Date(),
-                "total": totalz
-              },
-              "moments": allmoments,
-              "accname": accnt.usname,
-              "accava": accnt.im
-            }
-          }
-          ));
+    if (getlocalstore) {
+      if (getlocalstore.user.address === address) { // Mutating Data
+        console.log('Mutating Data')
+        let tmparr = getlocalstore
+        tmparr.user.graphdata.date = new Date()
+        tmparr.user.graphdata.total = totalz
+        tmparr.user.moments = allmoments
+        if (!getlocalstore.user.accname) { // Storage exists but no name
+          tmparr.user.graphdata.accname = accnt.usname
         }
-      } else { // New Storage
-        console.log('New Storage')
-  
-        // CHECK FOR usname AND im IN THE NEXT ONE
-  
+        if (!getlocalstore.user.accava) { // Storage exists but no avatar
+          tmparr.user.graphdata.accava = accnt.im
+        }
+        localStorage.setItem("flowmarket", JSON.stringify(tmparr))
+      } else { // Different Address
+        console.log('Different Address')
         localStorage.setItem("flowmarket", JSON.stringify({
           "user": {
             "address": address,
@@ -241,12 +226,31 @@ setTotal()
               "total": totalz
             },
             "moments": allmoments,
-               "accname": accnt.usname,
-             "accava": accnt.im
+            "accname": accnt.usname,
+            "accava": accnt.im
           }
         }
-        ))
+        ));
       }
+    } else { // New Storage
+      console.log('New Storage')
+
+      // CHECK FOR usname AND im IN THE NEXT ONE
+
+      localStorage.setItem("flowmarket", JSON.stringify({
+        "user": {
+          "address": address,
+          "graphdata": {
+            "date": new Date(),
+            "total": totalz
+          },
+          "moments": allmoments,
+          "accname": accnt.usname,
+          "accava": accnt.im
+        }
+      }
+      ))
+    }
     return
   }
 
@@ -259,21 +263,20 @@ setTotal()
           flexDirection: 'column',
           width: '100%',
           textAlign: 'center',
-          margin: 2
+          padding: 2
         }}>
           <Box width={{
             base: '100%', // 0-48em
             md: '50%', // 48em-80em,
-            xl: '25%', // 80em+
+           // xl: '25%', // 80em+
           }}>
-            <Stack spacing={[2]} direction={['row']}>
+            <Stack spacing={[1]} direction={['row']}>
               <TextField
                 size='small'
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     // borderRadius: 1,
                   },
-                  //paddingRight: 1,
                   fontSize: '0.7em',
                 }}
                 id="address"
@@ -292,7 +295,6 @@ setTotal()
                 loading={isDataLoading}
                 variant="outlined"
                 size="small"
-              //  sx={{m:'10px'}} 
               >Submit
               </LoadingButton>
             </Stack>
@@ -309,7 +311,7 @@ setTotal()
               <Grid container>
                 <Grid item xs={12} sm={6} md={8}>
                   <TotalEarning amount={totalz ? (<>${totalz}</>) : (<></>)}
-                    accname={accnt ? accnt.usname:null} accimage={accnt ? accnt.im : null} walletid={input} />
+                    accname={accnt ? accnt.usname : null} accimage={accnt ? accnt.im : null} walletid={input} />
                 </Grid>
               </Grid>
             </>) : (<></>)}
