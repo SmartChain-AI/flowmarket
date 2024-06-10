@@ -165,7 +165,7 @@ export default function OwnedMoments(props) {
 
   async function submitaddy(value) {
     let sa = document.getElementById('address')
-    if(sa.length === ""){
+    if(sa.value === "" || !sa.value.startsWith("0x")){
       return
     }
     setInput(sa.value)
