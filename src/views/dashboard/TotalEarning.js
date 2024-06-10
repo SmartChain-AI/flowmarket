@@ -43,7 +43,7 @@ const TotalEarning = ({ amount,accimage,accname,walletid }) => {
                   display: 'inline-block',
                   margin: 'auto 0',
                   pl: 2,
-                  pb: 1
+                  pb: 2
                 }}>
                 <Typography variant='h5' className="username">{accname??walletid}</Typography>
               </Box>
