@@ -7,8 +7,14 @@ import CardContent from '@mui/material/CardContent'
 import LinearProgress from '@mui/material/LinearProgress'
 import MenuUp from 'mdi-material-ui/MenuUp'
 import DotsVertical from 'mdi-material-ui/DotsVertical'
+import AccountCircleOutline from 'mdi-material-ui/AccountCircleOutline'
 
-const TotalEarning = ({ amount, other }) => {
+const TotalEarning = ({ amount,accimage,accname,walletid }) => {
+
+  //if(!other.im){
+   // other = {'im':null}
+  //}
+
   return (
     <Card sx={{ textAlign: 'left', mt: 4 }}>
       <CardHeader
@@ -21,25 +27,26 @@ const TotalEarning = ({ amount, other }) => {
         }
       />
       <CardContent sx={{ pt: theme => `${theme.spacing(2.25)} !important` }}>
-        <Box>
-          {
-        /*other.usname ? (<>
-           {
-            <Box pb="2" w='75px' sx={{ display: 'inline-flex' }}>
-            <img src={other.im} alt="" width="50" height="50" />
-            </Box> 
-            }
-            <Box
-            ps="2"
-            w='100%'
-             sx={{ display: 'inline-flex', margin: 'auto' }}><Typography variant='body2'>{other.usname}</Typography>
-             </Box>
-          </Box>  
-        </>
-        ) : (
-          <></>
-        )}
-        */}
+        <Box sx={{ display: 'flex', pb: 2 }}>
+              <Box pb="2" w='75px' sx={{ display: 'inline-block' }}>
+              {
+                accimage ? (<>
+                  <img src={accimage} alt="" width="50" height="50" />
+                </>) : (<>
+                  <AccountCircleOutline fontSize='large' />
+                </>)
+}
+              </Box>
+              <Box
+                w='100%'
+                sx={{
+                  display: 'inline-block',
+                  margin: 'auto 0',
+                  pl: 2,
+                  pb: 1
+                }}>
+                <Typography variant='h5' className="username">{accname??walletid}</Typography>
+              </Box>
         </Box>
         <Box sx={{ mb: 1.5, display: 'flex', alignItems: 'center' }}>
           <Box pt="4">

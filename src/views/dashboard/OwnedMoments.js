@@ -1,4 +1,3 @@
-// ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import Card from '@mui/material/Card'
@@ -37,7 +36,7 @@ export default function OwnedMoments(props) {
   const { variant, children, ...rest } = props;
   const url_account = '/api/moments';
   const url_sets = '/api/sets';
-  const url_accinf = '/api/dappername';
+  const url_accinf = '/api/evaluate/';
 
   const post_data_sets = {
     "sort": "listing_timestamp",
@@ -84,7 +83,6 @@ export default function OwnedMoments(props) {
         .then((response) => response.json())
         .then((data) => {
           setSetData(data)
-          console.info(data)
         }).catch(console.error);
     }, [input, isDone])
   }
@@ -105,7 +103,7 @@ export default function OwnedMoments(props) {
           }
 
           // const heyo = receivedinf(moment.deposit_block_height)
-          console.log(moment.listing_price)
+
           azza.push({
             'id': uid,
             'athlete_name': moment.metadata['ATHLETE NAME'],
@@ -138,7 +136,7 @@ export default function OwnedMoments(props) {
     async function receivedinf(block_height) {
       const sleepNow = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
       await sleepNow(1000)
-      console.info(block_height)
+      //console.info(block_height)
       //  const yep = await fcl.send([fcl.getBlock(), fcl.atBlockHeight(block_height)])
       //  .then(
       //   console.info(fcl.decode.block)
@@ -148,26 +146,16 @@ export default function OwnedMoments(props) {
   }, [setsDataz])
 
   async function fetchaccinf(userid) {
-    const pload2 = { "operationName": "GetPublicAccountWithAvatar", "variables": { "usernameOrFlowAddress": userid }, "query": "query GetPublicAccountWithAvatar($usernameOrFlowAddress: String!) {\n  getPublicAccountWithAvatar(usernameOrFlowAddress: $usernameOrFlowAddress) {\n    username\n    flowAddress\n    deactivated\n    avatar {\n      id\n      imageURL\n      name\n      __typename\n    }\n    __typename\n  }\n}" };
-    const trequestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(pload2),
-    };
-    const response = await fetch(url_accinf, trequestOptions)
+    const response = await fetch(url_accinf + '?ids=' + userid)
       .then((response) => {
-        console.info(response)
-        response.json()
-      })
-      .then((data) => {
-        console.info(data)
-        //  setAccnt({
-        //     'im': data.data.getPublicAccountWithAvatar.avatar.imageURL,
-        //    'usname': data.data.getPublicAccountWithAvatar.username
-        //  })
+       return response.json()
       }).catch(console.error);
+
+      console.info(response.username)
+        setAccnt({
+             'im': response.avatar??"",
+            'usname': response.username??""
+        })
   }
 
   async function getBlockH() {
@@ -176,24 +164,27 @@ export default function OwnedMoments(props) {
   }
 
   async function submitaddy(value) {
-    //  let erra = document.getElementById('error-cont');
-    //   erra.innerHTML = '';
     let sa = document.getElementById('address')
+    if(sa.length === 0){
+      return
+    }
     setInput(sa.value)
     azza = []
     setIsDataLoading(true);
     setIsDone(false);
     let getlocalstore = localStorage.getItem('flowmarket')
     getlocalstore = JSON.parse(getlocalstore)
+    //const fk = await getBlockH()
+    fetchaccinf(sa.value)
+setAccnt()
+setTotal()
 
-    const fk = await getBlockH()
-    console.info(fk)
     try {
       if (getlocalstore) {
         if (getlocalstore.user.address === sa.value) {
           setAccnt({
-            'im': getlocalstore.user.accava,
-            'usname': getlocalstore.user.accname
+            'im': getlocalstore.user.accava??"",
+            'usname': getlocalstore.user.accname??""
           })
         } else {
           fetchaccinf(sa.value)
@@ -207,7 +198,7 @@ export default function OwnedMoments(props) {
   function localStore(address, totalz, allmoments) {
     let getlocalstore = localStorage.getItem('flowmarket')
     getlocalstore = JSON.parse(getlocalstore)
-    /*  if (getlocalstore) {
+      if (getlocalstore) {
         if (getlocalstore.user.address === address) { // Mutating Data
           console.log('Mutating Data')
           let tmparr = getlocalstore
@@ -250,12 +241,12 @@ export default function OwnedMoments(props) {
               "total": totalz
             },
             "moments": allmoments,
-            //   "accname": accnt.usname,
-            // "accava": accnt.im
+               "accname": accnt.usname,
+             "accava": accnt.im
           }
         }
         ))
-      }*/
+      }
     return
   }
 
@@ -318,7 +309,7 @@ export default function OwnedMoments(props) {
               <Grid container>
                 <Grid item xs={12} sm={6} md={8}>
                   <TotalEarning amount={totalz ? (<>${totalz}</>) : (<></>)}
-                    other={accnt} />
+                    accname={accnt ? accnt.usname:null} accimage={accnt ? accnt.im : null} walletid={input} />
                 </Grid>
               </Grid>
             </>) : (<></>)}

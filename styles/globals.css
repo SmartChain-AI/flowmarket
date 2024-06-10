@@ -117,3 +117,7 @@ td:nth-child(n+2) {
 .moment-name {
   text-align: left;
 }
+
+.username{
+  color: #4fd1c5 !important
+}
