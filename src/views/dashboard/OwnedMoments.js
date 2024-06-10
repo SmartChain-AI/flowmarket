@@ -102,7 +102,7 @@ export default function OwnedMoments(props) {
             mname = moment.name.replace("/|/g", " ")
           }
 
-          // const heyo = receivedinf(moment.deposit_block_height)
+           const heyo = receivedinf(moment.deposit_block_height)
 
           azza.push({
             'id': uid,
@@ -137,11 +137,11 @@ export default function OwnedMoments(props) {
       const sleepNow = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
       await sleepNow(1000)
       //console.info(block_height)
-      //  const yep = await fcl.send([fcl.getBlock(), fcl.atBlockHeight(block_height)])
-      //  .then(
-      //   console.info(fcl.decode.block)
-      //   )
-      //  return yep
+        const yep = await fetch('https://rest-mainnet.onflow.org/v1/blocks?height='+block_height)
+        .then((results)=>{
+         console.info(results)
+         })
+        return yep
     }
   }, [setsDataz])
 
