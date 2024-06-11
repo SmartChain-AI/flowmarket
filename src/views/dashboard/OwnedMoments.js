@@ -14,7 +14,7 @@ import React, { useState, useEffect } from "react";
 import DataTable from "./DataTable";
 
 import * as fcl from '@onflow/fcl';
-//import { block } from "@onflow/fcl"
+import { block } from "@onflow/fcl"
 import "../../flow/config"
 
 export default function OwnedMoments(props) {
@@ -141,6 +141,29 @@ export default function OwnedMoments(props) {
       // sleepNow = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
       // await sleepNow(1000)
       //console.info(block_height)
+
+     // const events = await fcl.send([
+     //   fcl.getEventsAtBlockHeightRange(
+     //     'A.7e60df042a9c0868.FlowToken.TokensWithdrawn',
+      //    35580624,
+      //    35580624,
+      //  ),
+    //  ]).then(fcl.decode);
+
+     // console.info(events)
+
+
+
+
+
+
+
+
+
+
+
+
+
       const yep = await fetch('https://rest-mainnet.onflow.org/v1/blocks?height=' + block_height)
         .then((results) => {
           console.info(results)
@@ -268,7 +291,7 @@ export default function OwnedMoments(props) {
           <Box width={{
             base: '100%', // 0-48em
             md: '50%', // 48em-80em,
-           // xl: '25%', // 80em+
+            // xl: '25%', // 80em+
           }}>
             <Stack spacing={[1]} direction={['row']}>
               <TextField

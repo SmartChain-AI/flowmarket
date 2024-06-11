@@ -1,3 +1,9 @@
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+}
+
 export default async function handler(req, res) {
 
   const url_moments = 'https://market-api.ufcstrike.com/search/moments';

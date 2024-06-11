@@ -24,8 +24,10 @@ export default async function handler(req, res) {
   const response = fetch(url_dappername, trequestOptions)
     .then((response) => response.json())
     .then((data) => {
-      console.info(data.userName)
-      res.status(200).json({'username':data.object[0].userName,'avatar':data.object[0].avatarPath})
+      if (JSON.stringify(data.object) === "{}") {
+        res.status(200).json({ 'username': null, 'avatar': null })
+      }
+      res.status(200).json({ 'username': data.object[0].userName, 'avatar': data.object[0].avatarPath })
       return
     }).catch(console.error);
 
