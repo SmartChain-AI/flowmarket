@@ -24,11 +24,13 @@ export default async function handler(req, res) {
   const response = fetch(url_dappername, trequestOptions)
     .then((response) => response.json())
     .then((data) => {
-      if (JSON.stringify(data.object) === "{}") {
-        res.status(200).json({ 'username': null, 'avatar': null })
-      }
+      console.info(data.object)
+      if (JSON.stringify(data.object) === ("{}"||"[]") || !data.object[0]) {
+        res.status(200).json({ 'username': walletid, 'avatar': null })
+      }else{
       res.status(200).json({ 'username': data.object[0].userName, 'avatar': data.object[0].avatarPath })
       return
+    }
     }).catch(console.error);
 
   const done = await response

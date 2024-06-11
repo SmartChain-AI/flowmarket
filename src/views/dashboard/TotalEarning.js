@@ -11,10 +11,6 @@ import AccountCircleOutline from 'mdi-material-ui/AccountCircleOutline'
 
 const TotalEarning = ({ amount, accimage, accname, walletid }) => {
 
-  //if(!other.im){
-  // other = {'im':null}
-  //}
-
   return (
     <Card sx={{ textAlign: 'left', mt: 4 }}>
       <CardHeader
@@ -48,10 +44,11 @@ const TotalEarning = ({ amount, accimage, accname, walletid }) => {
             <Typography variant='h6' className="username">{accname ?? walletid}</Typography>
           </Box>
         </Box>
-        <Box sx={{ mb: 1.5,
+        <Box sx={{
+          mb: 1.5,
           display: 'flex',
           alignItems: 'center'
-          }}>
+        }}>
           <Box pt="4">
             <Box sx={{ display: 'inline-flex' }} ps="2">
               <Typography variant='h4' sx={{ fontWeight: 600, fontSize: '2.125rem !important' }}>

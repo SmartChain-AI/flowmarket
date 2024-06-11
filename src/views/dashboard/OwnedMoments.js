@@ -78,13 +78,13 @@ export default function OwnedMoments(props) {
   };
 
   async function fetchsets() {
-    useEffect(() => {
+    //useEffect(() => {
       const response = fetch(url_sets, setsOptions)
         .then((response) => response.json())
         .then((data) => {
           setSetData(data)
         }).catch(console.error);
-    }, [input, isDone])
+ //   }, [input, isDone])
   }
 
   useEffect(() => {
@@ -191,6 +191,8 @@ export default function OwnedMoments(props) {
   }
 
   async function submitaddy(value) {
+    fetchsets()
+
     let sa = document.getElementById('address')
     if (sa.value === "" || !sa.value.startsWith("0x")) {
       return
@@ -277,7 +279,6 @@ export default function OwnedMoments(props) {
     return
   }
 
-  fetchsets()
 
   return (
     <>
