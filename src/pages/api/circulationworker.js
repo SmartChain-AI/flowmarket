@@ -4,7 +4,7 @@ import Bottleneck from "bottleneck";
 export default async function circulation(req, res) {
   const { MongoClient, ServerApiVersion } = require('mongodb');
 
-  const uri = "mongodb+srv://doadmin:617ViK9vH2Y03xG8@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db";
+  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db";
   //"+process.env.DB_PW+"
   const url_set_circ = 'https://market-api.ufcstrike.com/sets/';
   const url_sets = 'https://market-api.ufcstrike.com/search/sets';
@@ -84,10 +84,29 @@ export default async function circulation(req, res) {
           limiter.schedule(async () => await fetch(url_set_circ + element.set_id + '/circulation')
             .then((response) => response.json())
             .then((data) => {
+
+              /// INSERT INTO DB ///
               const coll = client.db('admin').collection('FlowMarket');
-              const cursor2 = coll.insertOne({ //_id: 375, 
-                item: data.setId, info: data
-              })
+              const date = new Date()
+              const cursor2 = coll.updateOne(
+                { item: data.setId },
+                {
+                  $set:
+                  {
+                    item: data.setId,
+                    timestamp: date,
+                    info: data,
+                  }
+                },
+                { upsert: true }
+              )
+              /*
+               const cursor2 = coll.insertOne({ //_id: 375, 
+                 item: data.setId,
+                 timestamp: new Date(),
+                 info: data
+               })
+              */
               return
             })
             .catch(console.error)
