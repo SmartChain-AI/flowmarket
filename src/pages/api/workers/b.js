@@ -1,13 +1,18 @@
 // Grabs a list of all available sets and then gets their burn info etc and pushes to DB
+// initialise full list with full=1 paramenter, then set to 0 to update
 import Bottleneck from "bottleneck";
 
 export default async function circulation(req, res) {
   const { MongoClient, ServerApiVersion } = require('mongodb');
 
+  const limiter = new Bottleneck({
+    maxConcurrent: 3,
+    minTime: 100
+  });
+
   const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db";
-  //"+process.env.DB_PW+"
-  const url_set_circ = 'https://market-api.ufcstrike.com/sets/';
   const url_sets = 'https://market-api.ufcstrike.com/search/sets';
+  const url_sets_sales = 'https://market-api.ufcstrike.com/sets/';
   
   let tmparr = []
   const date = new Date()
@@ -22,38 +27,30 @@ export default async function circulation(req, res) {
 
   async function run() {
     try {
-      // Connect the client to the server	(optional starting in v4.7)
       await client.connect();
-      //await client.db("flowmarket-db").command( { serverStatus: 1 } ).metrics.apiVersions
       const session = client.startSession();
-      // await client.db("flowmarket-db").command({ ping: 1 });
-      // console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
-      const filterx = {
+     /* const filterx = {
         'sales.timestamp': {
           '$gte': '2023-06-16T18:24:05Z'
         }
       };
 
       session.startTransaction();
-      const coll = client.db('admin').collection('FlowMarket');
-      const cursor = coll.find(filterx);
-      const result = await cursor.toArray();
-      await getter(coll)
-      await session.endSession();
+      const coll = client.db('flowmarket').collection('sales');
+  const cursor = coll.find(filterx);
+      const result = await cursor.toArray();*/
 
+      await getter(coll)
+      
     } catch (error) {
       console.log("An error occurred during the transaction:" + error);
       await session.abortTransaction();
     } finally {
+      await session.endSession();
       // await client.close()
     }
   }
-
-  const limiter = new Bottleneck({
-    maxConcurrent: 2,
-    minTime: 20
-  });
 
   const post_data_sets = {
     "sort": "listing_timestamp",
@@ -83,31 +80,23 @@ export default async function circulation(req, res) {
       .then((response) => response.json())
       .then((data) => {
         data.sets.forEach(element => {
-          limiter.schedule(async () => await fetch(url_set_circ + element.set_id + '/circulation')
+          limiter.schedule(async () => await fetch(url_sets_sales + element.set_id + '/sales?sort=latest&full=1')
             .then((response) => response.json())
             .then((data) => {
-
               /// INSERT INTO DB ///
-              const coll = client.db('admin').collection('FlowMarket');
-              const cursor2 = coll.updateOne(
-                { item: data.setId },
+              const coll = client.db('flowmarket').collection('sales');
+              coll.updateOne(
+                { setId: data.setId },
                 {
                   $set:
                   {
-                    item: data.setId,
+                    setId: data.setId,
+                    ...data,
                     timestamp: date,
-                    info: data,
                   }
                 },
                 { upsert: true }
               )
-              /*
-               const cursor2 = coll.insertOne({ //_id: 375, 
-                 item: data.setId,
-                 timestamp: new Date(),
-                 info: data
-               })
-              */
               return
             })
             .catch(console.error)
