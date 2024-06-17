@@ -1,3 +1,5 @@
+'use client'
+
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import Card from '@mui/material/Card'
@@ -26,7 +28,6 @@ export default function OwnedMoments(props) {
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [accnt, setAccnt] = useState();
-  const [address, setAddress] = useState('')
 
   let azza = [];
   let lp = 0;
@@ -36,7 +37,7 @@ export default function OwnedMoments(props) {
   const { variant, children, ...rest } = props;
   const url_account = '/api/moments';
   const url_sets = '/api/sets';
-  const url_accinf = '/api/evaluate/';
+  const url_accinf = '/api/emname/';
 
   const post_data_sets = {
     "sort": "listing_timestamp",
@@ -78,18 +79,17 @@ export default function OwnedMoments(props) {
   };
 
   async function fetchsets() {
-    //useEffect(() => {
-      const response = fetch(url_sets, setsOptions)
-        .then((response) => response.json())
-        .then((data) => {
-          setSetData(data)
-        }).catch(console.error);
- //   }, [input, isDone])
+    fetch(url_sets, setsOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        setSetData(data)
+      })
+      .catch(console.error)
   }
 
   useEffect(() => {
     if (!isDataLoading) return
-    const response = fetch(url_account, momentsOptions)
+    fetch(url_account, momentsOptions)
       .then((response) => response.json())
       .then((data) => {
         for (const moment of data.moments) {
@@ -101,8 +101,6 @@ export default function OwnedMoments(props) {
             total = Number(found.listing_price) + total
             mname = moment.name.replace("/|/g", " ")
           }
-
-          const heyo = receivedinf(moment.deposit_block_height)
 
           azza.push({
             'id': uid,
@@ -138,36 +136,12 @@ export default function OwnedMoments(props) {
         return
       }
       counter = counter + 1
-      // sleepNow = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
-      // await sleepNow(1000)
-      //console.info(block_height)
-
-     // const events = await fcl.send([
-     //   fcl.getEventsAtBlockHeightRange(
-     //     'A.7e60df042a9c0868.FlowToken.TokensWithdrawn',
-      //    35580624,
-      //    35580624,
-      //  ),
-    //  ]).then(fcl.decode);
-
-     // console.info(events)
-
-
-
-
-
-
-
-
-
-
-
-
 
       const yep = await fetch('https://rest-mainnet.onflow.org/v1/blocks?height=' + block_height)
         .then((results) => {
           console.info(results)
         })
+        .catch(console.error)
       return yep
     }
   }, [setsDataz])
@@ -178,21 +152,15 @@ export default function OwnedMoments(props) {
         return response.json()
       }).catch(console.error);
 
-    console.info(response.username)
     setAccnt({
       'im': response.avatar ?? "",
       'usname': response.username ?? ""
     })
-  }
-
-  async function getBlockH() {
-    const yep = await fcl.getBlock({ 'height': '62705811' })
-    console.info(yep)
+    return
   }
 
   async function submitaddy(value) {
     fetchsets()
-
     let sa = document.getElementById('address')
     if (sa.value === "" || !sa.value.startsWith("0x")) {
       return
@@ -201,12 +169,11 @@ export default function OwnedMoments(props) {
     azza = []
     setIsDataLoading(true);
     setIsDone(false);
-    let getlocalstore = localStorage.getItem('flowmarket')
-    getlocalstore = JSON.parse(getlocalstore)
-    //const fk = await getBlockH()
     fetchaccinf(sa.value)
     setAccnt()
     setTotal()
+    let getlocalstore = localStorage.getItem('flowmarket')
+    getlocalstore = JSON.parse(getlocalstore)
 
     try {
       if (getlocalstore) {
@@ -222,6 +189,7 @@ export default function OwnedMoments(props) {
         fetchaccinf(sa.value)
       }
     } catch { }
+    return
   }
 
   function localStore(address, totalz, allmoments) {
@@ -259,9 +227,7 @@ export default function OwnedMoments(props) {
       }
     } else { // New Storage
       console.log('New Storage')
-
       // CHECK FOR usname AND im IN THE NEXT ONE
-
       localStorage.setItem("flowmarket", JSON.stringify({
         "user": {
           "address": address,
@@ -279,7 +245,6 @@ export default function OwnedMoments(props) {
     return
   }
 
-
   return (
     <>
       <Card className="main-cont">
@@ -289,6 +254,12 @@ export default function OwnedMoments(props) {
           textAlign: 'center',
           padding: 2
         }}>
+          <Box width={{
+            base: '100%', // 0-48em
+            md: '50%', // 48em-80em,
+            // xl: '25%', // 80em+
+          }}>
+          </Box>
           <Box width={{
             base: '100%', // 0-48em
             md: '50%', // 48em-80em,
@@ -355,4 +326,3 @@ export default function OwnedMoments(props) {
     </>
   );
 };
-

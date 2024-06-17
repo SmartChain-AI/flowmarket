@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-
+// Needs body posted for full list?
   const url_sets = 'https://market-api.ufcstrike.com/search/sets';
 
   const sets_requestOptions = {

@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       console.info(lastblockid)
     })
 
-  const pload = "height=" + lastblockid + "&name=A.329feb3ab062d289.UFC_NFT.Withdraw" // at block height, need to get latest block height
+  const pload = "height=" + lastblockid + "&name=A.4eb8a10cb9f87357.NFTStorefront.ListingCompleted" // at block height, need to get latest block height
 
   const yo = await fetch('https://api.findlabs.io/historical/api/rest/events?' + pload)
     .then((res) => res.json())
@@ -28,12 +28,15 @@ export default async function handler(req, res) {
     })
 
   const done = await yo
+//console.info(yo)
 
-  const filterUsersByBH = (blockh) => {
+  const filterUsersByBH = (blockh) => { // filters results returned by latest sales events
+console.log('yo')
     return done.events.filter(trans => trans.fields.from === blockh);
+
   };
 
-  async function yo2(pload2) {
+  async function yo2(pload2) { // Transaction number function
     console.log(pload2)
     await sleepNow(500)
 
@@ -46,8 +49,7 @@ export default async function handler(req, res) {
       .then((data) => {
         if (res.status(200) && data.transactions !== undefined) {
           //let arrlength = data.transactions[0].length
-        //  console.log(arrlength)
-       
+          console.log(arrlength)
           count = 0
           console.info("Done")
           return data
@@ -67,7 +69,7 @@ export default async function handler(req, res) {
     filteredUsers.forEach(element => { // get transactions from filtered user
       pload2 = "id=" + element.transaction_hash// at block height, need to get latest block height
       let ev = yo2(pload2)
-
+console.log('here')
 
       let amount = ev.transactions[0].events[0].fields.amount
       console.log("amount"+amount)
@@ -94,8 +96,8 @@ export default async function handler(req, res) {
     });
   }
 
-  const filteredUsers = filterUsersByBH("0xf2400730a594918b");
-
+  const filteredUsers = filterUsersByBH("0x9ca2ddd25b5fbd4b");
+console.info(filteredUsers)
   trannies(filteredUsers)
 
   res.status(200).json(tmpa)

@@ -1,3 +1,5 @@
+'use client'
+
 export default async function handler(req, res) {
 
   const url_dappername = 'https://api.evaluate.xyz/users/filter';
@@ -24,7 +26,6 @@ export default async function handler(req, res) {
   const response = fetch(url_dappername, trequestOptions)
     .then((response) => response.json())
     .then((data) => {
-      console.info(data.object)
       if (JSON.stringify(data.object) === ("{}"||"[]") || !data.object[0]) {
         res.status(200).json({ 'username': walletid, 'avatar': null })
       }else{

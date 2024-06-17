@@ -1,3 +1,5 @@
+'use client'
+
 export default async function handler(req, res) {
 
   const url_sets = 'https://market-api.ufcstrike.com/search/sets';

@@ -1,3 +1,5 @@
+  'use client'
+
   export default async function handler(req, res) {
 
     const exampleusername = "0x9ca2ddd25b5fbd4b"
