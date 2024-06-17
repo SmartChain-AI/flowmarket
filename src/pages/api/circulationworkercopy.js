@@ -35,8 +35,9 @@ export default async function circulation(req, res) {
      
 
      const test = {
-      'sales.timestamp': '2023-06-16T19:24:05Z'
+      'sales.timestamp': '2023-06-16T18:24:05Z'
     };
+
 
      const filter = {
       'sales.timestamp': {
@@ -49,8 +50,15 @@ export default async function circulation(req, res) {
     const result = await cursor.toArray();
    // coll.insert(test)
 console.info(result)
-    await session.endSession();
-    await client.close()
+
+
+
+
+
+        await session.endSession();
+
+              await client.close()
+
 
     } catch (error) {
         console.log("An error occurred during the transaction:" + error);

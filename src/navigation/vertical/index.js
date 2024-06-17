@@ -17,11 +17,11 @@ const navigation = () => {
       icon: HomeOutline,
       path: '/'
     },
- //   {
-    //  title: 'Activity',
-  //    icon: CreditCardOutline,
-  //    path: '/activity'
-//    }
+    {
+      title: 'Activity',
+      icon: CreditCardOutline,
+     path: '/activity'
+    }
    /* {
       title: 'Account Settings',
       icon: AccountCogOutline,
