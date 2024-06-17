@@ -24,12 +24,8 @@ export default async function circulation(req, res) {
       await client.connect();
       //await client.db("flowmarket-db").command( { serverStatus: 1 } ).metrics.apiVersions
       const session = client.startSession();
-
-      console.log("here");
-      await client.db("flowmarket-db").command({ ping: 1 });
-      console.log("Pinged your deployment. You successfully connected to MongoDB!");
-
-      session.startTransaction();
+      // await client.db("flowmarket-db").command({ ping: 1 });
+      // console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
       const filterx = {
         'sales.timestamp': {
@@ -37,6 +33,7 @@ export default async function circulation(req, res) {
         }
       };
 
+      session.startTransaction();
       const coll = client.db('admin').collection('FlowMarket');
       const cursor = coll.find(filterx);
       const result = await cursor.toArray();
