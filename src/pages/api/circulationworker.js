@@ -38,10 +38,11 @@ export default async function circulation(req, res) {
       };
 
       const coll = client.db('admin').collection('FlowMarket');
-      const cursor = coll.find(filter);
+      const cursor = coll.find(filterx);
       const result = await cursor.toArray();
       await getter(coll)
       await session.endSession();
+
     } catch (error) {
       console.log("An error occurred during the transaction:" + error);
       await session.abortTransaction();
