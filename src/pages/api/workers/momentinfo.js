@@ -32,12 +32,10 @@ export default async function circulation(req, res) {
 
       await getter()
       await session.endSession()
-      //await client.close()
 
     } catch (error) {
       console.log("An error occurred during the transaction:" + error);
       await session.abortTransaction();
-    } finally {
     }
   }
 
@@ -65,38 +63,44 @@ export default async function circulation(req, res) {
   };
 
   async function getter() {
-    await fetch(url_sets, sets_requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        const coll = client.db('flowmarket').collection('momentinfo');
-        data.sets.forEach(element => {
-          limiter.schedule(async () => await fetch(url_set_circ + element.set_id + '/circulation')
-            .then((response) => response.json())
-            .then((data) => {
-              /// INSERT INTO DB ///
-              const cursor2 = coll.updateOne(
-                { item: data.setId },
-                {
-                  $set:
+    try {
+      await fetch(url_sets, sets_requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          const coll = client.db('flowmarket').collection('momentinfo');
+          data.sets.forEach(element => {
+            limiter.schedule(async () => await fetch(url_set_circ + element.set_id + '/circulation')
+              .then((response) => response.json())
+              .then((data) => {
+                /// INSERT INTO DB ///
+                const cursor2 = coll.updateOne(
+                  { item: data.setId },
                   {
-                    item: data.setId,
-                    timestamp: date,
-                    info: data,
-                  }
-                },
-                { upsert: true }
-              )
-              return
-            })
-            .catch(console.error)
-          )
+                    $set:
+                    {
+                      item: data.setId,
+                      timestamp: date,
+                      info: data,
+                    }
+                  },
+                  { upsert: true }
+                )
+                return
+              })
+              .catch(console.error)
+            )
+          })
+          return data
         })
-        return data
-      })
-      .finally((data) => {
-        return data
-      })
-      .catch(console.error)
+        .finally((data) => {
+          return data
+        })
+        .catch(console.error)
+    } catch (error) {
+      console.log("An error occurred during the transaction:" + error);
+      await session.abortTransaction();
+      await client.close()
+    }
   }
 
   run()

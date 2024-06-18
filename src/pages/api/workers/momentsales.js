@@ -32,11 +32,9 @@ export default async function circulation(req, res) {
       const coll = client.db('flowmarket').collection('momentsales');
       await getter()
       await session.endSession();
-      // await client.close()
     } catch (error) {
       console.log("An error occurred during the transaction:" + error);
       await session.abortTransaction();
-    } finally {
     }
   }
 
@@ -64,39 +62,47 @@ export default async function circulation(req, res) {
   };
 
   async function getter() {
-    await fetch(url_sets, sets_requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        const coll = client.db('flowmarket').collection('momentsales');
-        data.sets.forEach(element => {
-          limiter.schedule(async () => await fetch(url_sets_sales + element.set_id + '/sales?sort=latest&full=1')
-            .then((response) => response.json())
-            .then((data) => {
-              /// INSERT INTO DB ///
-              coll.updateOne(
-                { setId: data.setId },
-                {
-                  $set:
+    try {
+
+      await fetch(url_sets, sets_requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          const coll = client.db('flowmarket').collection('momentsales');
+          data.sets.forEach(element => {
+            limiter.schedule(async () => await fetch(url_sets_sales + element.set_id + '/sales?sort=latest&full=0')
+              .then((response) => response.json())
+              .then((data) => {
+                /// INSERT INTO DB ///
+                coll.updateOne(
+                  { setId: data.setId },
                   {
-                    setId: data.setId,
-                    ...data,
-                    timestamp: date,
+                    $set:
+                    {
+                      setId: data.setId,
+                      ...data,
+                      timestamp: date,
+                    },
                   },
-                },
-                { $addToSet: { sales: data.sales } },
-                { upsert: true }
-              )
-              return
-            })
-            .catch(console.error)
-          )
+                  { $addToSet: { sales: data.sales } },
+                  { upsert: true }
+                )
+                return
+              })
+              .catch(console.error)
+            )
+          })
+          return data
         })
-        return data
-      })
-      .finally((data) => {
-        return data
-      })
-      .catch(console.error)
+        .finally((data) => {
+          return data
+        })
+        .catch(console.error)
+
+    } catch (error) {
+      console.log("An error occurred during the transaction:" + error);
+      await session.abortTransaction();
+      await client.close()
+    }
   }
 
   run()
