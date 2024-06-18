@@ -31,13 +31,13 @@ export default async function circulation(req, res) {
       session.startTransaction();
 
       await getter()
-      await session.endSession();
+      await session.endSession()
+      //await client.close()
 
     } catch (error) {
       console.log("An error occurred during the transaction:" + error);
       await session.abortTransaction();
     } finally {
-      // await client.close()
     }
   }
 
@@ -99,6 +99,12 @@ export default async function circulation(req, res) {
       .catch(console.error)
   }
 
-  run().catch(console.dir);
+  run()
+    .then(
+      await client.close()
+    )
+    .catch(
+      console.dir
+    );
   res.status(200).json(tmparr)
 }

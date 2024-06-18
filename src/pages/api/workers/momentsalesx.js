@@ -1,4 +1,5 @@
-// Grabs a list of all available sales and updates DB
+// Grabs a list of all available sets and then gets their burn info etc and pushes to DB
+// initialise full list with full=1 paramenter, then set to 0 to update
 import Bottleneck from "bottleneck";
 
 export default async function circulation(req, res) {
@@ -30,13 +31,15 @@ export default async function circulation(req, res) {
       const session = client.startSession();
       session.startTransaction();
       const coll = client.db('flowmarket').collection('momentsales');
+
       await getter()
       await session.endSession();
-      // await client.close()
+
     } catch (error) {
       console.log("An error occurred during the transaction:" + error);
       await session.abortTransaction();
     } finally {
+      // await client.close()
     }
   }
 
@@ -81,9 +84,8 @@ export default async function circulation(req, res) {
                     setId: data.setId,
                     ...data,
                     timestamp: date,
-                  },
+                  }
                 },
-                { $addToSet: { sales: data.sales } },
                 { upsert: true }
               )
               return
@@ -99,12 +101,6 @@ export default async function circulation(req, res) {
       .catch(console.error)
   }
 
-  run()
-    .then(
-      await client.close()
-    )
-    .catch(
-      console.dir
-    );
+  run().catch(console.dir);
   res.status(200).json(tmparr)
 }
