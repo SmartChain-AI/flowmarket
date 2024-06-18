@@ -29,7 +29,6 @@ export default async function circulation(req, res) {
       await client.connect();
       const session = client.startSession();
       session.startTransaction();
-      const coll = client.db('flowmarket').collection('momentsales');
       await getter()
       await session.endSession();
     } catch (error) {
