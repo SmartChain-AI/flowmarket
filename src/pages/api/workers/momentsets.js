@@ -1,17 +1,11 @@
-// Grabs a list of all available sales and updates DB
+// Grabs a list of all available sets and pushes to DB
 import Bottleneck from "bottleneck";
 
 export default async function circulation(req, res) {
   const { MongoClient, ServerApiVersion } = require('mongodb');
 
-  const limiter = new Bottleneck({
-    maxConcurrent: 3,
-    minTime: 100
-  });
-
   const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db";
   const url_sets = 'https://market-api.ufcstrike.com/search/sets';
-  const url_sets_sales = 'https://market-api.ufcstrike.com/sets/';
 
   let tmparr = []
   const date = new Date()
@@ -29,9 +23,10 @@ export default async function circulation(req, res) {
       await client.connect();
       const session = client.startSession();
       session.startTransaction();
-      const coll = client.db('flowmarket').collection('momentsales');
+
       await getter()
-      await session.endSession();
+      await session.endSession()
+
     } catch (error) {
       console.log("An error occurred during the transaction:" + error);
       await session.abortTransaction();
@@ -66,29 +61,23 @@ export default async function circulation(req, res) {
       await fetch(url_sets, sets_requestOptions)
         .then((response) => response.json())
         .then((data) => {
-          const coll = client.db('flowmarket').collection('momentsales');
+          const coll = client.db('flowmarket').collection('momentsets');
           data.sets.forEach(element => {
-            limiter.schedule(async () => await fetch(url_sets_sales + element.set_id + '/sales?sort=latest&full=0')
-              .then((response) => response.json())
-              .then((data) => {
-                /// INSERT INTO DB ///
-                coll.updateOne(
-                  { setId: data.setId },
-                  {
-                    $set:
-                    {
-                      setId: data.setId,
-                      ...data,
-                      timestamp: date,
-                    },
-                  },
-                  { $addToSet: { sales: data.sales } },
-                  { upsert: true }
-                )
-                return
-              })
-              .catch(console.error)
+            /// INSERT INTO DB ///
+            console.info(element.set_id)
+            const cursor2 = coll.updateOne(
+              { setId: element.set_id },
+              {
+                $set:
+                {
+                  setId: element.set_id,
+                  timestamp: date,
+                  ...element,
+                }
+              },
+              { upsert: true }
             )
+            return
           })
           return data
         })
@@ -96,7 +85,6 @@ export default async function circulation(req, res) {
           return data
         })
         .catch(console.error)
-
     } catch (error) {
       console.log("An error occurred during the transaction:" + error);
       await session.abortTransaction();
