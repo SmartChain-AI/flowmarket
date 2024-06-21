@@ -13,7 +13,7 @@ import Stack from '@mui/material/Stack';
 import React, { useState, useEffect } from "react";
 import DataTable from "./DataTablenew";
 import WeeklyOverview from './WeeklyOverview'
-////import * as fcl from '@onflow/fcl';
+import * as fcl from '@onflow/fcl';
 import "../../flow/config"
 import { useSettings } from 'src/@core/hooks/useSettings'
 
@@ -28,11 +28,12 @@ const OwnedMoments = props => {
   const [accnt, setAccnt] = useState();
   const { settings, saveSettings } = useSettings()
 
-  useEffect(() => {
-    if (settings.addr) {
-      submitaddy(settings.addr)
-    }
-  }, [settings.loggedIn])
+useEffect(()=>{
+  if(settings.addr){
+      console.log("here")
+  submitaddy(settings.addr)
+  }
+},[settings.loggedIn])
 
   let azza = [];
   let lp = 0;
@@ -41,12 +42,23 @@ const OwnedMoments = props => {
 
   const { variant, children, ...rest } = props;
 
-  //const url_account = '/api/dbx/gum';
-  const url_account = '/api/dbx/umo';
+  const url_account = '/api/dbx/gum';
   const url_accinf = '/api/emname/';
-  const url_sets = '/api/dbx/sets';
-
+ 
   async function fetchsets(addr) {
+
+    const post_data = {
+      "owner": addr
+    };
+  
+    const setsOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(post_data),
+    };
+    const url_sets = '/api/dbx/sets';
 
     await fetch(url_sets)
       .then((response) => response.json())
@@ -59,30 +71,16 @@ const OwnedMoments = props => {
 
   useEffect(() => {
     if (!isDataLoading) return
-    const post_data = {
-      "owner": input,
-    };
-  
-    const mOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(post_data),
-    };
-
-    fetch(url_account, mOptions)
+    fetch(url_account, momentsOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.info(data)
-        for (const moment of data.data.moments) {
+        for (const moment of data.moments) {
           uid = uid + 1
           var mname = moment.name
-          let found = data.results?.find(item => item.set_id === moment.set_id)
+          let found = setsDataz?.find(item => item.set_id === moment.set_id)
           if (found !== undefined) {
-            lp = setsDataz?.find(item => item.set_id === moment.set_id)
-            console.info(lp)
-            total = Number(lp.listing_price) + total
+            lp = Number(found.listing_price)
+            total = Number(found.listing_price) + total
             mname = moment.name.replace("/|/g", " ")
           }
 
@@ -98,12 +96,9 @@ const OwnedMoments = props => {
             'Image': moment.metadata['preview'],
             'set_id': moment.set_id,
             'Image': moment.set_id,
-            'Burned': found.burnedCount,
-            'Reserves': found.inReservesCount,
-            'Unopened': found.inUnopenedPackCount,
-            'Owned': found.ownedCount,
-            'Floor Price': Number(lp.listing_price),
-            'Listed': Number(moment.listing_price),
+            'Burned': moment.set_id,
+            'Floor Price': lp,
+            'Listed': moment.listing_price,
             'Received': moment.deposit_block_height,
             'nft_id': moment.nft_id
           })
@@ -117,6 +112,20 @@ const OwnedMoments = props => {
         localStore(input, total, sorted);
       })
       .catch(console.error);
+    let counter = 0
+    async function receivedinf(block_height) {
+      if (counter > 0) {
+        return
+      }
+      counter = counter + 1
+
+      const yep = await fetch('https://rest-mainnet.onflow.org/v1/blocks?height=' + block_height)
+        .then((results) => {
+          console.info(results)
+        })
+        .catch(console.error)
+      return yep
+    }
   }, [setsDataz])
 
   async function fetchaccinf(userid) {
@@ -143,12 +152,15 @@ const OwnedMoments = props => {
     } else {
       useraddr = settings.user.address
     }
-    setInput(useraddr)
-    fetchsets(useraddr)
+    //setInput(useraddr)
+      
+
+  fetchsets(useraddr)
+return
     azza = []
     setIsDataLoading(true);
     setIsDone(false);
-    fetchaccinf(useraddr)
+   // fetchaccinf(useraddr)
     setAccnt()
     setTotal()
     let getlocalstore = localStorage.getItem('flowmarket')
@@ -239,8 +251,7 @@ const OwnedMoments = props => {
             md: '50%', // 48em-80em,
             // xl: '25%', // 80em+
           }}>
-            {//<WeeklyOverview />
-           }
+            <WeeklyOverview />
           </Box>
           <Box width={{
             base: '100%', // 0-48em
@@ -300,7 +311,7 @@ const OwnedMoments = props => {
       ) : (
         <Card className="main-cont" sx={{ mt: 4 }}>
           <Box sx={{ flexDirection: 'column' }}>
-            {dataz ? (<><DataTable data={dataz} /></>) : (<></>)}
+            {dataz ? (<><DataTable dataz={dataz} /></>) : (<></>)}
           </Box>
         </Card>
       )

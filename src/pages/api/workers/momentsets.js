@@ -1,5 +1,4 @@
 // Grabs a list of all available sets and pushes to DB
-import Bottleneck from "bottleneck";
 
 export default async function circulation(req, res) {
   const { MongoClient, ServerApiVersion } = require('mongodb');
@@ -63,14 +62,11 @@ export default async function circulation(req, res) {
         .then((data) => {
           const coll = client.db('flowmarket').collection('momentsets');
           data.sets.forEach(element => {
-            /// INSERT INTO DB ///
-            console.info(element.set_id)
             const cursor2 = coll.updateOne(
-              { setId: element.set_id },
+              { set_id: element.set_id },
               {
                 $set:
                 {
-                  setId: element.set_id,
                   timestamp: date,
                   ...element,
                 }

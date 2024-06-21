@@ -1,21 +1,13 @@
 import * as React from 'react'
-import { 
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  getPaginationRowModel,
-  useReactTable,
-  ColumnResizeMode,
-  ColumnResizeDirection,
-} from '@tanstack/react-table'
+import { createColumnHelper, flexRender, getCoreRowModel, getSortedRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import Chip from '@mui/material/Chip'
 import Table from '@mui/material/Table'
 import Select from '@mui/material/Select'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
-import TableFooter from '@mui/material/TableFooter'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
@@ -29,8 +21,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Stack from '@mui/material/Stack';
 import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
-import LinkBoxVariant from 'mdi-material-ui/LinkBoxVariant';
-import Image from 'next/image'
 
 export default function DataTable({ dataz }) {
 
@@ -41,9 +31,10 @@ export default function DataTable({ dataz }) {
   const [columnVisibility, setColumnVisibility] = React.useState({})
   const [columnOrder, setColumnOrder] = React.useState([])
   const [sorting, setSorting] = React.useState([])
-  const [columnResizeMode, setColumnResizeMode] = React.useState('onChange')
-  const [columnResizeDirection, setColumnResizeDirection] = React.useState('ltr')
-  const rerender = React.useReducer(() => ({}), {})[1]
+
+  const momentlink = 'https://accounts.meetdapper.com/profile/'
+
+  //  const url_nftinf = 'https://market-api.ufcstrike.com/sets/';
   let count = 0;
   /*
     async function burned(setid){
@@ -58,34 +49,28 @@ export default function DataTable({ dataz }) {
   */
   const defaultColumns = [
     columnHelper.accessor('Image', {
-      cell: info => <div sx={{ position: 'relative' }}>
-        <Image
-          rel="preload"
-          loading="lazy"
-          quality={100}
-          alt={info.getValue()}
-          className={'moment-image fade-in'}
-          height={'85'}
-          width={'85'}
-          sizes="85px"
-          src={"/images/moments/" + info.getValue() + ".jpg"}
-          />
-      </div>,
+      cell: info => <img
+        rel="preload"
+        loading="lazy"
+        alt={info.getValue()}
+        className={'moment-image'}
+        height={'85'}
+        width={'85'}
+        transition={{ enter: { duration: 2.5 } }}
+        src={"/images/moments/" + info.getValue() + ".jpg"} />,
       header: () => '',
       enableResizing: false,
-      size: 85,
+      size: 85, //starting column size
     }),
     columnHelper.accessor('Moment Name', {
-      cell: info => <div className="moment-name" >
-        {info.getValue()} 
-      </div>,
+      cell: info => <div className="moment-name">{info.getValue()}</div>,
       header: () => 'Moment',
       size: 200,
       enableResizing: true,
     }),
     columnHelper.accessor('Floor Price', {
       header: 'Floor',
-      // id: 'floor',
+     // id: 'floor',
       cell: info => '$' + info.renderValue(),
       size: 50,
     }),
@@ -115,12 +100,24 @@ export default function DataTable({ dataz }) {
     }),
      columnHelper.accessor('Burned', {
       header: 'Burned',
-      cell: info => <>{info.renderValue()}</>,
+      cell: info => info.renderValue(),
      }),
-    // columnHelper.accessor('Received', {
-    //   header: 'Received',
-    //   cell: info => info.getValue(),
-    //  })
+     columnHelper.accessor('Reserves', {
+      header: 'Reserves',
+      cell: info => info.renderValue(),
+     }),
+     columnHelper.accessor('Unopened', {
+      header: 'Unopened',
+      cell: info => info.renderValue(),
+     }),
+     columnHelper.accessor('Owned', {
+      header: 'Owned',
+      cell: info => info.renderValue(),
+     }),
+   // columnHelper.accessor('Received', {
+   //   header: 'Received',
+   //   cell: info => info.getValue(),
+  //  })
   ]
 
   const [columns] = React.useState(() => [...defaultColumns])
@@ -128,7 +125,6 @@ export default function DataTable({ dataz }) {
     pageIndex: 0,
     pageSize: 10,
   })
-  
 
   const table = useReactTable({
     data,
@@ -138,8 +134,6 @@ export default function DataTable({ dataz }) {
       columnOrder,
       sorting,
       pagination,
-      columnResizeMode,
-    columnResizeDirection,
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnOrderChange: setColumnOrder,
@@ -152,78 +146,77 @@ export default function DataTable({ dataz }) {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
-
   })
-  /*async function fetchnftinf(nftid) {
-     if(!count || !dataz[0]['Moment Name']){return}
-     count = count + 1
-     const tarr = dataz
-      dataz.forEach(element => {
-      const response = fetch(url_nftinf+element.set_id+'/circulation')
-     const response = await fetch(url_nftinf + nftid + '/circulation')
-       .then((response) => response.json())
-       .then((data) => {
-          console.info(data)
-         let found = dataz?.find(item => item.set_id === nftid)
-          // Number(found.burnedCount)
-          element.Burned = data.burnedCount
+ /*async function fetchnftinf(nftid) {
+    if(!count || !dataz[0]['Moment Name']){return}
+    count = count + 1
+    const tarr = dataz
+     dataz.forEach(element => {
+     const response = fetch(url_nftinf+element.set_id+'/circulation')
+    const response = await fetch(url_nftinf + nftid + '/circulation')
+      .then((response) => response.json())
+      .then((data) => {
          console.info(data)
-         return
-       }).catch(console.error);
-     return response
-       });
-     console.info(dataz)
-   }*/
+        let found = dataz?.find(item => item.set_id === nftid)
+         // Number(found.burnedCount)
+         element.Burned = data.burnedCount
+        console.info(data)
+        return
+      }).catch(console.error);
+    return response
+      });
+    console.info(dataz)
+  }*/
   return (
     <TableContainer className="table-cont" sx={{
       'width': 'inherit',
-      m: 4
+      m:4
     }}>
       <Box sx={{
         width: '100%',
         display: 'flex',
-        // justifyContent: 'space-between',
-        justifyContent: "flex-end"
+       // justifyContent: 'space-between',
+        justifyContent:"flex-end"
       }}>
         <Accordion
-          allowtoggle="true"
-          sx={{
-            'maxWidth': 'max-content',
-            'textAlign': 'left',
-            'display': 'inline-block'
-          }}
+        allowtoggle="true"
+        sx={{
+          'maxWidth': 'max-content',
+          'textAlign': 'left',
+          'display': 'inline-block'
+        }}
         >
           <AccordionSummary>
-            <TableCog />
-          </AccordionSummary>
-          <AccordionDetails pb={4}>
-            <Box className="inline-block border border-black shadow rounded">
-              <Box className="px-1 border-b border-black">
-                <Stack spacing={[1, 5]} direction={['column', 'column']}>
-                  {table.getAllLeafColumns().map(column => {
-                    return (
-                      <Box key={column.id} className="px-1">
-                        <Checkbox size='medium'
-                          {...{
-                            type: 'checkbox',
-                            checked: column.getIsVisible(),
-                            onChange: column.getToggleVisibilityHandler(),
-                          }}
-                        />{' '}
-                        {column.id}
-                      </Box >
-                    )
-                  })}
-                </Stack>
+              <TableCog />
+            </AccordionSummary>
+            <AccordionDetails pb={4}>
+              <Box className="inline-block border border-black shadow rounded">
+                <Box className="px-1 border-b border-black">
+                  <Stack spacing={[1, 5]} direction={['column', 'column']}>
+                    {table.getAllLeafColumns().map(column => {
+                      return (
+                        <Box key={column.id} className="px-1">
+                          <Checkbox size='medium'
+                            {...{
+                              type: 'checkbox',
+                              checked: column.getIsVisible(),
+                              onChange: column.getToggleVisibilityHandler(),
+                            }}
+                          />{' '}
+                          {column.id}
+                        </Box >
+                      )
+                    })}
+                  </Stack>
+                </Box >
               </Box >
-            </Box >
-          </AccordionDetails>
+            </AccordionDetails>
         </Accordion>
       </Box>
       <Box>
         <Table stickyHeader aria-label='sticky table'
-          className="OwnedMomentsTable"
-          sx={{ marginTop: 4 }}
+        className="OwnedMomentsTable"
+        sx={{marginTop:4}}
         >
           <TableHead>
             {table.getHeaderGroups().map(headerGroup => (
@@ -264,18 +257,18 @@ export default function DataTable({ dataz }) {
           </TableHead>
           <TableBody>
             {table.getRowModel().rows.map(row => (
-              <TableRow key={row.id}>
+              <tr key={row.id}>
                 {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id}>
+                  <td key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+                  </td>
                 ))}
-              </TableRow>
+              </tr>
             ))}
           </TableBody>
-          <TableFooter>
+          <tfoot>
             {table.getFooterGroups().map(footerGroup => (
-              <TableRow key={footerGroup.id}>
+              <tr key={footerGroup.id}>
                 {footerGroup.headers.map(header => (
                   <th key={header.id}>
                     {header.isPlaceholder
@@ -286,16 +279,16 @@ export default function DataTable({ dataz }) {
                       )}
                   </th>
                 ))}
-              </TableRow>
+              </tr>
             ))}
-          </TableFooter>
+          </tfoot>
         </Table>
         <Box className="flex items-center" sx={{
           'textAlign': 'center',
           'display': 'inline-block',
           'fontSize': '0.7em',
           'justifyContent': 'center',
-          'width': '100%'
+          'width':'100%'
         }}>
           <Button
             className="border rounded"
@@ -325,7 +318,7 @@ export default function DataTable({ dataz }) {
           >
             {'>>'}
           </Button>
-          <Box sx={{ textAlign: 'center' }}>Page&nbsp;
+          <Box sx={{textAlign:'center'}}>Page&nbsp;
             <strong>
               {table.getState().pagination.pageIndex + 1} of{' '}
               {table.getPageCount().toLocaleString()}
@@ -333,13 +326,13 @@ export default function DataTable({ dataz }) {
           </Box >
           <Select sx={{
             'fontSize': '1em',
-            marginTop: 2,
-            p: 0
+            marginTop:2,
+            p:0
           }}
             value={table.getState().pagination.pageSize}
           >
             {[10, 25, 50, 100, 500].map(pageSize => (
-              <MenuItem key={pageSize} value={pageSize} onClick={() => { table.setPageSize(Number(pageSize)) }}>
+              <MenuItem key={pageSize} value={pageSize} onClick={()=>{table.setPageSize(Number(pageSize))}}>
                 Show {pageSize}
               </MenuItem>
             ))}

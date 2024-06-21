@@ -74,13 +74,13 @@ export default async function circulation(req, res) {
               .then((data) => {
                 /// INSERT INTO DB ///
                 const cursor2 = coll.updateOne(
-                  { item: data.setId },
+                  { set_id: data.setId },
                   {
                     $set:
                     {
-                      item: data.setId,
+                      set_id: data.setId,
                       timestamp: date,
-                      info: data,
+                      ...data,
                     }
                   },
                   { upsert: true }

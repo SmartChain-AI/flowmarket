@@ -10,19 +10,27 @@ const ModeToggler = props => {
 
   const handleModeChange = mode => {
     saveSettings({ ...settings, mode })
+    const yo = JSON.parse(localStorage.getItem("flowmarket"))
+console.info(yo)
+    localStorage.setItem("flowmarket", JSON.stringify({
+      ...yo,
+      "mode": mode,
+      //"address": settings.addr
+
+    }))
   }
 
   const handleModeToggle = () => {
-    if (settings.mode === 'light') {
-      handleModeChange('dark')
+    if (settings.mode === 'dark') {
+     handleModeChange('light')
     } else {
-      handleModeChange('light')
+       handleModeChange('dark')
     }
   }
 
   return (
     <IconButton color='inherit' aria-haspopup='true' onClick={handleModeToggle}>
-      {settings.mode === 'dark' ? <WeatherSunny /> : <WeatherNight />}
+      {settings.mode === 'dark' ? <WeatherNight /> : <WeatherSunny />}
     </IconButton>
   )
 }

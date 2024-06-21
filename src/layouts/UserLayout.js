@@ -27,8 +27,8 @@ const UserLayout = ({ children }) => {
   const UFCStrikeImg = () => {
     return (
       <Box sx={{ mx: 'auto', textAlign: 'center' }}>
-        <Fade in={true} timeout={2000}>
-        <img width={125} height={125} className={imageSrc === 'dark' ? 'logo-image-dark' : 'logo-image'} alt='UFC Strike' src={`/images/logos/ufcstrike.png`} />
+        <Fade in={true} timeout={1500}>
+        <img width={100} height={100} className={imageSrc === 'dark' ? 'logo-image-dark' : 'logo-image'} alt='UFC Strike' src={`/images/logos/ufcstrike.png`} />
       </Fade>
       </Box>
     )
@@ -57,9 +57,9 @@ const UserLayout = ({ children }) => {
         className='mui-fixed'
         sx={{ right: theme => theme.spacing(20), bottom: theme => theme.spacing(10), zIndex: 11, position: 'fixed' }}
       >
-      {/*
-        <SettingsDrawer />
-*/}
+      {
+       // <SettingsDrawer />
+      }
       </Box>
     </VerticalLayout>
   )
