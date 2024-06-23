@@ -18,7 +18,7 @@ import CardWithCollapse from 'src/views/cards/CardWithCollapse'
 import CardVerticalRatings from 'src/views/cards/CardVerticalRatings'
 import CardNavigationCenter from 'src/views/cards/CardNavigationCenter'
 import CardHorizontalRatings from 'src/views/cards/CardHorizontalRatings'
-import Events from "src/views/cards/Events";
+import Events from "src/views/cards/Eventsnewset";
 
 const CardBasic = () => {
   return (

@@ -58,7 +58,10 @@ const UserLayout = ({ children }) => {
         sx={{ right: theme => theme.spacing(20), bottom: theme => theme.spacing(10), zIndex: 11, position: 'fixed' }}
       >
       {
-       // <SettingsDrawer />
+        <SettingsDrawer
+        settings={settings}
+        saveSettings={saveSettings}
+        />
       }
       </Box>
     </VerticalLayout>

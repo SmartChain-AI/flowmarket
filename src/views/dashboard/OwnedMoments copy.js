@@ -13,7 +13,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import TotalEarning from 'src/views/dashboard/TotalEarning'
 import Stack from '@mui/material/Stack';
 import React, { useState, useEffect } from "react";
-import DataTable from "./DataTablenew";
+import DataTable from "./DataTable";
 import WeeklyOverview from './WeeklyOverview'
 
 

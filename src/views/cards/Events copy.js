@@ -1,101 +1,99 @@
 import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
 import { styled } from '@mui/material/styles'
-import CardHeader from '@mui/material/CardHeader'
 import Typography from '@mui/material/Typography'
-import CardContent from '@mui/material/CardContent'
-import MuiDivider from '@mui/material/Divider'
 import { useState, useEffect } from 'react'
 import * as fcl from '@onflow/fcl';
 import { block } from "@onflow/fcl"
 import "../../flow/config"
-import NftInfobyid from "../../flow/scripts/nft_info_by_id"
-
-const Divider = styled(MuiDivider)(({ theme }) => ({
-  margin: theme.spacing(5, 0),
-  borderRight: `1px solid ${theme.palette.divider}`,
-  [theme.breakpoints.down('md')]: {
-    borderRight: 'none',
-    margin: theme.spacing(0, 5),
-    borderBottom: `1px solid ${theme.palette.divider}`
-  }
-}))
+import Image from 'next/image'
+import Paper from '@mui/material/Paper'
+import Table from '@mui/material/Table'
+import TableRow from '@mui/material/TableRow'
+import TableHead from '@mui/material/TableHead'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TablePagination from '@mui/material/TablePagination'
 
 export default function Events() {
-  const [levnts, setLEvnts] = useState([])
   const [sevnts, setSEvnts] = useState([])
-  const [revnts, setREvnts] = useState([])
   const [retrieving, setRetrieving] = useState(false)
 
-  const aurl = '/api/test2/'
-  const lurl = '/api/listings/'
+  const aurl = '/api/activity/activity/'
+  const lurl = '/api/activity/listings/'
+  const mdurl = '/api/activity/metadata/'
 
   useEffect(() => {
-    let ltmparr = []
-        let stmparr = []
-        let rtmparr = []
+    let stmparr = []
 
     async function getinit() {
       try {
         // GET INITIAL SALES //
+        setRetrieving(true)
         const latestblock = await block({ sealed: true })
         const startblock = latestblock.height - 249
-        const sev = await fetch(aurl)
+        await fetch(aurl)
           .then((res) => res.json())
           .then((data) => {
-console.info(data)
-            data.forEach(element => {
+            data.forEach(async (element) => {
               if (element.fields.nftType.split('.')[2] === "UFC_NFT") {
-           //   const getstuff = gettran(element.transaction_hash)
-                  gettran(element.transaction_hash).then((result) => { // Get transaction details
-                //  console.info(result)
-                  element.buyer = "0x" + result.proposalKey.address
-                  element.seller = "0x" + result.args[0].value
-                  element.price = result.args[result.args.length - 1].value
-                  element.nftID = element.fields.nftID
-                  element.storefrontAddress = element.fields.storefrontAddress
-                }).finally(() => {
-                  if (element.fields.purchased) { // if not purchased push to removed list
-                  stmparr.push(element)
-                } else {
-                  rtmparr.push(element)
-                }
-              //const done = await getstuff
-                 stmparr.sort((p1, p2) => (p1.timestamp < p2.timestamp) ? 1 : (p1.timestamp > p2.timestamp) ? -1 : 0)
-              rtmparr.sort((p1, p2) => (p1.timestamp < p2.timestamp) ? 1 : (p1.timestamp > p2.timestamp) ? -1 : 0)  
-        setSEvnts((sevnts)=>[...sevnts, ...stmparr])
-          setREvnts((revnts)=>[...revnts, ...rtmparr])
-              })
-   
- }
-
-                           
-            });
-          //  console.info(stmparr)
-           // setSEvnts((prev)=>[...prev, ...stmparr])
-          //  setREvnts((prev)=>[...prev, ...rtmparr])
-         
+                await gettran(element.transaction_hash, element.fields.nftID)
+                  .then((result) => {
+                    if (element.fields.purchased) { // if not purchased push to removed list
+                      element.type = "Sold"
+                      element.price = Number(result.args[result.args.length - 1].value)
+                      element.buyer = "0x" + result.proposalKey.address
+                      element.seller = result.args[1].value
+                    } else {
+                      element.type = "Removed"
+                      element.price = null
+                      element.buyer = null
+                      element.seller = "0x" + result.proposalKey.address
+                    }
+                    element.nftID = element.fields.nftID
+                    element.serial = result.serial
+                    element.edition = result.edition
+                    element.editionmint = result.editionmint
+                    element.storefrontAddress = element.fields.storefrontAddress
+                    element.mname = result.mname
+                  })
+                  .finally(() => {
+                    stmparr.push(element)
+                    //  stmparr.sort((p1, p2) => (p1.timestamp < p2.timestamp) ? 1 : (p1.timestamp > p2.timestamp) ? -1 : 0)
+                    setSEvnts((sevnts) => [...stmparr, sevnts])
+                  })
+              }
+            })
           }).catch(console.error)
 
         /// GET INITIAL LISTINGS ///
-        const lev = await fetch(lurl)
+        await fetch(lurl)
           .then((res) => res.json())
           .then((data) => {
-            console.info(data)
             data.forEach(element => {
               if (element.fields.nftType.split('.')[2] === "UFC_NFT") {
-                  element.seller = element.fields.storefrontAddress
-                  element.price = element.fields.price
-                  element.nftID = element.fields.nftID
-                ltmparr.push(element)
+                gettran(element.transaction_hash, element.fields.nftID)
+                  .then((result) => {
+                    element.type = "Listed"
+                    element.seller = element.fields.storefrontAddress
+                    element.price = Number(element.fields.price)
+                    element.nftID = element.fields.nftID
+                    element.serial = result.serial
+                    element.edition = result.edition
+                    element.mname = result.mname
+                    element.editionmint = result.editionmint
+                  })
+                  .finally(() => {
+                    stmparr.push(element)
+                    setSEvnts((sevnts) => [...stmparr, sevnts])
+                  })
               }
             })
-            ltmparr.sort((p1, p2) => (p1.timestamp < p2.timestamp) ? 1 : (p1.timestamp > p2.timestamp) ? -1 : 0)
-            setLEvnts(ltmparr)
           }).catch(console.error)
       } catch (error) {
         console.log('There was an error', error);
       }
+      setRetrieving(false)
     }
 
     async function subscribe() {
@@ -104,51 +102,41 @@ console.info(data)
         fcl.events('A.4eb8a10cb9f87357.NFTStorefront.ListingCompleted').subscribe((event) => {
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
             let stmparr = sevnts
-            if (event.eventIndex !== 0) { // If not purchased push to listings
-              console.info(event)
-              gettran(event.transactionId).then((result) => { // Get transaction details
-                console.info(result)
-                // get timestamp from block
-                // get image from nftid script
-                let stmparrobj = {
-                  'buyer': "0x" + result.proposalKey.address,
-                  'seller': result.args[0].value,
-                  'transactionId': event.transactionId,
-                  'nftID': event.data.nftID,
-                  'price': result.args[result.args.length - 1].value,
-                  'timestamp': result.timestamptest,
-                  'storefrontAddress': event.data.storefrontAddress
-                }
-                // const newObj = result[0] || {};
-                // if (newObj.edition_number !== 'undefined') {
-                //stmparr.edition_number = newObj.edition_number // Get edition number
-                // }
-               stmparr.unshift(stmparrobj)
-                           setSEvnts((sevnts)=>[...sevnts, ...stmparr])
+            gettran(event.transactionId, event.data.nftID)
+              .then((result) => {
+                let type = null
+                let buyer = null
+                let price = null
 
-               // setSEvnts(stmparr)
-              })
-            } else {
-              gettran(event.transactionId).then((result) => { // Get transaction details
-                console.info(result)
-                console.info(event)
+                if (event.eventIndex !== 0) {
+                  type = "Sold"
+                  buyer = "0x" + result.proposalKey.address
+                  price = Number(result.args[result.args.length - 1].value)
+                } else {
+                  type = "Removed"
+                  buyer = ""
+                  price = null
+                }
+
                 let stmparrobj = {
-                  'buyer': "0x" + result.proposalKey.address,
-                  'seller': result.args[0].value,
+                  'buyer': "0x" + result.args[0].value,
+                  'seller': "0x" + result.proposalKey.address,
                   'transactionId': event.transactionId,
                   'nftID': event.data.nftID,
-                  'price': event.data.price,
-                  'timestamp': result.timestamptest,
-                  'storefrontAddress': event.data.storefrontAddress
+                  'price': price,
+                  'timestamp': result.timestamp,
+                  'serial': result.serial,
+                  'edition': result.edition,
+                  'editionmint': result.editionmint,
+                  'storefrontAddress': event.data.storefrontAddress,
+                  'type': type,
+                  'mname': result.mname
                 }
-                // const newObj = result[0] || {};
-                // if (newObj.edition_number !== 'undefined') {
-                //stmparr.edition_number = newObj.edition_number // Get edition number
-                // }
                 stmparr.unshift(stmparrobj)
-                setREvnts(revnts => [...revnts, ...stmparr]);
               })
-            }
+              .finally(() => {
+                setSEvnts((sevnts) => [...stmparr, ...sevnts])
+              })
           }
         })
       } catch (error) {
@@ -159,26 +147,25 @@ console.info(data)
       try {
         fcl.events('A.4eb8a10cb9f87357.NFTStorefront.ListingAvailable').subscribe((event) => {
           setRetrieving(true)
+          console.log("checking")
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
-            let ltmparr = levnts
-            console.info(event)
-            const yo = gettran(event.transactionId).then((result) => { // Get transaction details
-              console.info(result)
+            gettran(event.transactionId, event.data.nftID).then((result) => {
               let ltmparrobj = {
+                'type': "Listed",
                 'seller': "0x" + result.proposalKey.address,
                 'transactionId': event.transactionId,
                 'nftID': event.data.nftID,
-                'price': event.data.price ?? "",
-                'timestamp': result.timestamptest,
-                'storefrontAddress': event.data.storefrontAddress
+                'price': Number(event.data.price),
+                'timestamp': result.timestamp,
+                'serial': result.serial,
+                'edition': result.edition,
+                'editionmint': result.editionmint,
+                'storefrontAddress': event.data.storefrontAddress,
+                'mname': result.mname
               }
-              ltmparr.push(ltmparrobj)
-              // const newObj = result[0] || {};
-              //if (newObj.edition_number !== 'undefined') {
-              // event.edition_number = newObj.edition_number
-              // }
-              setLEvnts(sevnts => [...sevnts, ...ltmparr])
-              
+              stmparr.unshift(ltmparrobj)
+            }).finally(() => {
+              setSEvnts((sevnts) => [...stmparr, ...sevnts])
             })
           }
           setRetrieving(false)
@@ -188,15 +175,28 @@ console.info(data)
       }
     }
 
-    async function gettran(id) {
+    /// TRANSACTION ///
+    async function gettran(txid, nftid) {
       try {
-        const tx = await fcl.send([fcl.getTransaction(id,)])
+        const tx = await fcl.send([fcl.getTransaction(txid,)])
           .then(fcl.decode)
+
         const timestamp = await block({ sealed: true })
           .then((result) => {
             return result.timestamp
           })
-          tx.timestamptest = timestamp
+
+        const nftmd = await fetch(mdurl + '?id=' + nftid)
+          .then((res) => res.json())
+          .then((data) => {
+            return data
+          })
+
+        tx.serial = nftmd.editionNumber
+        tx.edition = nftmd.setId
+        tx.editionmint = nftmd.editionSize
+        tx.mname = nftmd.metadata.name
+        tx.timestamp = timestamp
         return tx
       } catch (error) {
         console.log('There was an error', error);
@@ -204,195 +204,113 @@ console.info(data)
     }
 
     getinit().then(subscribe())
-    
 
-  }, []) // Leave array in or will loop
+  }, [])
 
-  //console.info(sevnts)
-  //console.info(levnts)
- // console.info(revnts)
+  const columns = [
+    {
+      id: 'edition',
+      label: '',
+      minWidth: 50,
+      align: 'right',
+      format: value => <Image
+        rel="preload"
+        loading="lazy"
+        quality={100}
+        alt=""
+        // className={'moment-image fade-in'}
+        height={'45'}
+        width={'45'}
+        sizes="45px"
+        src={"/images/moments/" + value + ".jpg"}
+        sx={{ display: 'block' }}
+      />
+    },
+    { id: 'type', label: '', minWidth: 50 },
+    { id: 'mname', label: 'Name', minWidth: 200 },
+    {
+      id: 'price',
+      label: 'Price',
+      minWidth: 60,
+      align: 'right',
+      format: value => "$" + Number(value.toFixed(2))
+    },
+    { id: 'serial', label: 'Serial', minWidth: 60 },
+    {
+      id: 'seller',
+      label: 'Owner',
+      minWidth: 150,
+      align: 'right',
+    },
+    {
+      id: 'buyer',
+      label: 'Buyer',
+      minWidth: 150,
+      align: 'right',
+    },
+    {
+      id: 'timestamp',
+      label: 'Time',
+      minWidth: 120,
+      align: 'right',
+      sortDirection: 'desc',
+      format: value => Date(value)
+    }
+  ]
+
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(+event.target.value)
+    setPage(0)
+  }
+
   return (
-    <Card sx={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexDirection: ['column', 'column', 'row']
-    }}>
-      <Box sx={{ width: '100%' }}>
-        <CardHeader
-          title='Purchases'
-          sx={{ pt: 5.5, alignItems: 'center', '& .MuiCardHeader-action': { mt: 0.6 } }}
-          action={<Typography variant='caption'>Purchases</Typography>}
-          titleTypographyProps={{
-            variant: 'h6',
-            sx: { lineHeight: '1.6 !important', letterSpacing: '0.15px !important' }
-          }}
-        />
-        <CardContent sx={{
-          pb: theme => `${theme.spacing(5.5)} !important`,
-          overflowY: 'scroll',
-          maxHeight: "400px",
-          height: "400px"
-        }}>{retrieving ? "Checking blockchain" : ""}
-          {sevnts ? (sevnts.map((item, index) => {
-            return (
-              <Box
-                key={index}
-                sx={{
-                  display: 'flex', alignItems: 'center',
-                  mb: index !== sevnts.length - 1 ? 6 : 0
-                }}
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650, fontSize: '10px' }} size="small" aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              {columns.map(column => (
+                <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sevnts.map((row) => (
+              <TableRow
+                key={row.timestamp}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <Box
-                  sx={{
-                    ml: 4,
-                    width: '100%',
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <Box sx={{ marginRight: 2, display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant='caption'>{item.nftID}</Typography>
-                  </Box>
-                  <Typography variant='caption'>{item.timestamp}</Typography>
-                  <Typography variant='caption'>{item.buyer}</Typography>{// .split("T", 1)[0]
-                  }
-                  <Typography variant='caption'>{item.seller}</Typography>
-                  <Typography variant='subtitle2' sx={{ fontWeight: 600, color: 'success.main' }}>
-                    {item.price ? "$" + Number(item.price).toFixed(2) : ""}
-                  </Typography>
-                </Box>
-              </Box>
-            )
-          }
-          )) : (<></>)
-          }
-        </CardContent>
-      </Box>
-      <Divider flexItem />
-      <Box sx={{ width: '100%' }}>
-        <CardHeader
-          title='Listings'
-          sx={{ pt: 5.5, alignItems: 'center', '& .MuiCardHeader-action': { mt: 0.6 } }}
-          action={<Typography variant='caption'>Listings</Typography>}
-          titleTypographyProps={{
-            variant: 'h6',
-            sx: { lineHeight: '1.6 !important', letterSpacing: '0.15px !important' }
-          }}
-        />
-        <CardContent sx={{
-          pb: theme => `${theme.spacing(5.5)} !important`,
-          overflowY: 'scroll',
-          maxHeight: "400px",
-          height: "400px"
-        }}>
-          {levnts ? (levnts.map((item, index) => {
-            return (
-              <Box
-                key={index}
-                sx={{
-                  display: 'flex', alignItems: 'center',
-                  mb: index !== levnts.length - 1 ? 6 : 0
-                }}
-              >
-                <Box
-                  sx={{
-                    ml: 4,
-                    width: '100%',
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}>
-                  <Box sx={{ marginRight: 2, display: 'flex', flexDirection: 'column' }}>
-                    <Typography sx={{ fontWeight: 600, fontSize: '0.875rem' }}>
-                      {//item.fields.nftType.split('.')[2]
-                      }
-                    </Typography>
-                  </Box>
-                  <Typography variant='caption'>{item.nftID}</Typography>
-                  <Typography variant='caption'>{item.timestamp}</Typography>
-                  <Typography variant='caption'>{item.seller}</Typography>
-                  <Typography variant='subtitle2' sx={{ fontWeight: 600, color: 'error.main' }}>
-                    {item.price ? "$" + Number(item.price).toFixed(2) : ""}
-                  </Typography>
-                </Box>
-              </Box>
-            )
-          }
-          )) : (<></>)
-          }
-        </CardContent>
-      </Box>
-      <Divider flexItem />
-      <Box sx={{ width: '100%' }}>
-        <CardHeader
-          title='Removed'
-          sx={{ pt: 5.5, alignItems: 'center', '& .MuiCardHeader-action': { mt: 0.6 } }}
-          action={<Typography variant='caption'>Removed</Typography>}
-          titleTypographyProps={{
-            variant: 'h6',
-            sx: { lineHeight: '1.6 !important', letterSpacing: '0.15px !important' }
-          }}
-        />
-        <CardContent sx={{
-          pb: theme => `${theme.spacing(5.5)} !important`,
-          overflowY: 'scroll',
-          maxHeight: "400px",
-          height: "400px"
-        }}>{retrieving ? "Checking blockchain" : ""}
-          {revnts ? (revnts.map((item, index) => {
-            return (
-              <Box
-                key={index}
-                sx={{
-                  display: 'flex', alignItems: 'center',
-                  mb: index !== revnts.length - 1 ? 6 : 0
-                }}
-              >
-                <Box
-                  sx={{
-                    ml: 4,
-                    width: '100%',
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}>
-                  <Box sx={{ marginRight: 2, display: 'flex', flexDirection: 'column' }}>
-                    <Typography sx={{ fontWeight: 600, fontSize: '0.875rem' }}>
-                      {//item.fields.nftType.split('.')[2]
-                      }
-                    </Typography>
-                  </Box>
-                  <Typography variant='caption'>{item.nftID}</Typography>
-                  <Typography variant='caption'>{item.timestamp}</Typography>
-                  <Typography variant='caption'>{item.buyer}</Typography>
-                </Box>
-              </Box>
-            )
-          }
-          )) : (<></>)
-          }
-        </CardContent>
-      </Box>
-    </Card>
+                {columns.map(column => {
+                  const value = row[column.id]
+                  return (
+                    <TableCell key={column.id} align={column.align} sx={{ fontSize: '0.9em' }}>
+                      {column.format && typeof value === 'number' ? column.format(value) : value}
+                    </TableCell>
+                  )
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component='div'
+        count={sevnts.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
   )
 }
-/*  const sev = await fcl.send([
-       fcl.getEventsAtBlockHeightRange(
-         'A.4eb8a10cb9f87357.NFTStorefront.ListingCompleted',
-         startblock,
-         latestblock.height,
-       ),
-     ]).then(fcl.decode)
-     sev.reverse()
-     let tmparr = []
-     sev.forEach(element => {
-       if (element.data.purchased) {
-         tmparr.push(element)
-       } else {
-         setLEvnts(levnts => [...levnts, element]);
-       }
-     });*/

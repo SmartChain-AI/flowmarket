@@ -4,7 +4,6 @@ import IconButton from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Menu from 'mdi-material-ui/Menu'
 
-import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
 import FlowLogin from 'src/@core/layouts/components/shared-components/FlowLogin'
 
 //import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
@@ -34,13 +33,6 @@ const AppBarContent = props => {
           settings={settings}
           saveSettings={saveSettings}
         />
-        {/*
-        <ModeToggler
-          settings={settings}
-          saveSettings={saveSettings}
-        />
-        */
-        }
         {/*
         <NotificationDropdown />
         <UserDropdown />

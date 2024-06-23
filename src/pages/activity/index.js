@@ -24,7 +24,7 @@ const CardBasic = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12} sx={{ paddingBottom: 4 }}>
-        <Typography variant='h5'>Marketplace Activity</Typography>
+        <Typography variant='h5' sx={{pb:'10px'}}>Live Marketplace Activity</Typography>
         <Events />
       </Grid>
     </Grid>

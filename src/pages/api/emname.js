@@ -1,6 +1,12 @@
 'use client'
+import Bottleneck from "bottleneck";
 
 export default async function handler(req, res) {
+ 
+  const limiter = new Bottleneck({
+    maxConcurrent: 2,
+    minTime: 250
+  });
 
   const url_dappername = 'https://api.evaluate.xyz/users/filter';
   const url = new URL('http://localhost:3000' + req.url)
