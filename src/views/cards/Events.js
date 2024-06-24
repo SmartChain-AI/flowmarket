@@ -112,7 +112,7 @@ export default function Events() {
                 }
 
                 let stmparrobj = {
-                  'buyer': "0x" + result.args[0].value,
+                  'buyer': buyer,
                   'seller': "0x" + result.proposalKey.address,
                   'transactionId': event.transactionId,
                   'nftID': event.data.nftID,
