@@ -3,9 +3,6 @@ import { useState, useEffect } from 'react'
 import * as fcl from '@onflow/fcl';
 import { block } from "@onflow/fcl"
 import "../../flow/config"
-
-//import * as React from 'react';
-
 import DataTable from './DataTable-Activity'
 
 export default function Events() {
@@ -33,7 +30,7 @@ export default function Events() {
               if (element.fields.nftType.split('.')[2] === "UFC_NFT") {
                 await gettran(element.transaction_hash, element.fields.nftID)
                   .then((result) => {
-                    if (element.fields.purchased) { // if not purchased push to removed list
+                    if (element.fields.purchased) {
                       element.type = "Sold"
                       element.price = Number(result.args[result.args.length - 1].value)
                       element.buyer = "0x" + result.proposalKey.address
@@ -52,7 +49,6 @@ export default function Events() {
                     element.mname = result.mname
                   })
                   .finally(() => {
-                //    stmparr.push(element)
                     setSEvnts((sevnts) => [...sevnts, element])
                   })
               }
@@ -77,7 +73,6 @@ export default function Events() {
                     element.editionmint = result.editionmint
                   })
                   .finally(() => {
-                 //   ltmparr.push(element)
                     setSEvnts((sevnts) => [...sevnts, element])
                   })
               }

@@ -102,8 +102,8 @@ const DataTable = ({ data }) => {
         accessorKey: 'timestamp',
         header: 'Time',
         Cell: ({ renderedCellValue, row }) => (
-     new Date(renderedCellValue).toLocaleString()
-      )
+          new Date(renderedCellValue).toLocaleString()
+        )
       },
     ],
     [],
@@ -112,10 +112,11 @@ const DataTable = ({ data }) => {
   const table = useMaterialReactTable({
     columns,
     data,
+    onPaginationChange: setPagination,
     initialState: {
       sorting: [
         {
-          id: 'timestamp', //sort by age by default on page load
+          id: 'timestamp',
           desc: true,
         }
       ],
@@ -123,7 +124,6 @@ const DataTable = ({ data }) => {
     state: {
       pagination
     },
-    // enablePagination:true,
     muiPaginationProps: {
       showRowsPerPage: true,
       shape: 'rounded',
@@ -131,7 +131,7 @@ const DataTable = ({ data }) => {
     //  manualPagination: true,
     // columnFilterDisplayMode: 'custom',
     enableFacetedValues: true,
-    enableBottomToolbar: true,
+    // enableBottomToolbar: true,
     // muiFilterTextFieldProps: ({ column }) => ({
     //    label: `Filter by ${column.columnDef.header}`,
     // }),
