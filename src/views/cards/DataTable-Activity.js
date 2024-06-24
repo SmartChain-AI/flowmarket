@@ -101,9 +101,9 @@ const DataTable = ({ data }) => {
       {
         accessorKey: 'timestamp',
         header: 'Time',
-   //     Cell: ({ renderedCellValue, row }) => (
-   //  new Date(renderedCellValue).toLocaleString()
-   //   )
+        Cell: ({ renderedCellValue, row }) => (
+     new Date(renderedCellValue).toLocaleString()
+      )
       },
     ],
     [],

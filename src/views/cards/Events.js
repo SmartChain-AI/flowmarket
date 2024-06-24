@@ -39,7 +39,7 @@ export default function Events() {
                       element.buyer = "0x" + result.proposalKey.address
                       element.seller = result.args[1].value
                     } else {
-                      element.type = "Delisted"
+                      element.type = "Removed"
                       element.price = null
                       element.buyer = null
                       element.seller = "0x" + result.proposalKey.address
@@ -136,7 +136,7 @@ export default function Events() {
                   buyer = "0x" + result.proposalKey.address
                   price = Number(result.args[result.args.length - 1].value)
                 } else {
-                  type = "Removed"
+                  type = "Delisted"
                   buyer = ""
                   price = null
                 }
@@ -158,7 +158,7 @@ export default function Events() {
                 stmparr.unshift(stmparrobj)
               })
               .finally(() => {
-                setSEvnts((sevnts) => [...sevnts, stmparr])
+                setSEvnts((sevnts) => [...sevnts, ...stmparr])
               })
           }
         })
@@ -189,7 +189,7 @@ export default function Events() {
               }
               ltmparr.unshift(ltmparrobj)
             }).finally(() => {
-              setSEvnts((sevnts) => [...sevnts, ltmparr ])
+              setSEvnts((sevnts) => [...sevnts, ...ltmparr ])
             })
           }
           setRetrieving(false)
@@ -215,7 +215,7 @@ export default function Events() {
           .then((data) => {
             return data
           })
-//console.info(nftmd)
+console.info(nftmd)
         tx.serial = nftmd.editionNumber
         tx.edition = nftmd.setId
         tx.editionmint = nftmd.editionSize
