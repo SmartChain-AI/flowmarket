@@ -53,25 +53,10 @@ export default function Events() {
                   })
                   .finally(() => {
                     stmparr.push(element)
-                  //  setSEvnts((sevnts) => [...stmparr, sevnts])
-                     //setSEvnts((sevnts) => [ stmparr,...sevnts ])X
-                   //  setSEvnts((sevnts) => [ stmparr,sevnts ])x
-                   // setSEvnts((sevnts) => [ ...stmparr,...sevnts ]) x overwrites sales and removed with listings
-                                     setSEvnts((sevnts) => [...sevnts, element ])
-
-                   //     setSEvnts((sevnts) => [sevnts, ...stmparr ])
-                    // setSEvnts((sevnts) => [...sevnts, stmparr ])
-                    //setSEvnts((sevnts) => [...sevnts, ...stmparr ])
+                    setSEvnts((sevnts) => [...sevnts, element])
                   })
               }
-            //  setSEvnts((sevnts) => [...stmparr, sevnts])
-            // setSEvnts((sevnts) => [ stmparr,...sevnts ])
-            // setSEvnts((sevnts) => [ stmparr,sevnts ])
-            //setSEvnts((sevnts) => [ ...stmparr,...sevnts ])
-             //setSEvnts((sevnts) => [sevnts, ...stmparr ])
-            // setSEvnts((sevnts) => [...sevnts, stmparr ])
-            //setSEvnts((sevnts) => [...sevnts, ...stmparr ])
-          })
+            })
           }).catch(console.error)
 
         /// GET INITIAL LISTINGS ///
@@ -93,25 +78,10 @@ export default function Events() {
                   })
                   .finally(() => {
                     ltmparr.push(element)
-                    //setSEvnts((sevnts) => [...ltmparr, sevnts])
-                       //setSEvnts((sevnts) => [ ltmparr, ...sevnts ])X
-                      // setSEvnts((sevnts) => [ ltmparr, sevnts ])x
-                       //setSEvnts((sevnts) => [ ...ltmparr,...sevnts ])x overwrites sales and removed with listings
-                       setSEvnts((sevnts) => [...sevnts, element ])
-
-                      // setSEvnts((sevnts) => [ ...sevnts, ...ltmparr ])
-                      // setSEvnts((sevnts) => [ sevnts, ...ltmparr ])
-                     // setSEvnts((sevnts) => [ ...sevnts, ltmparr ])
+                    setSEvnts((sevnts) => [...sevnts, element])
                   })
               }
-              //setSEvnts((sevnts) => [...ltmparr, sevnts])
-          //   setSEvnts((sevnts) => [ ltmparr, ...sevnts ])
-            // setSEvnts((sevnts) => [ ltmparr, sevnts ])
-             //setSEvnts((sevnts) => [ ...ltmparr,...sevnts ])
-            //setSEvnts((sevnts) => [ ...sevnts, ...ltmparr ])
-            // setSEvnts((sevnts) => [ sevnts, ...ltmparr ])
-           // setSEvnts((sevnts) => [ ...sevnts, ltmparr ])
-          })
+            })
           }).catch(console.error)
       } catch (error) {
         console.log('There was an error', error);
@@ -124,7 +94,7 @@ export default function Events() {
       try {
         fcl.events('A.4eb8a10cb9f87357.NFTStorefront.ListingCompleted').subscribe((event) => {
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
-           stmparr = []
+            stmparr = []
             gettran(event.transactionId, event.data.nftID)
               .then((result) => {
                 let type = null
@@ -170,7 +140,7 @@ export default function Events() {
       try {
         fcl.events('A.4eb8a10cb9f87357.NFTStorefront.ListingAvailable').subscribe((event) => {
           setRetrieving(true)
-         ltmparr = []
+          ltmparr = []
           console.log("checking")
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
             gettran(event.transactionId, event.data.nftID).then((result) => {
@@ -189,7 +159,7 @@ export default function Events() {
               }
               ltmparr.unshift(ltmparrobj)
             }).finally(() => {
-              setSEvnts((sevnts) => [...sevnts, ...ltmparr ])
+              setSEvnts((sevnts) => [...sevnts, ...ltmparr])
             })
           }
           setRetrieving(false)
@@ -215,7 +185,7 @@ export default function Events() {
           .then((data) => {
             return data
           })
-console.info(nftmd)
+        console.info(nftmd)
         tx.serial = nftmd.editionNumber
         tx.edition = nftmd.setId
         tx.editionmint = nftmd.editionSize

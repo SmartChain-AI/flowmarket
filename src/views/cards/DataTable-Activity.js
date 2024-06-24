@@ -128,7 +128,6 @@ const DataTable = ({ data }) => {
       showRowsPerPage: true,
       shape: 'rounded',
     },
-    //paginationDisplayMode: 'pages',
     //  manualPagination: true,
     // columnFilterDisplayMode: 'custom',
     enableFacetedValues: true,
