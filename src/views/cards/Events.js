@@ -52,7 +52,7 @@ export default function Events() {
                     element.mname = result.mname
                   })
                   .finally(() => {
-                    stmparr.push(element)
+                //    stmparr.push(element)
                     setSEvnts((sevnts) => [...sevnts, element])
                   })
               }
@@ -77,7 +77,7 @@ export default function Events() {
                     element.editionmint = result.editionmint
                   })
                   .finally(() => {
-                    ltmparr.push(element)
+                 //   ltmparr.push(element)
                     setSEvnts((sevnts) => [...sevnts, element])
                   })
               }
@@ -94,7 +94,7 @@ export default function Events() {
       try {
         fcl.events('A.4eb8a10cb9f87357.NFTStorefront.ListingCompleted').subscribe((event) => {
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
-            stmparr = []
+            let stmparr2 = []
             gettran(event.transactionId, event.data.nftID)
               .then((result) => {
                 let type = null
@@ -125,10 +125,10 @@ export default function Events() {
                   'type': type,
                   'mname': result.mname
                 }
-                stmparr.unshift(stmparrobj)
+                stmparr2.push(stmparrobj)
               })
               .finally(() => {
-                setSEvnts((sevnts) => [...sevnts, ...stmparr])
+                setSEvnts((sevnts) => [...sevnts, ...stmparr2])
               })
           }
         })
@@ -140,7 +140,7 @@ export default function Events() {
       try {
         fcl.events('A.4eb8a10cb9f87357.NFTStorefront.ListingAvailable').subscribe((event) => {
           setRetrieving(true)
-          ltmparr = []
+          let ltmparr2 = []
           console.log("checking")
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
             gettran(event.transactionId, event.data.nftID).then((result) => {
@@ -157,9 +157,9 @@ export default function Events() {
                 'storefrontAddress': event.data.storefrontAddress,
                 'mname': result.mname
               }
-              ltmparr.unshift(ltmparrobj)
+              ltmparr2.unshift(ltmparrobj)
             }).finally(() => {
-              setSEvnts((sevnts) => [...sevnts, ...ltmparr])
+              setSEvnts((sevnts) => [...sevnts, ...ltmparr2])
             })
           }
           setRetrieving(false)
