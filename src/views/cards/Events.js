@@ -39,7 +39,7 @@ export default function Events() {
                       element.buyer = "0x" + result.proposalKey.address
                       element.seller = result.args[1].value
                     } else {
-                      element.type = "Removed"
+                      element.type = "Delisted"
                       element.price = null
                       element.buyer = null
                       element.seller = "0x" + result.proposalKey.address
