@@ -1,12 +1,19 @@
+import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
 import { useState, useEffect } from 'react'
 import * as fcl from '@onflow/fcl';
 import { block } from "@onflow/fcl"
 import "../../flow/config"
-
-//import * as React from 'react';
-
-import DataTable from './DataTable-Activity'
+import Image from 'next/image'
+import Paper from '@mui/material/Paper'
+import Table from '@mui/material/Table'
+import TableRow from '@mui/material/TableRow'
+import TableHead from '@mui/material/TableHead'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TablePagination from '@mui/material/TablePagination'
 
 export default function Events() {
   const [sevnts, setSEvnts] = useState([])
@@ -18,7 +25,6 @@ export default function Events() {
 
   useEffect(() => {
     let stmparr = []
-    let ltmparr = []
 
     async function getinit() {
       try {
@@ -39,7 +45,7 @@ export default function Events() {
                       element.buyer = "0x" + result.proposalKey.address
                       element.seller = result.args[1].value
                     } else {
-                      element.type = "Delisted"
+                      element.type = "Removed"
                       element.price = null
                       element.buyer = null
                       element.seller = "0x" + result.proposalKey.address
@@ -53,25 +59,11 @@ export default function Events() {
                   })
                   .finally(() => {
                     stmparr.push(element)
-                  //  setSEvnts((sevnts) => [...stmparr, sevnts])
-                     //setSEvnts((sevnts) => [ stmparr,...sevnts ])X
-                   //  setSEvnts((sevnts) => [ stmparr,sevnts ])x
-                   // setSEvnts((sevnts) => [ ...stmparr,...sevnts ]) x overwrites sales and removed with listings
-                                     setSEvnts((sevnts) => [...sevnts, element ])
-
-                   //     setSEvnts((sevnts) => [sevnts, ...stmparr ])
-                    // setSEvnts((sevnts) => [...sevnts, stmparr ])
-                    //setSEvnts((sevnts) => [...sevnts, ...stmparr ])
+                    //  stmparr.sort((p1, p2) => (p1.timestamp < p2.timestamp) ? 1 : (p1.timestamp > p2.timestamp) ? -1 : 0)
+                    setSEvnts((sevnts) => [...stmparr, sevnts])
                   })
               }
-            //  setSEvnts((sevnts) => [...stmparr, sevnts])
-            // setSEvnts((sevnts) => [ stmparr,...sevnts ])
-            // setSEvnts((sevnts) => [ stmparr,sevnts ])
-            //setSEvnts((sevnts) => [ ...stmparr,...sevnts ])
-             //setSEvnts((sevnts) => [sevnts, ...stmparr ])
-            // setSEvnts((sevnts) => [...sevnts, stmparr ])
-            //setSEvnts((sevnts) => [...sevnts, ...stmparr ])
-          })
+            })
           }).catch(console.error)
 
         /// GET INITIAL LISTINGS ///
@@ -92,26 +84,11 @@ export default function Events() {
                     element.editionmint = result.editionmint
                   })
                   .finally(() => {
-                    ltmparr.push(element)
-                    //setSEvnts((sevnts) => [...ltmparr, sevnts])
-                       //setSEvnts((sevnts) => [ ltmparr, ...sevnts ])X
-                      // setSEvnts((sevnts) => [ ltmparr, sevnts ])x
-                       //setSEvnts((sevnts) => [ ...ltmparr,...sevnts ])x overwrites sales and removed with listings
-                       setSEvnts((sevnts) => [...sevnts, element ])
-
-                      // setSEvnts((sevnts) => [ ...sevnts, ...ltmparr ])
-                      // setSEvnts((sevnts) => [ sevnts, ...ltmparr ])
-                     // setSEvnts((sevnts) => [ ...sevnts, ltmparr ])
+                    stmparr.push(element)
+                    setSEvnts((sevnts) => [...stmparr, sevnts])
                   })
               }
-              //setSEvnts((sevnts) => [...ltmparr, sevnts])
-          //   setSEvnts((sevnts) => [ ltmparr, ...sevnts ])
-            // setSEvnts((sevnts) => [ ltmparr, sevnts ])
-             //setSEvnts((sevnts) => [ ...ltmparr,...sevnts ])
-            //setSEvnts((sevnts) => [ ...sevnts, ...ltmparr ])
-            // setSEvnts((sevnts) => [ sevnts, ...ltmparr ])
-           // setSEvnts((sevnts) => [ ...sevnts, ltmparr ])
-          })
+            })
           }).catch(console.error)
       } catch (error) {
         console.log('There was an error', error);
@@ -124,7 +101,7 @@ export default function Events() {
       try {
         fcl.events('A.4eb8a10cb9f87357.NFTStorefront.ListingCompleted').subscribe((event) => {
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
-           stmparr = []
+            let stmparr = sevnts
             gettran(event.transactionId, event.data.nftID)
               .then((result) => {
                 let type = null
@@ -158,7 +135,7 @@ export default function Events() {
                 stmparr.unshift(stmparrobj)
               })
               .finally(() => {
-                setSEvnts((sevnts) => [...sevnts, stmparr])
+                setSEvnts((sevnts) => [...stmparr, ...sevnts])
               })
           }
         })
@@ -170,7 +147,6 @@ export default function Events() {
       try {
         fcl.events('A.4eb8a10cb9f87357.NFTStorefront.ListingAvailable').subscribe((event) => {
           setRetrieving(true)
-         ltmparr = []
           console.log("checking")
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
             gettran(event.transactionId, event.data.nftID).then((result) => {
@@ -187,9 +163,9 @@ export default function Events() {
                 'storefrontAddress': event.data.storefrontAddress,
                 'mname': result.mname
               }
-              ltmparr.unshift(ltmparrobj)
+              stmparr.unshift(ltmparrobj)
             }).finally(() => {
-              setSEvnts((sevnts) => [...sevnts, ltmparr ])
+              setSEvnts((sevnts) => [...stmparr, ...sevnts])
             })
           }
           setRetrieving(false)
@@ -215,7 +191,7 @@ export default function Events() {
           .then((data) => {
             return data
           })
-//console.info(nftmd)
+
         tx.serial = nftmd.editionNumber
         tx.edition = nftmd.setId
         tx.editionmint = nftmd.editionSize
@@ -231,7 +207,110 @@ export default function Events() {
 
   }, [])
 
+  const columns = [
+    {
+      id: 'edition',
+      label: '',
+      minWidth: 50,
+      align: 'right',
+      format: value => <Image
+        rel="preload"
+        loading="lazy"
+        quality={100}
+        alt=""
+        // className={'moment-image fade-in'}
+        height={'45'}
+        width={'45'}
+        sizes="45px"
+        src={"/images/moments/" + value + ".jpg"}
+        sx={{ display: 'block' }}
+      />
+    },
+    { id: 'type', label: '', minWidth: 50 },
+    { id: 'mname', label: 'Name', minWidth: 200 },
+    {
+      id: 'price',
+      label: 'Price',
+      minWidth: 60,
+      align: 'right',
+      format: value => "$" + Number(value.toFixed(2))
+    },
+    { id: 'serial', label: 'Serial', minWidth: 60 },
+    {
+      id: 'seller',
+      label: 'Owner',
+      minWidth: 150,
+      align: 'right',
+    },
+    {
+      id: 'buyer',
+      label: 'Buyer',
+      minWidth: 150,
+      align: 'right',
+    },
+    {
+      id: 'timestamp',
+      label: 'Time',
+      minWidth: 120,
+      align: 'right',
+      sortDirection: 'desc',
+      format: value => Date(value)
+    }
+  ]
+
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(+event.target.value)
+    setPage(0)
+  }
+
   return (
-    <DataTable data={sevnts} />
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650, fontSize: '10px' }} size="small" aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              {columns.map(column => (
+                <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sevnts.map((row) => (
+              <TableRow
+                key={row.timestamp}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                {columns.map(column => {
+                  const value = row[column.id]
+                  return (
+                    <TableCell key={column.id} align={column.align} sx={{ fontSize: '0.9em' }}>
+                      {column.format && typeof value === 'number' ? column.format(value) : value}
+                    </TableCell>
+                  )
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component='div'
+        count={sevnts.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
   )
 }

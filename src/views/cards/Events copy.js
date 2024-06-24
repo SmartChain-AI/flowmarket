@@ -1,19 +1,12 @@
-import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
 import { useState, useEffect } from 'react'
 import * as fcl from '@onflow/fcl';
 import { block } from "@onflow/fcl"
 import "../../flow/config"
-import Image from 'next/image'
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableRow from '@mui/material/TableRow'
-import TableHead from '@mui/material/TableHead'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TablePagination from '@mui/material/TablePagination'
+
+//import * as React from 'react';
+
+import DataTable from './DataTable-Activity'
 
 export default function Events() {
   const [sevnts, setSEvnts] = useState([])
@@ -207,110 +200,7 @@ export default function Events() {
 
   }, [])
 
-  const columns = [
-    {
-      id: 'edition',
-      label: '',
-      minWidth: 50,
-      align: 'right',
-      format: value => <Image
-        rel="preload"
-        loading="lazy"
-        quality={100}
-        alt=""
-        // className={'moment-image fade-in'}
-        height={'45'}
-        width={'45'}
-        sizes="45px"
-        src={"/images/moments/" + value + ".jpg"}
-        sx={{ display: 'block' }}
-      />
-    },
-    { id: 'type', label: '', minWidth: 50 },
-    { id: 'mname', label: 'Name', minWidth: 200 },
-    {
-      id: 'price',
-      label: 'Price',
-      minWidth: 60,
-      align: 'right',
-      format: value => "$" + Number(value.toFixed(2))
-    },
-    { id: 'serial', label: 'Serial', minWidth: 60 },
-    {
-      id: 'seller',
-      label: 'Owner',
-      minWidth: 150,
-      align: 'right',
-    },
-    {
-      id: 'buyer',
-      label: 'Buyer',
-      minWidth: 150,
-      align: 'right',
-    },
-    {
-      id: 'timestamp',
-      label: 'Time',
-      minWidth: 120,
-      align: 'right',
-      sortDirection: 'desc',
-      format: value => Date(value)
-    }
-  ]
-
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(+event.target.value)
-    setPage(0)
-  }
-
-  return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650, fontSize: '10px' }} size="small" aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              {columns.map(column => (
-                <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sevnts.map((row) => (
-              <TableRow
-                key={row.timestamp}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                {columns.map(column => {
-                  const value = row[column.id]
-                  return (
-                    <TableCell key={column.id} align={column.align} sx={{ fontSize: '0.9em' }}>
-                      {column.format && typeof value === 'number' ? column.format(value) : value}
-                    </TableCell>
-                  )
-                })}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component='div'
-        count={sevnts.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+  return(
+    <DataTable sevnts={sevnts} />
   )
-}
+  }
