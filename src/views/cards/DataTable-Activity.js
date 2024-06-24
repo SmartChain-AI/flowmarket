@@ -142,7 +142,10 @@ const DataTable = ({ data }) => {
       direction={isMobile ? 'column-reverse' : 'row'}
       gap="8px"
     >
-      <MaterialReactTable table={table} />
+      <MaterialReactTable
+       table={table} 
+       enableStickyHeader
+       />
     </Stack>
   );
 };
