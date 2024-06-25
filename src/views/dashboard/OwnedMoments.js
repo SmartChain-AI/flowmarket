@@ -52,7 +52,6 @@ const OwnedMoments = props => {
       .then((response) => response.json())
       .then((data) => {
         setSetData(data)
-        console.info(data)
       })
       .catch(console.error)
   }
@@ -62,7 +61,7 @@ const OwnedMoments = props => {
     const post_data = {
       "owner": input,
     };
-  
+
     const mOptions = {
       method: 'POST',
       headers: {
@@ -89,22 +88,22 @@ const OwnedMoments = props => {
           azza.push({
             'id': uid,
             'athlete_name': moment.metadata['ATHLETE NAME'],
-            'Moment Name': mname,
-            'Serial': moment.edition_number,
-            'Mintage': moment.max_editions,
-            'Series': moment.metadata['SERIES'],
-            'Set': moment.metadata['SET'],
-            'Tier': moment.metadata['TIER'],
-            'Image': moment.metadata['preview'],
+            'moment_name': mname,
+            'serial': moment.edition_number,
+            'mintage': moment.max_editions,
+            'series': moment.metadata['SERIES'],
+            'set': moment.metadata['SET'],
+            'tier': moment.metadata['TIER'],
+            'ipfs_image': moment.metadata['preview'],
             'set_id': moment.set_id,
-            'Image': moment.set_id,
-            'Burned': found.burnedCount,
-            'Reserves': found.inReservesCount,
-            'Unopened': found.inUnopenedPackCount,
-            'Owned': found.ownedCount,
-            'Floor Price': Number(lp.listing_price),
-            'Listed': Number(moment.listing_price),
-            'Received': moment.deposit_block_height,
+            'edition_image': moment.set_id,
+            'burned': found.burnedCount,
+            'reserves': found.inReservesCount,
+            'unopened': found.inUnopenedPackCount,
+            'owned': found.ownedCount,
+            'floor_price': Number(lp.listing_price),
+            'listed': Number(moment.listing_price),
+            'received': moment.deposit_block_height,
             'nft_id': moment.nft_id
           })
         }
@@ -126,8 +125,8 @@ const OwnedMoments = props => {
       }).catch(console.error);
 
     setAccnt({
-      'im': response.avatar ?? "",
-      'usname': response.username ?? ""
+      'avatar': response.avatar ?? "",
+      'username': response.username ?? ""
     })
     return
   }
@@ -158,8 +157,8 @@ const OwnedMoments = props => {
       if (getlocalstore) {
         if (getlocalstore.user.address === useraddr) {
           setAccnt({
-            'im': getlocalstore.user.accava ?? "",
-            'usname': getlocalstore.user.accname ?? ""
+            'avatar': getlocalstore.user.accava ?? "",
+            'username': getlocalstore.user.accname ?? ""
           })
         } else {
           fetchaccinf(useraddr)
@@ -190,7 +189,6 @@ const OwnedMoments = props => {
         }
         localStorage.setItem("flowmarket", JSON.stringify(tmparr))
       } else { // Different Address
-        console.log('Different Address')
         localStorage.setItem("flowmarket", JSON.stringify({
           "user": {
             "address": address,
@@ -199,8 +197,8 @@ const OwnedMoments = props => {
               "total": totalz
             },
             "moments": allmoments,
-            "accname": accnt.usname,
-            "accava": accnt.im
+            "accname": accnt.username,
+            "accava": accnt.avatar
           }
         }
         ));
@@ -216,8 +214,8 @@ const OwnedMoments = props => {
             "total": totalz
           },
           "moments": allmoments,
-          "accname": accnt.usname,
-          "accava": accnt.im
+          "accname": accnt.username,
+          "accava": accnt.avatar
         }
       }
       ))
@@ -240,7 +238,7 @@ const OwnedMoments = props => {
             // xl: '25%', // 80em+
           }}>
             {//<WeeklyOverview />
-           }
+            }
           </Box>
           <Box width={{
             base: '100%', // 0-48em
@@ -288,7 +286,7 @@ const OwnedMoments = props => {
               <Grid container>
                 <Grid item xs={12} sm={6} md={8}>
                   <TotalEarning amount={totalz ? (<>${totalz}</>) : (<></>)}
-                    accname={accnt ? accnt.usname : null} accimage={accnt ? accnt.im : null} walletid={input} />
+                    accname={accnt ? accnt.username : null} accimage={accnt ? accnt.avatar : null} walletid={input} />
                 </Grid>
               </Grid>
             </>) : (<></>)}

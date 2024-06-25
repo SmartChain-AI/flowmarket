@@ -57,16 +57,7 @@ a {
      font-size: 0.7em;
 }
 
-/* TABLE */
-.table-cont {
-  font-size: 0.7em;
-}
-
-.OwnedMomentsTable {
-  display: block !important;
-  overflow-x: auto;
-}
-
+/*
 .MuiTableHead-root {
   white-space: nowrap;
   padding: 10px;
@@ -100,14 +91,16 @@ td:nth-child(n+2) {
   font-size: 1.2em !important;
   vertical-align: text-bottom;
 }
-
+*/
 .moment-image {
-  border: 2px solid #4fd1c5;
-  width: 85px !important;
-  min-width: 85px !important;
+  border: 1px solid #4fd1c5;
   border-radius: 15px;
-  height: auto;
-  margin: 2px;
+  vertical-align: middle;
+}
+
+/* MUI OVERRIDES */
+.MuiInputBase-input{
+  font-size: 0.7em !important
 }
 
 .MuiButton-endIcon {

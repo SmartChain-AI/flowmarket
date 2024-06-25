@@ -18,7 +18,12 @@ const DataTable = ({ data }) => {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 15,
-  });
+  })
+  
+  const [density, setDensity] = useState({
+   // pageIndex: 0,
+   // pageSize: 15,
+  })
 
   const columns = useMemo(
     () => [
@@ -29,6 +34,7 @@ const DataTable = ({ data }) => {
         enableSorting: false,
         Cell: ({ renderedCellValue, row }) => (
           renderedCellValue ? (
+      
             <Box
               sx={{
                 display: 'flex',
@@ -108,11 +114,10 @@ const DataTable = ({ data }) => {
     ],
     [],
   );
-
+//{table.getState().density !== 'compact' ? '85':'15'}
   const table = useMaterialReactTable({
     columns,
     data,
-    onPaginationChange: setPagination,
     initialState: {
       sorting: [
         {
@@ -124,17 +129,20 @@ const DataTable = ({ data }) => {
     state: {
       pagination
     },
+    onPaginationChange: setPagination,
+    onDensityChange:setDensity,
     muiPaginationProps: {
       showRowsPerPage: true,
       shape: 'rounded',
     },
-    //  manualPagination: true,
+    enableStickyHeader: true,
+    muiTableContainerProps: { sx: { maxHeight: '500px' } },
     // columnFilterDisplayMode: 'custom',
-    enableFacetedValues: true,
-    // enableBottomToolbar: true,
     // muiFilterTextFieldProps: ({ column }) => ({
     //    label: `Filter by ${column.columnDef.header}`,
     // }),
+    enableColumnOrdering: true,
+
   });
 
   return (
@@ -144,7 +152,6 @@ const DataTable = ({ data }) => {
     >
       <MaterialReactTable
        table={table} 
-       enableStickyHeader
        />
     </Stack>
   );

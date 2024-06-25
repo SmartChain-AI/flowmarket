@@ -53,13 +53,10 @@ export default function SettingsDrawer(props) {
           </ListItem>
         ))}
         <ListItem>
-          <ListItemButton>
             <ModeToggler
               settings={settings}
               saveSettings={saveSettings}
             />
-            <ListItemText primary={settings.mode + ' mode'} />
-          </ListItemButton>
         </ListItem>
       </List>
     </Box>
