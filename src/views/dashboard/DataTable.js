@@ -13,13 +13,14 @@ const DataTable = ({ data }) => {
 
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnOrder, setColumnOrder] = useState([]);
-  const [columnPinning, setColumnPinning] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [density, setDensity] = useState({});
   const [globalFilter, setGlobalFilter] = useState(undefined);
   const [showGlobalFilter, setShowGlobalFilter] = useState(false);
   const [showColumnFilters, setShowColumnFilters] = useState(false);
   const [sorting, setSorting] = useState([]);
+  const [columnPinning, setColumnPinning] = useState([]);
+  const [pagination, setPagination] = useState({});
 
   const columns = useMemo(
     () => [
@@ -181,6 +182,7 @@ const DataTable = ({ data }) => {
       showGlobalFilter,
       sorting,
       columnPinning,
+      pagination
     },
     enableColumnOrdering: true,
     enableColumnPinning: true,
@@ -194,6 +196,8 @@ const DataTable = ({ data }) => {
     onSortingChange: setSorting,
     onDensityChange: setDensity,
     onColumnPinningChange: setColumnPinning,
+    onPaginationChange: setPagination,
+
     //  layoutMode: 'grid-no-grow', //constant column widths
     muiTableHeadCellProps: {
       //simple styling with the `sx` prop, works just like a style prop in this example
@@ -215,6 +219,7 @@ const DataTable = ({ data }) => {
     const showColumnFilters = localStorage.getItem('valuation_table_showColumnFilters');
     const sorting = localStorage.getItem('valuation_table_sorting');
     const columnPinning = localStorage.getItem('valuation_table_columnPinning');
+    const pagination = localStorage.getItem('valuation_table_pagination');
 
     if (columnFilters) {
       setColumnFilters(JSON.parse(columnFilters));
@@ -242,6 +247,9 @@ const DataTable = ({ data }) => {
     }
     if (columnPinning) {
       setColumnPinning(JSON.parse(columnPinning));
+    }
+    if (pagination) {
+      setPagination(JSON.parse(pagination));
     }
     isFirstRender.current = false;
   }, []);
@@ -309,6 +317,11 @@ const DataTable = ({ data }) => {
     if (isFirstRender.current) return;
     localStorage.setItem('valuation_table_columnPinning', JSON.stringify(columnPinning));
   }, [columnPinning]);
+
+  useEffect(() => {
+    if (isFirstRender.current) return;
+    localStorage.setItem('valuation_table_pagination', JSON.stringify(pagination));
+  }, [pagination]);
 
   return <MaterialReactTable table={table} />;
 };
