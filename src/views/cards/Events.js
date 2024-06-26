@@ -95,7 +95,8 @@ export default function Events() {
                 let type = null
                 let buyer = null
                 let price = null
-
+console.info(result)
+console.info(event)
                 if (event.eventIndex !== 0) {
                   type = "Sold"
                   buyer = "0x" + result.proposalKey.address

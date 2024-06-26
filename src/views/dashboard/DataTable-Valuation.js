@@ -4,7 +4,7 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import Image from 'next/image'
-import PerfectScrollbar from 'react-perfect-scrollbar'
+//import PerfectScrollbar from 'react-perfect-scrollbar'
 import { styled } from '@mui/material/styles'
 
 const DataTableValuation = ({ data }) => {
@@ -350,9 +350,7 @@ const DataTableValuation = ({ data }) => {
   }, [pagination]);
 
   return (
-    <PerfectScrollbar>
       <MaterialReactTable table={table} />
-    </PerfectScrollbar>
   )
 };
 
