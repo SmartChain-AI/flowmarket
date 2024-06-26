@@ -98,7 +98,7 @@ export default function Events() {
 
                 if (event.eventIndex !== 0) {
                   type = "Sold"
-                  buyer = result.args[1].value
+                  buyer = "0x" + result.proposalKey.address
                   price = Number(result.args[result.args.length - 1].value)
                 } else {
                   type = "Delisted"
@@ -108,7 +108,7 @@ export default function Events() {
 
                 let stmparrobj = {
                   'buyer': buyer,
-                  'seller': "0x" + result.proposalKey.address,
+                  'seller': result.args[1].value,
                   'transactionId': event.transactionId,
                   'nftID': event.data.nftID,
                   'price': price,
