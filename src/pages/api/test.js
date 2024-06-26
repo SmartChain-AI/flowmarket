@@ -11,7 +11,6 @@ export default async function handler(req, res) {
   let pload2 = ''
   let count = 0
 
-  const sleepNow = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 
   await block({ sealed: true })
     .then((result) => {
@@ -28,7 +27,6 @@ export default async function handler(req, res) {
     })
 
   const done = await yo
-//console.info(yo)
 
   const filterUsersByBH = (blockh) => { // filters results returned by latest sales events
 console.log('yo')
@@ -38,7 +36,7 @@ console.log('yo')
 
   async function yo2(pload2) { // Transaction number function
     console.log(pload2)
-    await sleepNow(500)
+    //await sleepNow(500)
 
     if (count > 0) {
       console.log("retrying attempt #"+ count)
