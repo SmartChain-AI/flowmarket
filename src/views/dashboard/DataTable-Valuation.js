@@ -4,9 +4,10 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import Image from 'next/image'
-import Box from '@mui/material/Box'
+import PerfectScrollbar from 'react-perfect-scrollbar'
+import { styled } from '@mui/material/styles'
 
-const DataTable = ({ data }) => {
+const DataTableValuation = ({ data }) => {
 
   if (!data) return
   const isFirstRender = useRef(true);
@@ -20,7 +21,7 @@ const DataTable = ({ data }) => {
   const [showColumnFilters, setShowColumnFilters] = useState(false);
   const [sorting, setSorting] = useState([]);
   const [columnPinning, setColumnPinning] = useState([]);
-  const [pagination, setPagination] = useState({});
+  const [pagination, setPagination] = useState({pageIndex: 0,pageSize: 10});
 
   const columns = useMemo(
     () => [
@@ -80,13 +81,27 @@ const DataTable = ({ data }) => {
           cell.getValue().toLocaleString('en-US', {
             style: 'currency',
             currency: 'USD',
-          })
+        }),
+        filterVariant: 'range-slider',
+        filterFn: 'betweenInclusive',
+        muiFilterSliderProps: {
+          color: 'primary',
+          step: 1,
+          size:'small',
+          valueLabelFormat: (value) =>
+            value.toLocaleString('en-US', {
+              style: 'currency',
+              currency: 'USD',
+            }),
+        },
       },
       {
         accessorKey: 'serial',
         header: 'Serial',
         muiTableHeadCellProps: { align: 'center' },
         muiTableBodyCellProps: { align: 'center' },
+        Cell: ({ cell }) =>
+          "#" + cell.getValue()
       },
       {
         accessorKey: 'mintage',
@@ -154,7 +169,7 @@ const DataTable = ({ data }) => {
               style: 'currency',
               currency: 'USD',
             })
-          ) : (<>N/A</>)
+          ) : (null)
         ,
       },
     ],
@@ -164,6 +179,7 @@ const DataTable = ({ data }) => {
   const table = useMaterialReactTable({
     columns,
     data,
+    enableFacetedValues: true,
     initialState: {
       sorting: [
         {
@@ -197,18 +213,28 @@ const DataTable = ({ data }) => {
     onDensityChange: setDensity,
     onColumnPinningChange: setColumnPinning,
     onPaginationChange: setPagination,
-
-    //  layoutMode: 'grid-no-grow', //constant column widths
     muiTableHeadCellProps: {
-      //simple styling with the `sx` prop, works just like a style prop in this example
       sx: {
         padding: '0px',
-        textAlign: 'center'
+        textAlign: 'center',
+      },
+    },
+
+    muiFilterTextFieldProps:{
+      sx: {
+        fontSize: '0.7em',
+        padding:'0px'
+      },
+    },
+    muiFilterSliderProps: {
+      sx: {
+        width: 'inherit',
+        margin: 'auto',
+        padding: '5px !important'
       },
     },
   });
 
-  //load state from local storage
   useEffect(() => {
     const columnFilters = localStorage.getItem('valuation_table_columnFilters');
     const columnOrder = localStorage.getItem('valuation_table_columnOrder');
@@ -323,7 +349,11 @@ const DataTable = ({ data }) => {
     localStorage.setItem('valuation_table_pagination', JSON.stringify(pagination));
   }, [pagination]);
 
-  return <MaterialReactTable table={table} />;
+  return (
+    <PerfectScrollbar>
+  <MaterialReactTable table={table} />
+  </PerfectScrollbar>
+)
 };
 
-export default DataTable;
+export default DataTableValuation;

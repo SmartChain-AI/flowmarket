@@ -3,13 +3,10 @@ import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Menu from 'mdi-material-ui/Menu'
-
 import FlowLogin from 'src/@core/layouts/components/shared-components/FlowLogin'
 
 //import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
 //import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
-
-//import { ThemeProvider, createTheme } from '@mui/material/styles'
 
 const AppBarContent = props => {
   const { hidden, settings, saveSettings, toggleNavVisibility } = props

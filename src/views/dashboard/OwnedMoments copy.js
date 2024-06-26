@@ -1,5 +1,3 @@
-'use client'
-
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import Card from '@mui/material/Card'
@@ -13,11 +11,13 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import TotalEarning from 'src/views/dashboard/TotalEarning'
 import Stack from '@mui/material/Stack';
 import React, { useState, useEffect } from "react";
-import DataTable from "./DataTable";
+import DataTableValuation from "./DataTable-Valuation"
 import WeeklyOverview from './WeeklyOverview'
+////import * as fcl from '@onflow/fcl';
+import "../../flow/config"
+import { useSettings } from 'src/@core/hooks/useSettings'
 
-
-export default function OwnedMoments(props) {
+const OwnedMoments = props => {
 
   const [dataz, setData] = useState()
   const [setsDataz, setSetData] = useState()
@@ -26,6 +26,13 @@ export default function OwnedMoments(props) {
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [accnt, setAccnt] = useState();
+  const { settings, saveSettings } = useSettings()
+
+  useEffect(() => {
+    if (settings.addr) {
+      submitaddy(settings.addr)
+    }
+  }, [settings.loggedIn])
 
   let azza = [];
   let lp = 0;
@@ -33,51 +40,15 @@ export default function OwnedMoments(props) {
   let total = 0;
 
   const { variant, children, ...rest } = props;
-  const url_account = '/api/moments';
-  const url_sets = '/api/sets';
+
+  //const url_account = '/api/dbx/gum';
+  const url_account = '/api/dbx/umo';
   const url_accinf = '/api/emname/';
+  const url_sets = '/api/dbx/sets';
 
-  const post_data_sets = {
-    "sort": "listing_timestamp",
-    "order": "desc",
-    "query": null,
-    "limit": 10000,
-    "max_mintings": {},
-    "price": {},
-    "weight_class": [],
-    "highlight_type": [],
-    "athlete_name": [],
-    "tier": [],
-    "set": [],
-    "id": []
-  };
+  async function fetchsets(addr) {
 
-  const post_data_account = {
-    "sort": "name",
-    "order": "desc",
-    "query": null,
-    "limit": 10000,
-    "owner": input,
-  };
-
-  const momentsOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(post_data_account),
-  };
-
-  const setsOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(post_data_sets),
-  };
-
-  async function fetchsets() {
-    fetch(url_sets, setsOptions)
+    await fetch(url_sets)
       .then((response) => response.json())
       .then((data) => {
         setSetData(data)
@@ -87,35 +58,52 @@ export default function OwnedMoments(props) {
 
   useEffect(() => {
     if (!isDataLoading) return
-    fetch(url_account, momentsOptions)
+    const post_data = {
+      "owner": input,
+    };
+
+    const mOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(post_data),
+    };
+
+    fetch(url_account, mOptions)
       .then((response) => response.json())
       .then((data) => {
-        for (const moment of data.moments) {
+        console.info(data)
+        for (const moment of data.data.moments) {
           uid = uid + 1
           var mname = moment.name
-          let found = setsDataz?.find(item => item.set_id === moment.set_id)
+          let found = data.results?.find(item => item.set_id === moment.set_id)
           if (found !== undefined) {
-            lp = Number(found.listing_price)
-            total = Number(found.listing_price) + total
+            lp = setsDataz?.find(item => item.set_id === moment.set_id)
+            console.info(lp)
+            total = Number(lp.listing_price) + total
             mname = moment.name.replace("/|/g", " ")
           }
 
           azza.push({
             'id': uid,
             'athlete_name': moment.metadata['ATHLETE NAME'],
-            'Moment Name': mname,
-            'Serial': moment.edition_number,
-            'Mintage': moment.max_editions,
-            'Series': moment.metadata['SERIES'],
-            'Set': moment.metadata['SET'],
-            'Tier': moment.metadata['TIER'],
-            'Image': moment.metadata['preview'],
+            'moment_name': mname,
+            'serial': moment.edition_number,
+            'mintage': moment.max_editions,
+            'series': moment.metadata['SERIES'],
+            'set': moment.metadata['SET'],
+            'tier': moment.metadata['TIER'],
+            'ipfs_image': moment.metadata['preview'],
             'set_id': moment.set_id,
-            'Image': moment.set_id,
-            'Burned': moment.set_id,
-            'Floor Price': lp,
-            'Listed': moment.listing_price,
-            'Received': moment.deposit_block_height,
+            'edition_image': moment.set_id,
+            'burned': found.burnedCount,
+            'reserves': found.inReservesCount,
+            'unopened': found.inUnopenedPackCount,
+            'owned': found.ownedCount,
+            'floor_price': Number(lp.listing_price),
+            'listed': Number(moment.listing_price),
+            'received': moment.deposit_block_height,
             'nft_id': moment.nft_id
           })
         }
@@ -128,20 +116,6 @@ export default function OwnedMoments(props) {
         localStore(input, total, sorted);
       })
       .catch(console.error);
-    let counter = 0
-    async function receivedinf(block_height) {
-      if (counter > 0) {
-        return
-      }
-      counter = counter + 1
-
-      const yep = await fetch('https://rest-mainnet.onflow.org/v1/blocks?height=' + block_height)
-        .then((results) => {
-          console.info(results)
-        })
-        .catch(console.error)
-      return yep
-    }
   }, [setsDataz])
 
   async function fetchaccinf(userid) {
@@ -151,23 +125,29 @@ export default function OwnedMoments(props) {
       }).catch(console.error);
 
     setAccnt({
-      'im': response.avatar ?? "",
-      'usname': response.username ?? ""
+      'avatar': response.avatar ?? "",
+      'username': response.username ?? ""
     })
     return
   }
 
   async function submitaddy(value) {
-    fetchsets()
-    let sa = document.getElementById('address')
-    if (sa.value === "" || !sa.value.startsWith("0x")) {
-      return
+    let useraddr = null
+    console.info(value)
+    if (value) {
+      if (value === "" || !value.startsWith("0x")) {
+        return
+      }
+      useraddr = value
+    } else {
+      useraddr = settings.user.address
     }
-    setInput(sa.value)
+    setInput(useraddr)
+    fetchsets(useraddr)
     azza = []
     setIsDataLoading(true);
     setIsDone(false);
-    fetchaccinf(sa.value)
+    fetchaccinf(useraddr)
     setAccnt()
     setTotal()
     let getlocalstore = localStorage.getItem('flowmarket')
@@ -175,16 +155,16 @@ export default function OwnedMoments(props) {
 
     try {
       if (getlocalstore) {
-        if (getlocalstore.user.address === sa.value) {
+        if (getlocalstore.user.address === useraddr) {
           setAccnt({
-            'im': getlocalstore.user.accava ?? "",
-            'usname': getlocalstore.user.accname ?? ""
+            'avatar': getlocalstore.user.accava ?? "",
+            'username': getlocalstore.user.accname ?? ""
           })
         } else {
-          fetchaccinf(sa.value)
+          fetchaccinf(useraddr)
         }
       } else {
-        fetchaccinf(sa.value)
+        fetchaccinf(useraddr)
       }
     } catch { }
     return
@@ -193,6 +173,7 @@ export default function OwnedMoments(props) {
   function localStore(address, totalz, allmoments) {
     let getlocalstore = localStorage.getItem('flowmarket')
     getlocalstore = JSON.parse(getlocalstore)
+    return
     if (getlocalstore) {
       if (getlocalstore.user.address === address) { // Mutating Data
         console.log('Mutating Data')
@@ -208,7 +189,6 @@ export default function OwnedMoments(props) {
         }
         localStorage.setItem("flowmarket", JSON.stringify(tmparr))
       } else { // Different Address
-        console.log('Different Address')
         localStorage.setItem("flowmarket", JSON.stringify({
           "user": {
             "address": address,
@@ -217,8 +197,8 @@ export default function OwnedMoments(props) {
               "total": totalz
             },
             "moments": allmoments,
-            "accname": accnt.usname,
-            "accava": accnt.im
+            "accname": accnt.username,
+            "accava": accnt.avatar
           }
         }
         ));
@@ -234,8 +214,8 @@ export default function OwnedMoments(props) {
             "total": totalz
           },
           "moments": allmoments,
-          "accname": accnt.usname,
-          "accava": accnt.im
+          "accname": accnt.username,
+          "accava": accnt.avatar
         }
       }
       ))
@@ -257,7 +237,8 @@ export default function OwnedMoments(props) {
             md: '50%', // 48em-80em,
             // xl: '25%', // 80em+
           }}>
-            <WeeklyOverview />
+            {//<WeeklyOverview />
+            }
           </Box>
           <Box width={{
             base: '100%', // 0-48em
@@ -285,7 +266,7 @@ export default function OwnedMoments(props) {
               />
               <LoadingButton
                 color="secondary"
-                onClick={() => { submitaddy() }}
+                onClick={() => { submitaddy(address.value) }}
                 loading={isDataLoading}
                 variant="outlined"
                 size="small"
@@ -305,7 +286,7 @@ export default function OwnedMoments(props) {
               <Grid container>
                 <Grid item xs={12} sm={6} md={8}>
                   <TotalEarning amount={totalz ? (<>${totalz}</>) : (<></>)}
-                    accname={accnt ? accnt.usname : null} accimage={accnt ? accnt.im : null} walletid={input} />
+                    accname={accnt ? accnt.username : null} accimage={accnt ? accnt.avatar : null} walletid={input} />
                 </Grid>
               </Grid>
             </>) : (<></>)}
@@ -317,7 +298,7 @@ export default function OwnedMoments(props) {
       ) : (
         <Card className="main-cont" sx={{ mt: 4 }}>
           <Box sx={{ flexDirection: 'column' }}>
-            {dataz ? (<><DataTable dataz={dataz} /></>) : (<></>)}
+            {dataz ? (<><DataTableValuation data={dataz} /></>) : (<></>)}
           </Box>
         </Card>
       )
@@ -325,3 +306,5 @@ export default function OwnedMoments(props) {
     </>
   );
 };
+
+export default OwnedMoments

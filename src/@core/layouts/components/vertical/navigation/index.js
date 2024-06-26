@@ -1,20 +1,11 @@
-// ** React Import
 import { useRef, useState } from 'react'
-
-// ** MUI Import
 import List from '@mui/material/List'
 import Box from '@mui/material/Box'
 import { styled, useTheme } from '@mui/material/styles'
-
-// ** Third Party Components
 import PerfectScrollbar from 'react-perfect-scrollbar'
-
-// ** Component Imports
 import Drawer from './Drawer'
 import VerticalNavItems from './VerticalNavItems'
 import VerticalNavHeader from './VerticalNavHeader'
-
-// ** Util Import
 import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
 
 const StyledBoxForShadow = styled(Box)({

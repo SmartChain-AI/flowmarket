@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import * as fcl from '@onflow/fcl';
 import { block } from "@onflow/fcl"
 import "../../flow/config"
-import DataTable from './DataTable-Activity'
+import DataTableActivity from './DataTable-Activity'
 
 export default function Events() {
   const [sevnts, setSEvnts] = useState([])
@@ -197,6 +197,6 @@ export default function Events() {
   }, [])
 
   return (
-    <DataTable data={sevnts} />
+    <DataTableActivity data={sevnts} />
   )
 }

@@ -10,20 +10,13 @@ import { Paper, Stack, useMediaQuery } from '@mui/material';
 import Image from 'next/image'
 import Box from '@mui/material/Box'
 
-const DataTable = ({ data }) => {
+const DataTableActivity = ({ data }) => {
+
   if (!data) { return }
 
-  const isMobile = useMediaQuery('(max-width: 1000px)');
-
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 15,
-  })
-  
-  const [density, setDensity] = useState({
-   // pageIndex: 0,
-   // pageSize: 15,
-  })
+  //const isMobile = useMediaQuery('(max-width: 1000px)');
+  const [pagination, setPagination] = useState({})
+  const [density, setDensity] = useState({})
 
   const columns = useMemo(
     () => [
@@ -147,7 +140,9 @@ const DataTable = ({ data }) => {
 
   return (
     <Stack
-      direction={isMobile ? 'column-reverse' : 'row'}
+  //    direction={
+  //      isMobile ? 'column-reverse' : 'row'
+ //     }
       gap="8px"
     >
       <MaterialReactTable
@@ -157,4 +152,4 @@ const DataTable = ({ data }) => {
   );
 };
 
-export default DataTable;
+export default DataTableActivity;

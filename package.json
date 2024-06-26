@@ -38,12 +38,10 @@
     "@onflow/fcl": "^1.10.1",
     "@onflow/types": "^1.4.0",
     "@popperjs/core": "^2.11.8",
-    "@tanstack/react-table": "^8.17.3",
     "@yr/monotone-cubic-spline": "^1.0.3",
     "apexcharts": "^3.49.1",
     "apexcharts-clevision": "^3.28.5",
     "bottleneck": "^2.19.5",
-    "child_process": "^1.0.2",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.11",
     "google-protobuf": "^3.21.2",
@@ -59,8 +57,7 @@
     "react-dom": "18.3.1",
     "react-perfect-scrollbar": "^1.5.8",
     "react-popper": "^2.3.0",
-    "react-usestateref": "^1.0.9",
-    "swr": "^2.2.5"
+    "react-usestateref": "^1.0.9"
   },
   "devDependencies": {
     "next-transpile-modules": "^10.0.1",

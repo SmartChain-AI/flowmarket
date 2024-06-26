@@ -1,8 +1,5 @@
 import Grid from '@mui/material/Grid'
-import Link from '@mui/material/Link'
 import Card from '@mui/material/Card'
-import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -11,9 +8,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import TotalEarning from 'src/views/dashboard/TotalEarning'
 import Stack from '@mui/material/Stack';
 import React, { useState, useEffect } from "react";
-import DataTable from "./DataTable"
+import DataTableValuation from "./DataTable-Valuation"
 import WeeklyOverview from './WeeklyOverview'
-////import * as fcl from '@onflow/fcl';
+//import * as fcl from '@onflow/fcl';
 import "../../flow/config"
 import { useSettings } from 'src/@core/hooks/useSettings'
 
@@ -34,14 +31,13 @@ const OwnedMoments = props => {
     }
   }, [settings.loggedIn])
 
-  let azza = [];
+  let tmparray = [];
   let lp = 0;
   let uid = 0;
   let total = 0;
 
   const { variant, children, ...rest } = props;
 
-  //const url_account = '/api/dbx/gum';
   const url_account = '/api/dbx/umo';
   const url_accinf = '/api/emname/';
   const url_sets = '/api/dbx/sets';
@@ -73,19 +69,18 @@ const OwnedMoments = props => {
     fetch(url_account, mOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.info(data)
+
         for (const moment of data.data.moments) {
           uid = uid + 1
           var mname = moment.name
           let found = data.results?.find(item => item.set_id === moment.set_id)
           if (found !== undefined) {
             lp = setsDataz?.find(item => item.set_id === moment.set_id)
-            console.info(lp)
             total = Number(lp.listing_price) + total
             mname = moment.name.replace("/|/g", " ")
           }
 
-          azza.push({
+          tmparray.push({
             'id': uid,
             'athlete_name': moment.metadata['ATHLETE NAME'],
             'moment_name': mname,
@@ -109,7 +104,7 @@ const OwnedMoments = props => {
         }
         setTotal(total)
       }).then((res) => {
-        const sorted = azza.sort((p1, p2) => (p1['Floor Price'] < p2['Floor Price']) ? 1 : (p1['Floor Price'] > p2['Floor Price']) ? -1 : 0)
+        const sorted = tmparray.sort((p1, p2) => (p1['Floor Price'] < p2['Floor Price']) ? 1 : (p1['Floor Price'] > p2['Floor Price']) ? -1 : 0)
         setData(sorted)
         setIsDataLoading(false);
         setIsDone(true)
@@ -142,15 +137,15 @@ const OwnedMoments = props => {
     } else {
       useraddr = settings.user.address
     }
+    tmparray = []
     setInput(useraddr)
     fetchsets(useraddr)
-    azza = []
     setIsDataLoading(true);
     setIsDone(false);
     fetchaccinf(useraddr)
     setAccnt()
     setTotal()
-    let getlocalstore = localStorage.getItem('flowmarket')
+    let getlocalstore = localStorage.getItem('valuation-user-moments')
     getlocalstore = JSON.parse(getlocalstore)
 
     try {
@@ -171,7 +166,7 @@ const OwnedMoments = props => {
   }
 
   function localStore(address, totalz, allmoments) {
-    let getlocalstore = localStorage.getItem('flowmarket')
+    let getlocalstore = localStorage.getItem('valuation-user-moments')
     getlocalstore = JSON.parse(getlocalstore)
     return
     if (getlocalstore) {
@@ -187,9 +182,9 @@ const OwnedMoments = props => {
         if (!getlocalstore.user.accava) { // Storage exists but no avatar
           tmparr.user.graphdata.accava = accnt.im
         }
-        localStorage.setItem("flowmarket", JSON.stringify(tmparr))
+        localStorage.setItem("valuation-user-moments", JSON.stringify(tmparr))
       } else { // Different Address
-        localStorage.setItem("flowmarket", JSON.stringify({
+        localStorage.setItem("valuation-user-moments", JSON.stringify({
           "user": {
             "address": address,
             "graphdata": {
@@ -206,7 +201,7 @@ const OwnedMoments = props => {
     } else { // New Storage
       console.log('New Storage')
       // CHECK FOR usname AND im IN THE NEXT ONE
-      localStorage.setItem("flowmarket", JSON.stringify({
+      localStorage.setItem("valuation-user-moments", JSON.stringify({
         "user": {
           "address": address,
           "graphdata": {
@@ -298,7 +293,7 @@ const OwnedMoments = props => {
       ) : (
         <Card className="main-cont" sx={{ mt: 4 }}>
           <Box sx={{ flexDirection: 'column' }}>
-            {dataz ? (<><DataTable data={dataz} /></>) : (<></>)}
+            {dataz ? (<><DataTableValuation data={dataz} /></>) : (<></>)}
           </Box>
         </Card>
       )

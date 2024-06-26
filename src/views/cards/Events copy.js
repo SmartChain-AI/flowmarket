@@ -3,10 +3,7 @@ import { useState, useEffect } from 'react'
 import * as fcl from '@onflow/fcl';
 import { block } from "@onflow/fcl"
 import "../../flow/config"
-
-//import * as React from 'react';
-
-import DataTable from './DataTable-Activity'
+import DataTableActivity from './DataTable-Activity'
 
 export default function Events() {
   const [sevnts, setSEvnts] = useState([])
@@ -18,6 +15,7 @@ export default function Events() {
 
   useEffect(() => {
     let stmparr = []
+    let ltmparr = []
 
     async function getinit() {
       try {
@@ -32,13 +30,13 @@ export default function Events() {
               if (element.fields.nftType.split('.')[2] === "UFC_NFT") {
                 await gettran(element.transaction_hash, element.fields.nftID)
                   .then((result) => {
-                    if (element.fields.purchased) { // if not purchased push to removed list
+                    if (element.fields.purchased) {
                       element.type = "Sold"
                       element.price = Number(result.args[result.args.length - 1].value)
                       element.buyer = "0x" + result.proposalKey.address
                       element.seller = result.args[1].value
                     } else {
-                      element.type = "Removed"
+                      element.type = "Delisted"
                       element.price = null
                       element.buyer = null
                       element.seller = "0x" + result.proposalKey.address
@@ -51,9 +49,7 @@ export default function Events() {
                     element.mname = result.mname
                   })
                   .finally(() => {
-                    stmparr.push(element)
-                    //  stmparr.sort((p1, p2) => (p1.timestamp < p2.timestamp) ? 1 : (p1.timestamp > p2.timestamp) ? -1 : 0)
-                    setSEvnts((sevnts) => [...stmparr, sevnts])
+                    setSEvnts((sevnts) => [...sevnts, element])
                   })
               }
             })
@@ -77,8 +73,7 @@ export default function Events() {
                     element.editionmint = result.editionmint
                   })
                   .finally(() => {
-                    stmparr.push(element)
-                    setSEvnts((sevnts) => [...stmparr, sevnts])
+                    setSEvnts((sevnts) => [...sevnts, element])
                   })
               }
             })
@@ -94,7 +89,7 @@ export default function Events() {
       try {
         fcl.events('A.4eb8a10cb9f87357.NFTStorefront.ListingCompleted').subscribe((event) => {
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
-            let stmparr = sevnts
+            let stmparr2 = []
             gettran(event.transactionId, event.data.nftID)
               .then((result) => {
                 let type = null
@@ -106,13 +101,13 @@ export default function Events() {
                   buyer = "0x" + result.proposalKey.address
                   price = Number(result.args[result.args.length - 1].value)
                 } else {
-                  type = "Removed"
+                  type = "Delisted"
                   buyer = ""
                   price = null
                 }
 
                 let stmparrobj = {
-                  'buyer': "0x" + result.args[0].value,
+                  'buyer': buyer,
                   'seller': "0x" + result.proposalKey.address,
                   'transactionId': event.transactionId,
                   'nftID': event.data.nftID,
@@ -125,10 +120,10 @@ export default function Events() {
                   'type': type,
                   'mname': result.mname
                 }
-                stmparr.unshift(stmparrobj)
+                stmparr2.push(stmparrobj)
               })
               .finally(() => {
-                setSEvnts((sevnts) => [...stmparr, ...sevnts])
+                setSEvnts((sevnts) => [...sevnts, ...stmparr2])
               })
           }
         })
@@ -140,6 +135,7 @@ export default function Events() {
       try {
         fcl.events('A.4eb8a10cb9f87357.NFTStorefront.ListingAvailable').subscribe((event) => {
           setRetrieving(true)
+          let ltmparr2 = []
           console.log("checking")
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
             gettran(event.transactionId, event.data.nftID).then((result) => {
@@ -156,9 +152,9 @@ export default function Events() {
                 'storefrontAddress': event.data.storefrontAddress,
                 'mname': result.mname
               }
-              stmparr.unshift(ltmparrobj)
+              ltmparr2.unshift(ltmparrobj)
             }).finally(() => {
-              setSEvnts((sevnts) => [...stmparr, ...sevnts])
+              setSEvnts((sevnts) => [...sevnts, ...ltmparr2])
             })
           }
           setRetrieving(false)
@@ -184,7 +180,7 @@ export default function Events() {
           .then((data) => {
             return data
           })
-
+        console.info(nftmd)
         tx.serial = nftmd.editionNumber
         tx.edition = nftmd.setId
         tx.editionmint = nftmd.editionSize
@@ -200,7 +196,7 @@ export default function Events() {
 
   }, [])
 
-  return(
-    <DataTable sevnts={sevnts} />
+  return (
+    <DataTableActivity data={sevnts} />
   )
-  }
+}
