@@ -99,7 +99,7 @@ console.info(result)
 console.info(event)
                 if (event.eventIndex !== 0) {
                   type = "Sold"
-                  buyer = "0x" + result.proposalKey.address
+                  buyer = "0x" + result.args[1].value
                   price = Number(result.args[result.args.length - 1].value)
                 } else {
                   type = "Delisted"
