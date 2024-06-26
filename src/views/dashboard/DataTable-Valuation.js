@@ -21,7 +21,7 @@ const DataTableValuation = ({ data }) => {
   const [showColumnFilters, setShowColumnFilters] = useState(false);
   const [sorting, setSorting] = useState([]);
   const [columnPinning, setColumnPinning] = useState([]);
-  const [pagination, setPagination] = useState({pageIndex: 0,pageSize: 10});
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
 
   const columns = useMemo(
     () => [
@@ -81,13 +81,13 @@ const DataTableValuation = ({ data }) => {
           cell.getValue().toLocaleString('en-US', {
             style: 'currency',
             currency: 'USD',
-        }),
+          }),
         filterVariant: 'range-slider',
         filterFn: 'betweenInclusive',
         muiFilterSliderProps: {
           color: 'primary',
           step: 1,
-          size:'small',
+          size: 'small',
           valueLabelFormat: (value) =>
             value.toLocaleString('en-US', {
               style: 'currency',
@@ -220,10 +220,10 @@ const DataTableValuation = ({ data }) => {
       },
     },
 
-    muiFilterTextFieldProps:{
+    muiFilterTextFieldProps: {
       sx: {
         fontSize: '0.7em',
-        padding:'0px'
+        padding: '0px'
       },
     },
     muiFilterSliderProps: {
@@ -351,9 +351,9 @@ const DataTableValuation = ({ data }) => {
 
   return (
     <PerfectScrollbar>
-  <MaterialReactTable table={table} />
-  </PerfectScrollbar>
-)
+      <MaterialReactTable table={table} />
+    </PerfectScrollbar>
+  )
 };
 
 export default DataTableValuation;
