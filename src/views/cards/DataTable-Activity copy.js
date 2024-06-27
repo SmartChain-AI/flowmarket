@@ -120,7 +120,7 @@ const DataTableActivity = ({ data }) => {
       ],
     },
     state: {
-      pagination
+   //   pagination
     },
     onPaginationChange: setPagination,
     onDensityChange:setDensity,

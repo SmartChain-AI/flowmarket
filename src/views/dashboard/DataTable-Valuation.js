@@ -6,10 +6,11 @@ import {
 import Image from 'next/image'
 //import PerfectScrollbar from 'react-perfect-scrollbar'
 import { styled } from '@mui/material/styles'
+import { Suspense } from 'react';
 
 const DataTableValuation = ({ data }) => {
 
-  if (!data) return
+ // if (!data) return
   const isFirstRender = useRef(true);
 
   const [columnFilters, setColumnFilters] = useState([]);
@@ -189,6 +190,7 @@ const DataTableValuation = ({ data }) => {
       ],
     },
     state: {
+      isLoading: data.length ? false:true,
       columnFilters,
       columnOrder,
       columnVisibility,
@@ -199,6 +201,15 @@ const DataTableValuation = ({ data }) => {
       sorting,
       columnPinning,
       pagination
+    },
+    muiCircularProgressProps:{
+      color: 'secondary',
+      thickness: 5,
+      size: 55,
+    },
+    muiSkeletonProps:{
+      animation: 'pulse',
+      height: 28,
     },
     enableColumnOrdering: true,
     enableColumnPinning: true,

@@ -4,25 +4,18 @@ import * as fcl from '@onflow/fcl';
 import { block } from "@onflow/fcl"
 import "../../flow/config"
 import DataTableActivity from './DataTable-Activity'
-import { useSettings } from 'src/@core/hooks/useSettings'
 
 export default function Events() {
   const [sevnts, setSEvnts] = useState([])
   const [retrieving, setRetrieving] = useState(false)
-  const { settings, saveSettings } = useSettings()
 
   const aurl = '/api/activity/activity/'
   const lurl = '/api/activity/listings/'
   const mdurl = '/api/activity/metadata/'
-  const url_accinf = '/api/emname/';
 
   useEffect(() => {
-    if (settings.addr) {
-      submitaddy(settings.addr)
-    }
-  }, [settings.loggedIn])
-
-  useEffect(() => {
+    let stmparr = []
+    let ltmparr = []
 
     async function getinit() {
       try {
@@ -33,50 +26,20 @@ export default function Events() {
         await fetch(aurl)
           .then((res) => res.json())
           .then((data) => {
-            let sresults = null
-            let bresults = null
-            let dresults = null
             data.forEach(async (element) => {
               if (element.fields.nftType.split('.')[2] === "UFC_NFT") {
                 await gettran(element.transaction_hash, element.fields.nftID)
-                  .then(async (result) => {
+                  .then((result) => {
                     if (element.fields.purchased) {
                       element.type = "Sold"
                       element.price = Number(result.args[result.args.length - 1].value)
-                      bresults = await fetchaccinf("0x" + result.proposalKey.address)
-console.log("here")
-                      if (
-                        bresults.found
-                        // && settings.addr
-                      ) {
-                        element.buyer = bresults.username + " " + "0x" + result.proposalKey.address
-                      } else {
-                        element.buyer = "0x" + result.proposalKey.address
-                      }
-
-                      sresults = await fetchaccinf(result.args[1].value)
-
-                      if (sresults.found) {
-                        element.seller = sresults.username + " " + result.args[1].value
-                      } else {
-                        element.seller = result.args[1].value
-                      }
-
+                      element.buyer = "0x" + result.proposalKey.address
+                      element.seller = result.args[1].value
                     } else {
                       element.type = "Delisted"
                       element.price = null
                       element.buyer = null
-                      dresults = await fetchaccinf("0x" + result.proposalKey.address)
-
-                      if (
-                        dresults.found
-                        // && settings.addr
-                      ) {
-                        element.seller = dresults.username + " " + "0x" + result.proposalKey.address
-                      } else {
-                        element.seller = "0x" + result.proposalKey.address
-                      }
-
+                      element.seller = "0x" + result.proposalKey.address
                     }
                     element.nftID = element.fields.nftID
                     element.serial = result.serial
@@ -96,23 +59,12 @@ console.log("here")
         await fetch(lurl)
           .then((res) => res.json())
           .then((data) => {
-            let lresults = null
             data.forEach(element => {
               if (element.fields.nftType.split('.')[2] === "UFC_NFT") {
                 gettran(element.transaction_hash, element.fields.nftID)
-                  .then(async (result) => {
+                  .then((result) => {
                     element.type = "Listed"
-                    lresults = await fetchaccinf(element.fields.storefrontAddress)
-
-                    if (
-                      lresults.found
-                      // && settings.addr
-                    ) {
-                      element.seller = lresults.username + " " + element.fields.storefrontAddress
-                    } else {
-                      element.seller = element.fields.storefrontAddress
-                    }
-
+                    element.seller = element.fields.storefrontAddress
                     element.price = Number(element.fields.price)
                     element.nftID = element.fields.nftID
                     element.serial = result.serial
@@ -139,55 +91,24 @@ console.log("here")
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
             let stmparr2 = []
             gettran(event.transactionId, event.data.nftID)
-              .then(async (result) => {
+              .then((result) => {
                 let type = null
                 let buyer = null
-                let seller = null
-                let sresults = null
-                let bresults = null
                 let price = null
 
                 if (event.eventIndex !== 0) {
                   type = "Sold"
-                  buyer = await fetchaccinf("0x" + result.proposalKey.address)
-                  if (
-                    buyer.found
-                    // && settings.addr
-                  ) {
-                    bresults = buyer.username + " " + result.proposalKey.address
-                  } else {
-                    bresults = result.proposalKey.address
-                  }
-
-                  seller = await fetchaccinf(result.args[1].value)
-
-                  if (
-                    seller.found
-                                        // && settings.addr
-                  ) {
-                    sresults = seller.username + " " + result.args[1].value
-                  } else {
-                    sresults = result.args[1].value
-                  }
-
+                  buyer = "0x" + result.proposalKey.address
                   price = Number(result.args[result.args.length - 1].value)
                 } else {
                   type = "Delisted"
-                  seller = await fetchaccinf("0x" + result.proposalKey.address)
-
-                  if (
-                    seller.found
-                    // && settings.addr
-                  ) {
-                    sresults = seller.username + " " + "0x" + result.proposalKey.address
-                  } else {
-                    sresults = "0x" + result.proposalKey.address
-                  }
+                  buyer = ""
+                  price = null
                 }
 
                 let stmparrobj = {
-                  'buyer': bresults,
-                  'seller': sresults,
+                  'buyer': buyer,
+                  'seller': result.args[1].value,
                   'transactionId': event.transactionId,
                   'nftID': event.data.nftID,
                   'price': price,
@@ -215,26 +136,12 @@ console.log("here")
         fcl.events('A.4eb8a10cb9f87357.NFTStorefront.ListingAvailable').subscribe((event) => {
           setRetrieving(true)
           let ltmparr2 = []
-          let seller = null
-          let sresults = null
           console.log("checking")
           if (event.data.nftType.typeID.split('.')[2] === "UFC_NFT") {
-            gettran(event.transactionId, event.data.nftID).then(async (result) => {
-
-              seller = await fetchaccinf("0x" + result.proposalKey.address)
-
-              if (
-                seller.found
-                // && settings.addr
-              ) {
-                sresults = seller.username + " " + "0x" + result.proposalKey.address
-              } else {
-                sresults = "0x" + result.proposalKey.address
-              }
-
+            gettran(event.transactionId, event.data.nftID).then((result) => {
               let ltmparrobj = {
                 'type': "Listed",
-                'seller': sresults,
+                'seller': "0x" + result.proposalKey.address,
                 'transactionId': event.transactionId,
                 'nftID': event.data.nftID,
                 'price': Number(event.data.price),
@@ -273,7 +180,7 @@ console.log("here")
           .then((data) => {
             return data
           })
-
+        console.info(nftmd)
         tx.serial = nftmd.editionNumber
         tx.edition = nftmd.setId
         tx.editionmint = nftmd.editionSize
@@ -285,15 +192,8 @@ console.log("here")
       }
     }
 
-    async function fetchaccinf(userid) {
-      const response = await fetch(url_accinf + '?ids=' + userid)
-        .then((response) => {
-          return response.json()
-        }).catch(console.error);
-      return response
-    }
-
     getinit().then(subscribe())
+
   }, [])
 
   return (

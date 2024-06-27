@@ -9,10 +9,11 @@ import MenuUp from 'mdi-material-ui/MenuUp'
 import DotsVertical from 'mdi-material-ui/DotsVertical'
 import AccountCircleOutline from 'mdi-material-ui/AccountCircleOutline'
 
-const TotalEarning = ({ amount, accimage, accname, walletid }) => {
+const TotalEarning = ({ amount, accimage, accname, momentcount, walletid }) => {
 
   return (
     <Card sx={{ textAlign: 'left', mt: 4 }}>
+     {/*
       <CardHeader
         title='Account Floor Value'
         titleTypographyProps={{ sx: { lineHeight: '1.6 !important', letterSpacing: '0.15px !important' } }}
@@ -22,6 +23,8 @@ const TotalEarning = ({ amount, accimage, accname, walletid }) => {
           </IconButton>
         }
       />
+      */
+     }
       <CardContent sx={{ pt: theme => `${theme.spacing(2.25)} !important` }}>
         <Box sx={{ display: 'flex', pb: 2 }}>
           <Box pb="2" w='75px' sx={{ display: 'inline-block' }}>
@@ -50,18 +53,25 @@ const TotalEarning = ({ amount, accimage, accname, walletid }) => {
           alignItems: 'center'
         }}>
           <Box pt="4">
-            <Box sx={{ display: 'inline-flex' }} ps="2">
-              <Typography variant='h4' sx={{ fontWeight: 600, fontSize: '2.125rem !important' }}>
-                {amount}
+            <Box sx={{ display: 'block' }} ps="60px">
+              <Typography variant='h6' sx={{ fontWeight: 600 }}>
+                Moment Count: {momentcount ? momentcount:""}
               </Typography>
             </Box>
           </Box>
-          {/*<Box sx={{ display: 'flex', alignItems: 'center', color: 'success.main' }}>
-            <MenuUp sx={{ fontSize: '1.875rem', verticalAlign: 'middle' }} />
-            <Typography variant='body2' sx={{ fontWeight: 600, color: 'success.main' }}>
-              10%
-            </Typography>
-          </Box>*/}
+        </Box>
+        <Box sx={{
+          mb: 1.5,
+          display: 'flex',
+          alignItems: 'center'
+        }}>
+          <Box pt="4">
+            <Box sx={{ display: 'block' }} ps="2">
+              <Typography variant='h6' sx={{ fontWeight: 600 }}>
+                Floor Value: {amount}
+              </Typography>
+            </Box>
+          </Box>
         </Box>
       </CardContent>
     </Card>

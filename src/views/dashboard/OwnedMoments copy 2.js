@@ -16,10 +16,9 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 
 const OwnedMoments = props => {
 
-  const [dataz, setData] = useState([])
+  const [dataz, setData] = useState()
   const [setsDataz, setSetData] = useState()
   const [totalz, setTotal] = useState()
-  const [momentCount, setMomentCount] = useState(null)
   const [input, setInput] = useState('');
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isDone, setIsDone] = useState(false);
@@ -107,7 +106,6 @@ const OwnedMoments = props => {
       }).then((res) => {
         const sorted = tmparray.sort((p1, p2) => (p1['Floor Price'] < p2['Floor Price']) ? 1 : (p1['Floor Price'] > p2['Floor Price']) ? -1 : 0)
         setData(sorted)
-        setMomentCount(sorted.length)
         setIsDataLoading(false);
         setIsDone(true)
         localStore(input, total, sorted);
@@ -130,20 +128,18 @@ const OwnedMoments = props => {
 
   async function submitaddy(value) {
     let useraddr = null
+    if (value) {
       if (value === "" || !value.startsWith("0x")) {
         return
       }
-      if (value) {
       useraddr = value
     } else {
       useraddr = settings.user.address
     }
-    setMomentCount(null)
-    setData([])
     tmparray = []
-    setIsDataLoading(true);
     setInput(useraddr)
     fetchsets(useraddr)
+    setIsDataLoading(true);
     setIsDone(false);
     fetchaccinf(useraddr)
     setAccnt()
@@ -285,37 +281,28 @@ const OwnedMoments = props => {
               <Grid container>
                 <Grid item xs={12} sm={6} md={8}>
                   <TotalEarning amount={totalz ? (<>${totalz}</>) : (<></>)}
-                    accname={accnt ? accnt.username : null}
-                    accimage={accnt ? accnt.avatar : null}
-                    momentcount={momentCount}
-                    walletid={input} />
+                    accname={accnt ? accnt.username : null} accimage={accnt ? accnt.avatar : null} walletid={input} />
                 </Grid>
               </Grid>
             </>) : (<></>)}
           </Box>
         </Box>
       </Card>
-      {
-      /*!isDone ? (
+      {!isDone ? (
         <></>
       ) : (
-       */
-      }
         <Card className="main-cont" sx={{ mt: 4 }}>
           <Box sx={{ flexDirection: 'column' }}>
             {
-            isDataLoading || isDone ? (<>
-
-            <DataTableValuation data={dataz} />
-           
-            </>) : (<></>)
+            //dataz ? (<>
 }
+            <DataTableValuation data={dataz} />
+           {
+           //</Box> </>) : (<></>)
+            }
           </Box>
         </Card>
-    { 
-    // )
-
-     // }
+      )
       }
     </>
   );

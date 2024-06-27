@@ -1,7 +1,4 @@
-// ** React Imports
 import { useState, Fragment } from 'react'
-
-// ** MUI Imports
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
@@ -12,11 +9,7 @@ import MuiMenu from '@mui/material/Menu'
 import MuiAvatar from '@mui/material/Avatar'
 import MuiMenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
-
-// ** Icons Imports
 import BellOutline from 'mdi-material-ui/BellOutline'
-
-// ** Third Party Components
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 
 // ** Styled Menu component
@@ -99,7 +92,12 @@ const NotificationDropdown = () => {
       return <Box sx={{ ...styles, overflowY: 'auto', overflowX: 'hidden' }}>{children}</Box>
     } else {
       return (
-        <PerfectScrollbar options={{ wheelPropagation: false, suppressScrollX: true }}>{children}</PerfectScrollbar>
+        <PerfectScrollbar options={{
+          wheelPropagation: false,
+          suppressScrollX: true
+        }}>
+          {children}
+        </PerfectScrollbar>
       )
     }
   }

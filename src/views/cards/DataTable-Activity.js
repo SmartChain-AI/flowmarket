@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef } from 'react';
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -9,14 +9,24 @@ import {
 import { Paper, Stack, useMediaQuery } from '@mui/material';
 import Image from 'next/image'
 import Box from '@mui/material/Box'
+import { Suspense } from 'react';
 
 const DataTableActivity = ({ data }) => {
 
-  if (!data) { return }
-
   //const isMobile = useMediaQuery('(max-width: 1000px)');
-  const [pagination, setPagination] = useState({})
-  const [density, setDensity] = useState({})
+  const isFirstRender = useRef(true);
+
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [columnOrder, setColumnOrder] = useState([]);
+  const [columnVisibility, setColumnVisibility] = useState({});
+  //const [density, setDensity] = useState({});
+  const [globalFilter, setGlobalFilter] = useState(undefined);
+  const [showGlobalFilter, setShowGlobalFilter] = useState(false);
+  const [showColumnFilters, setShowColumnFilters] = useState(false);
+  const [sorting, setSorting] = useState([]);
+  const [columnPinning, setColumnPinning] = useState([]);
+  //const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+
 
   const columns = useMemo(
     () => [
@@ -119,23 +129,33 @@ const DataTableActivity = ({ data }) => {
         }
       ],
     },
-    state: {
-   //   pagination
+    state:{ 
+      isLoading: data.length ? false:true
     },
-    onPaginationChange: setPagination,
-    onDensityChange:setDensity,
+    muiCircularProgressProps:{
+      color: 'secondary',
+      thickness: 5,
+      size: 55,
+    },
+    muiSkeletonProps:{
+      animation: 'pulse',
+      height: 28,
+    },
+    //onPaginationChange: setPagination,
+    //onDensityChange:setDensity,
     muiPaginationProps: {
       showRowsPerPage: true,
       shape: 'rounded',
     },
     enableStickyHeader: true,
+    enableColumnOrdering: true,
     muiTableContainerProps: { sx: { maxHeight: '500px' } },
+   // density,
+  //  pagination,
     // columnFilterDisplayMode: 'custom',
     // muiFilterTextFieldProps: ({ column }) => ({
     //    label: `Filter by ${column.columnDef.header}`,
     // }),
-    enableColumnOrdering: true,
-
   });
 
   return (

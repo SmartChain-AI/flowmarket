@@ -40,12 +40,14 @@ a {
 
 .logo-image {
   width: 125px !important;
+  height: auto;
   border-radius: 15px;
   filter: invert(1);
 }
 
 .logo-image-dark {
   width: 125px !important;
+  height: auto;
   border-radius: 15px;
 }
 
