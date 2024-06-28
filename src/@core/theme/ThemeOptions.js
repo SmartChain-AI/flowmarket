@@ -10,7 +10,7 @@ const themeOptions = settings => {
 
    useEffect(() => {
 
-    let value = JSON.parse(localStorage.getItem('flowmarket')) || { mode: 'light' }
+    let value = JSON.parse(localStorage.getItem('flowmarket')) || { mode: 'dark' }
     settings.mode = value.mode
     setMode(value.mode);
   }, [settings])
