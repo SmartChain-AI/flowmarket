@@ -126,6 +126,11 @@ td:nth-child(n+2) {
   border: 2px #ffffff
 }
 
+.modetoggle{
+    text-transform: capitalize;
+    font-size: 0.6em;
+}
+
 @keyframes fadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }
