@@ -2,7 +2,6 @@ import Box from '@mui/material/Box'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import VerticalLayout from 'src/@core/layouts/VerticalLayout'
 import VerticalNavItems from 'src/navigation/vertical'
-import SettingsDrawer from 'src/layouts/components/SettingsDrawer'
 import VerticalAppBarContent from './components/vertical/AppBarContent'
 import { useSettings } from 'src/@core/hooks/useSettings'
 import { useTheme } from '@mui/material/styles'
@@ -49,12 +48,6 @@ const UserLayout = ({ children }) => {
         className='mui-fixed'
         sx={{ right: theme => theme.spacing(20), bottom: theme => theme.spacing(10), zIndex: 11, position: 'fixed' }}
       >
-        {
-          <SettingsDrawer
-            settings={settings}
-            saveSettings={saveSettings}
-          />
-        }
       </Box>
     </VerticalLayout>
   )
