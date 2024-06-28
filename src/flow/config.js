@@ -8,7 +8,7 @@ config({
   "discovery.authn.include": ["0xead892083b3e2c6c"], // Dapper
   "walletconnect.projectId": "FlowMarket",
   "app.detail.title": "FlowMarket",
-  "app.detail.icon": "https://flowmarket.io/apple-touch-icon.png",
+  "app.detail.icon": "https://flowmarket.io/images/apple-touch-icon.png",
   "app.detail.description": "FlowMarket - UFC Strike",
   "app.detail.url": "https://flowmarket.io",
 })
