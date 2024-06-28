@@ -6,9 +6,9 @@ const DefaultPalette = (mode, themeColor) => {
 
   const primaryGradient = () => {
     if (themeColor === 'primary') {
-      return '#C6A7FE'
+      return '#4FD1C5'
     } else if (themeColor === 'secondary') {
-      return '#9C9FA4'
+      return '#4fd1c4'
     } else if (themeColor === 'success') {
       return '#93DD5C'
     } else if (themeColor === 'error') {
@@ -95,7 +95,7 @@ const DefaultPalette = (mode, themeColor) => {
     },
     action: {
       active: `${mainColor};opacity: 0.54)`,
-      hover: `${mainColor};opacity: 0.04)`,
+   //   hover: `${mainColor};opacity: 0.04)`,
       selected: `${mainColor};opacity: 0.08)`,
       disabled: `${mainColor};opacity: 0.3)`,
       disabledBackground: `${mainColor};opacity: 0.18)`,
