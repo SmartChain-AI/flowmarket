@@ -1,4 +1,4 @@
-// Add user to database if doesn't exist
+// Add user to database
 
 export default async function circulation(req, res) {
 
@@ -6,7 +6,7 @@ export default async function circulation(req, res) {
   if (!usradd) return
 
   const { MongoClient, ServerApiVersion } = require('mongodb');
-  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db";
+  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db&retryWrites=true&w=majority";
   const date = new Date()
 
   const client = new MongoClient(uri, {
@@ -20,7 +20,7 @@ export default async function circulation(req, res) {
   try {
     await client.connect()
     const session = client.startSession()
-    const coll = client.db('flowmarket').collection('addresses')
+    const coll = client.db('flowmarket').collection('users')
     const filter = { field: { $exists: false } };
     const update = {
       $setOnInsert: {
@@ -47,5 +47,5 @@ export default async function circulation(req, res) {
   }
 
   await client.close()
-  return res.status(200).json({'message':'Done'})
+  res.status(200).json({ 'message': 'Done' })
 }

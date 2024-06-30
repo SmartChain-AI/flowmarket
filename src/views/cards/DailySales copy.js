@@ -10,7 +10,7 @@ import DotsVertical from 'mdi-material-ui/DotsVertical'
 import ReactApexcharts from 'src/@core/components/react-apexcharts'
 import React, { useState, useEffect } from "react";
 
-const WeeklyOverview = () => {
+const DailySales = () => {
 
   const theme = useTheme()
   var url = '/api/charts/momentstats/'
@@ -21,9 +21,9 @@ const WeeklyOverview = () => {
       chart: {
         type: 'bar',
       },
-      title: {
-        text: 'Daily Sales',
-      },
+   //   title: {
+    //    text: 'Daily Sales',
+    //  },
       noData: {
         text: 'Loading...'
       }
@@ -51,7 +51,13 @@ const WeeklyOverview = () => {
               id: "totalsales"
             },
             xaxis: {
-              categories: xaxis
+              categories: xaxis,
+              labels: {
+                show: true,
+                rotate: -45,
+                rotateAlways: false,
+                hideOverlappingLabels: true,
+              }
             },
             yaxis: {
               labels: {
@@ -110,7 +116,7 @@ const WeeklyOverview = () => {
         />
         <Box sx={{ mb: 7, display: 'flex', alignItems: 'center' }}>
           <Typography variant='h5' sx={{ mr: 4 }}>
-            45%
+
           </Typography>
         </Box>
       </CardContent>
@@ -118,4 +124,4 @@ const WeeklyOverview = () => {
   )
 }
 
-export default WeeklyOverview
+export default DailySales

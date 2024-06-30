@@ -16,9 +16,10 @@ export default async function circulation(req, res) {
       await client.connect()
       const session = client.startSession()
       session.startTransaction()
-      const coll = client.db('flowmarket').collection('momentinfo')
+      const coll = client.db('flowmarket').collection('dailymomentstats')
       const cursor = coll.find()
       const result = await cursor.toArray()
+      console.info(result)
       res.status(200).json(result)
       await session.endSession()
     } catch (error) {
@@ -34,5 +35,4 @@ export default async function circulation(req, res) {
     .catch(
       console.dir
     );
-    res.status(200).json({ 'message': 'Done' })
 }

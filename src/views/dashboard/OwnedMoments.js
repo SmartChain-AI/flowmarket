@@ -235,8 +235,7 @@ const OwnedMoments = props => {
             md: '50%', // 48em-80em,
             // xl: '25%', // 80em+
           }}>
-            {//<WeeklyOverview />
-            }
+            <WeeklyOverview />
           </Box>
           <Box width={{
             base: '100%', // 0-48em

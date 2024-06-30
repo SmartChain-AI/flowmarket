@@ -3,9 +3,6 @@ export default async function circulation(req, res) {
 
   const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db";
 
-
-  const date = new Date()
-
   const client = new MongoClient(uri, {
     serverApi: {
       version: ServerApiVersion.v1,
@@ -22,9 +19,6 @@ export default async function circulation(req, res) {
       const coll = client.db('flowmarket').collection('momentsets')
       const cursor = coll.find()
       const result = await cursor.toArray()
-      // .then((res)=>{
-      //    res.status(200).json(result)
-      //  })
       res.status(200).json(result)
       await session.endSession()
     } catch (error) {

@@ -18,7 +18,7 @@ export default function Events() {
 
   useEffect(() => {
     if (settings.addr) {
-      submitaddy(settings.addr)
+     // submitaddy(settings.addr)
     }
   }, [settings.loggedIn])
 
@@ -44,7 +44,7 @@ export default function Events() {
                       element.type = "Sold"
                       element.price = Number(result.args[result.args.length - 1].value)
                       bresults = await fetchaccinf("0x" + result.proposalKey.address)
-console.log("here")
+
                       if (
                         bresults.found
                         // && settings.addr
@@ -165,9 +165,9 @@ console.log("here")
                     seller.found
                                         // && settings.addr
                   ) {
-                    sresults = seller.username + " " + result.args[1].value
+                    sresults = seller.username + " 0x" + result.args[1].value
                   } else {
-                    sresults = result.args[1].value
+                    sresults = "0x" + result.args[1].value
                   }
 
                   price = Number(result.args[result.args.length - 1].value)

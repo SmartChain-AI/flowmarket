@@ -10,7 +10,7 @@ import DotsVertical from 'mdi-material-ui/DotsVertical'
 import ReactApexcharts from 'src/@core/components/react-apexcharts'
 import React, { useState, useEffect } from "react";
 
-const WeeklyOverview = () => {
+const DailySales = () => {
 
   const theme = useTheme()
   var url = '/api/charts/momentstats/'
@@ -21,9 +21,9 @@ const WeeklyOverview = () => {
       chart: {
         type: 'bar',
       },
-      title: {
-        text: 'Daily Sales',
-      },
+      //   title: {
+      //    text: 'Daily Sales',
+      //  },
       noData: {
         text: 'Loading...'
       }
@@ -37,37 +37,101 @@ const WeeklyOverview = () => {
       .then((response) => response.json())
       .then((data) => {
         let xaxis = []
-        let series = []
+        let lineseries = []
+        let barseries = []
 
         data.map((element) => {
-          let newdate = element.date.split('T');
-          xaxis.push(newdate[0])
-          series.push(element.momentsalesdaytotal)
+          // let newdate = element.date.split('T');
+          xaxis.push(element.date)
+          lineseries.push(element.momentsalesdaytotal)
+          barseries.push(element.momentsalesdaycount)
         });
 
         setChartstate({
           options: {
             chart: {
-              id: "totalsales"
+              id: "totalsales",
+              dropShadow: {
+                enabled: true,
+                top: 3,
+                left: 2,
+                blur: 4,
+                opacity: 1,
+              }
+            },
+            grid: {
+              show: true,
+              padding: {
+                bottom: 0
+              }
+            },
+            legend: {
+              position: 'top',
+              horizontalAlign: 'left',
+              offsetY: 0,
+            },
+            stroke: {
+              curve: 'smooth',
+              width: 2
+            },
+            markers: {
+              size: 10,
+              strokeWidth: 0,
+              hover: {
+                size: 9
+              },
+              shape: "rect" // "circle" | "square" | "rect"
             },
             xaxis: {
-              categories: xaxis
-            },
-            yaxis: {
+              categories: xaxis,
               labels: {
-                formatter: (value) => {
-                  return `$${parseInt(value)}`;
-                },
+                show: true,
+                rotate: -45,
+                rotateAlways: false,
+                hideOverlappingLabels: true,
+                type: 'datetime'
+              },
+              dataLabels: {
+                formatter: function (value) {
+                  return "$" + value
+                }
               },
             },
+            yaxis: [
+              {
+ dataLabels: {
+              enabled: true,
+              enabledOnSeries: [1],
+              formatter: (value) => {
+                return `$${parseInt(value)}`;
+              },
+            },
+              },
+              {
+                opposite: true,
+                title: {
+                  text: 'Total Sales'
+                },
+                labels: {
+                  formatter: (value) => {
+                    return `$${parseInt(value)}`;
+                  },
+                }
+              }
+            ],
             stroke: {
               width: 3,
               colors: [theme.palette.highlight.main]
             },
           },
           series: [{
-            name: "Total Sales",
-            data: series,
+            name: 'Moments Sold',
+            type: 'column',
+            data: barseries
+          }, {
+            name: 'Total Sales',
+            type: 'line',
+            data: lineseries
           }],
           dataLabels: {
             formatter: function (value) {
@@ -110,7 +174,7 @@ const WeeklyOverview = () => {
         />
         <Box sx={{ mb: 7, display: 'flex', alignItems: 'center' }}>
           <Typography variant='h5' sx={{ mr: 4 }}>
-            45%
+
           </Typography>
         </Box>
       </CardContent>
@@ -118,4 +182,4 @@ const WeeklyOverview = () => {
   )
 }
 
-export default WeeklyOverview
+export default DailySales

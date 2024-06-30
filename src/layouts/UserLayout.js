@@ -19,7 +19,7 @@ const UserLayout = ({ children }) => {
     return (
       <Box sx={{ mx: 'auto', textAlign: 'center' }}>
         <Fade in={true} timeout={1500}>
-          <Image width={100} height={100} className={imageSrc === 'dark' ? 'logo-image-dark' : 'logo-image'} alt='UFC Strike' src={`/images/logos/ufcstrike.png`} />
+          <Image width={100} height={100} priority={true} className={imageSrc === 'dark' ? 'logo-image-dark' : 'logo-image'} alt='UFC Strike' src={`/images/logos/ufcstrike.png`} />
         </Fade>
       </Box>
     )

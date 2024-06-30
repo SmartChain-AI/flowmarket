@@ -83,6 +83,5 @@ export default async function circulation(req, res) {
   } finally {
     await session.endSession()
     res.status(200).json({ 'message': 'Done' })
-    // await client.close();
   }
 }
