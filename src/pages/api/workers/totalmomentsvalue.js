@@ -18,7 +18,7 @@ export default async function circulation(req, res) {
   const collection1 = client.db('flowmarket').collection('momentsets');
   const collection2 = client.db('flowmarket').collection('momentsales');
 
-  const insertto = client.db('flowmarket').collection('momentstotalvalues');
+  const insertto = client.db('flowmarket').collection('dailymomentstats');
   const session = client.startSession();
 
   try {
@@ -75,7 +75,8 @@ export default async function circulation(req, res) {
       {
         date: date,
         totalmomentsvalue: tmvresult[0].tmvtotal,
-        momentsalesdaytotal: result[0].count,
+        momentsalesdaytotal: result[0].total,
+        momentsalesdaycount: result[0].count,
       }
     )
 
