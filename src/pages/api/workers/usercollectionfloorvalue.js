@@ -9,7 +9,7 @@ export default async function circulation(req, res) {
     minTime: 100
   });
 
-  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db";
+  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db&retryWrites=true&w=majority";
   const url_sets = 'https://market-api.ufcstrike.com/search/sets';
   const url_sets_sales = 'https://market-api.ufcstrike.com/sets/';
 
@@ -31,19 +31,11 @@ export default async function circulation(req, res) {
       session.startTransaction();
       const coll = client.db('flowmarket').collection('addresses');
       const momentfloorprice = client.db('flowmarket').collection('momentsets');
-      
-      /* const filterx = {
-        'sales.timestamp': {
-          '$gte': '2023-06-16T18:24:05Z'
-        }
-      };
-      */
-  const cursora = coll.find();
-const addresses = await cursora.toArray();
-const cursor = coll.find();
-const floorvalues = await cursor.toArray();
+      const cursora = coll.find();
+      const addresses = await cursora.toArray();
+      const cursor = coll.find();
+      const floorvalues = await cursor.toArray();
 
-console.info(result)
       await getter(addresses)
       await session.endSession();
     } catch (error) {
@@ -126,5 +118,5 @@ console.info(result)
     .catch(
       console.dir
     );
-  res.status(200).json(tmparr)
+  res.status(200).json({ 'message': 'Done' })
 }

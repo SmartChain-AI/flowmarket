@@ -3,7 +3,7 @@
 export default async function circulation(req, res) {
   const { MongoClient, ServerApiVersion } = require('mongodb');
 
-  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db";
+  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db&retryWrites=true&w=majority";
   const url_sets = 'https://market-api.ufcstrike.com/search/sets';
 
   let tmparr = []
@@ -22,10 +22,8 @@ export default async function circulation(req, res) {
       await client.connect();
       const session = client.startSession();
       session.startTransaction();
-
       await getter()
       await session.endSession()
-
     } catch (error) {
       console.log("An error occurred during the transaction:" + error);
       await session.abortTransaction();
@@ -95,5 +93,5 @@ export default async function circulation(req, res) {
     .catch(
       console.dir
     );
-  res.status(200).json(tmparr)
+  res.status(200).json({ 'message': 'Done' })
 }

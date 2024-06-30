@@ -1,9 +1,10 @@
-// Calculates total floor value each day
+// Calculate each day the total current floor value, past 24 hours sales value and moment amount sold
 
 export default async function circulation(req, res) {
   const { MongoClient, ServerApiVersion } = require('mongodb');
+  const dayjs = require("dayjs");
 
-  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db";
+  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db&retryWrites=true&w=majority";
 
   const client = new MongoClient(uri, {
     serverApi: {
@@ -14,16 +15,18 @@ export default async function circulation(req, res) {
   });
 
   const date = new Date()
-  const collection = client.db('flowmarket').collection('momentsets');
+  const collection1 = client.db('flowmarket').collection('momentsets');
+  const collection2 = client.db('flowmarket').collection('momentsales');
+
   const insertto = client.db('flowmarket').collection('momentstotalvalues');
   const session = client.startSession();
 
   try {
     await client.connect();
-
     session.startTransaction();
 
-    const pipeline = [
+    // Get total moments value
+    const totalmomentvalue = [
       {
         $addFields: {
           convertedField: { $toInt: "$listing_price" }
@@ -32,23 +35,53 @@ export default async function circulation(req, res) {
       {
         $group: {
           _id: null,
-          total: { $sum: '$convertedField' }
+          tmvtotal: { $sum: '$convertedField' }
         }
       }
     ];
+    const tmvresult = await collection1.aggregate(totalmomentvalue).toArray();
 
-    const result = await collection.aggregate(pipeline).toArray();
-    
-    const cursor2 = insertto.insertOne(
+    // Get sale count
+    const endDate = new Date();
+    const startDate = dayjs(endDate).subtract(24, 'hour').toDate();
+
+    const pipeline = [
+      {
+        $unwind: "$sales" // Unwind the array of objects
+      },
+      {
+        $addFields: {
+          convertedDate: { $toDate: "$sales.timestamp" }
+        }
+      },
+      {
+        $match: {
+          convertedDate: { $gte: startDate, $lte: endDate }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          total: {
+            $sum: "$sales.price"
+          },
+          count: { $sum: 1 }
+        }
+      },
+    ];
+    const result = await collection2.aggregate(pipeline).toArray();
+
+    insertto.insertOne(
       {
         date: date,
-        total: result[0].total
+        totalmomentsvalue: tmvresult[0].tmvtotal,
+        momentsalesdaytotal: result[0].count,
       }
     )
 
   } finally {
     await session.endSession()
-    res.status(200).json({'message':'Done'})
+    res.status(200).json({ 'message': 'Done' })
     // await client.close();
   }
 }

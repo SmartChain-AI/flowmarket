@@ -9,7 +9,7 @@ export default async function circulation(req, res) {
     minTime: 100
   });
 
-  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db";
+  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db&retryWrites=true&w=majority";
   const url_moments = 'https://market-api.ufcstrike.com/search/moments';
 
   let tmparr = []
@@ -38,18 +38,8 @@ export default async function circulation(req, res) {
 
   async function getter() {
     try {
+      let data = [{ 'address': '0x9ca2ddd25b5fbd4b' }]
 
-
-      // Select all address from db
-      let data = [{'address':'0x9ca2ddd25b5fbd4b'}]
-      /* const filterx = {
-        'sales.timestamp': {
-          '$gte': '2023-06-16T18:24:05Z'
-        }
-      };
-  const cursor = coll.find(filterx);
-      const result = await cursor.toArray();*/
-      
       const post_data_sets = {
         "sort": "deposit_block_height",
         "order": "desc",
@@ -66,14 +56,13 @@ export default async function circulation(req, res) {
         body: JSON.stringify(post_data_sets),
       };
 
-
       const coll = client.db('flowmarket').collection('usermoments');
       data.sets.forEach(element => {
         limiter.schedule(async () => await fetch(url_moments, sets_requestOptions)
           .then((response) => response.json())
           .then((data) => {
             /// INSERT INTO DB ///
-            coll.updateOne(////// FIX ALL THIS
+            coll.updateOne(
               { address: data.address },
               {
                 $set:
@@ -83,8 +72,8 @@ export default async function circulation(req, res) {
                   timestamp: date,
                 },
               },
-             // { $addToSet: { sales: data.sales } },
-             // { upsert: true }
+              // { $addToSet: { sales: data.sales } },
+              // { upsert: true }
             )
             return
           })
@@ -92,7 +81,6 @@ export default async function circulation(req, res) {
         )
       })
       return data
-
 
     } catch (error) {
       console.log("An error occurred during the transaction:" + error);
@@ -108,5 +96,5 @@ export default async function circulation(req, res) {
     .catch(
       console.dir
     );
-  res.status(200).json(tmparr)
+  res.status(200).json({ 'message': 'Done' })
 }

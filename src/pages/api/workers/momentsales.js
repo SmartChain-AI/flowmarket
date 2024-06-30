@@ -9,7 +9,7 @@ export default async function circulation(req, res) {
     minTime: 100
   });
 
-  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db";
+  const uri = "mongodb+srv://doadmin:" + process.env.DB_PW + "@flowmarket-db-7c310bf1.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=flowmarket-db&retryWrites=true&w=majority";
   const url_sets = 'https://market-api.ufcstrike.com/search/sets';
   const url_sets_sales = 'https://market-api.ufcstrike.com/sets/';
 
@@ -80,7 +80,7 @@ export default async function circulation(req, res) {
                     $set:
                     {
                       setId: data.setId,
-                      timestamp: date,
+                      date: date,
                     },
                     $addToSet: {
                       sales: { $each: data.sales }
@@ -113,5 +113,5 @@ export default async function circulation(req, res) {
     .catch(
       console.dir
     );
-  res.status(200).json(tmparr)
+  res.status(200).json({ 'message': 'Done' })
 }
