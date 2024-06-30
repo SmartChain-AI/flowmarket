@@ -88,12 +88,6 @@ export default async function circulation(req, res) {
                   },
                   { upsert: true }
                 )
-             /* if(re.upsertedCount){
-                console.info("updated")
-                console.info(re)
-                count=count+1
-                console.log(count)
-                }*/
               })
               .catch(console.error)
             )

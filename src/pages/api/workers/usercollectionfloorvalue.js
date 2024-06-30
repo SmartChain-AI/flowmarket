@@ -29,17 +29,22 @@ export default async function circulation(req, res) {
       await client.connect();
       const session = client.startSession();
       session.startTransaction();
-      const coll = client.db('flowmarket').collection('momentsales');
+      const coll = client.db('flowmarket').collection('addresses');
+      const momentfloorprice = client.db('flowmarket').collection('momentsets');
       
       /* const filterx = {
         'sales.timestamp': {
           '$gte': '2023-06-16T18:24:05Z'
         }
       };
-  const cursor = coll.find(filterx);
-      const result = await cursor.toArray();*/
+      */
+  const cursora = coll.find();
+const addresses = await cursora.toArray();
+const cursor = coll.find();
+const floorvalues = await cursor.toArray();
 
-      await getter()
+console.info(result)
+      await getter(addresses)
       await session.endSession();
     } catch (error) {
       console.log("An error occurred during the transaction:" + error);
@@ -70,7 +75,7 @@ export default async function circulation(req, res) {
     body: JSON.stringify(post_data_sets),
   };
 
-  async function getter() {
+  async function getter(addresses) {
     try {
 
       await fetch(url_sets, sets_requestOptions)

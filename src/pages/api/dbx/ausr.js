@@ -1,3 +1,5 @@
+// Add user to database if doesn't exist
+
 export default async function circulation(req, res) {
 
   const usradd = JSON.stringify(req.body.address)
