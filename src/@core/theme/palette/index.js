@@ -43,6 +43,12 @@ const DefaultPalette = (mode, themeColor) => {
       dark: '#777B82',
       contrastText: '#FFF'
     },
+    highlight:{
+      light: '#308179',
+      main: '#4fd1c5',
+      dark: '#4fd1c5',
+      contrastText: '#FFF'
+    },
     success: {
       light: '#6AD01F',
       main: '#56CA00',

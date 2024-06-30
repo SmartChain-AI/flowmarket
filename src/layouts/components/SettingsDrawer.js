@@ -67,7 +67,11 @@ export default function SettingsDrawer(props) {
       {['right'].map((anchor) => (
         <React.Fragment key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)}>
-            <Cog fontSize='small' />
+            <Cog 
+            fontSize='small'
+            color= 'secondary'
+          
+             />
           </Button>
           <SwipeableDrawer
             anchor={anchor}

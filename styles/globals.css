@@ -131,6 +131,10 @@ td:nth-child(n+2) {
     font-size: 0.6em;
 }
 
+.MuiInputBase-input{
+  box-shadow:rgb(40 36 61) 0px 0px 0px 100px inset !important
+}
+
 @keyframes fadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }

@@ -66,25 +66,34 @@ export default async function circulation(req, res) {
         .then((response) => response.json())
         .then((data) => {
           const coll = client.db('flowmarket').collection('momentsales');
+          let count = 0
           data.sets.forEach(element => {
-            limiter.schedule(async () => await fetch(url_sets_sales + element.set_id + '/sales?sort=latest&full=0')
+            limiter.schedule(async () => await fetch(url_sets_sales + element.set_id + '/sales?sort=latest&full=1')
               .then((response) => response.json())
-              .then((data) => {
+              .then(async (data) => {
                 /// INSERT INTO DB ///
-                coll.updateOne(
-                  { setId: data.setId },
+                const re = await coll.updateOne(
+                  {
+                    setId: data.setId,
+                  },
                   {
                     $set:
                     {
                       setId: data.setId,
-                      ...data,
                       timestamp: date,
                     },
+                    $addToSet: {
+                      sales: { $each: data.sales }
+                    }
                   },
-                  { $addToSet: { sales: data.sales } },
                   { upsert: true }
                 )
-                return
+             /* if(re.upsertedCount){
+                console.info("updated")
+                console.info(re)
+                count=count+1
+                console.log(count)
+                }*/
               })
               .catch(console.error)
             )

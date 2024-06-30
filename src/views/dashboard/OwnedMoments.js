@@ -28,7 +28,7 @@ const OwnedMoments = props => {
 
   useEffect(() => {
     if (settings.addr) {
-      submitaddy(settings.addr)
+     // submitaddy(settings.addr)
     }
   }, [settings.loggedIn])
 

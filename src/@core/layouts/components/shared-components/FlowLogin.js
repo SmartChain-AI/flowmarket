@@ -9,12 +9,44 @@ const FlowLogin = props => {
     const [user, setUser] = useState({ loggedIn: null })
     const { settings, saveSettings } = props
 
+const dbadduser = '/api/dbx/ausr'
+
     useEffect(() => {
         fcl.currentUser.subscribe(setUser)
+      
+      /*  const post_data = {
+            "address": input,
+          };
+      
+          const options = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(post_data),
+          };
+      
+          fetch(dbadduser, options)
+*/
     }, []);
 
     useEffect(() => {
         saveSettings({ ...settings, ...user })
+
+        const post_data = {
+            "address": user.addr,
+          };
+      
+          const options = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(post_data),
+          };
+      
+          fetch(dbadduser, options)
+
     }, [user.loggedIn]);
 
     if (user.loggedIn) {
@@ -33,7 +65,7 @@ const FlowLogin = props => {
         return (
             <Box>
                 <Button
-                    color="secondary"
+                    color="info"
                     variant="outlined"
                     size="small"
                     onClick={fcl.logIn}>Log In
