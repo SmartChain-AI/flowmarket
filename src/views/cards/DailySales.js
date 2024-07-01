@@ -20,7 +20,18 @@ const DailySales = () => {
     'options':
     {
       chart: {
-        type: 'bar',
+        type: 'column',
+        height:"250"
+      },
+      xaxis: {
+        labels: {
+          show: false,
+        }
+      },
+      yaxis: {
+        labels: {
+          show: false,
+        }
       },
       //   title: {
       //    text: 'Daily Sales',

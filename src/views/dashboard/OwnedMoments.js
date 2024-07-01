@@ -27,7 +27,7 @@ const OwnedMoments = props => {
 
   useEffect(() => {
     if (settings.addr) {
-     // submitaddy(settings.addr)
+      // submitaddy(settings.addr)
     }
   }, [settings.loggedIn])
 
@@ -129,10 +129,10 @@ const OwnedMoments = props => {
 
   async function submitaddy(value) {
     let useraddr = null
-      if (value === "" || !value.startsWith("0x")) {
-        return
-      }
-      if (value) {
+    if (value === "" || !value.startsWith("0x")) {
+      return
+    }
+    if (value) {
       useraddr = value
     } else {
       useraddr = settings.user.address
@@ -242,7 +242,7 @@ const OwnedMoments = props => {
           }}>
             <Stack spacing={[1]} direction={['row']}>
               <TextField
-              //  autocomplete="on" //supposed to be on form
+                //  autocomplete="on" //supposed to be on form
                 size='small'
                 sx={{
                   '& .MuiOutlinedInput-root': {
@@ -292,28 +292,15 @@ const OwnedMoments = props => {
           </Box>
         </Box>
       </Card>
-      {
-      /*!isDone ? (
-        <></>
-      ) : (
-       */
-      }
-        <Card className="main-cont" sx={{ mt: 4 }}>
-          <Box sx={{ flexDirection: 'column' }}>
-            {
+      <Card className="main-cont" sx={{ mt: 4 }}>
+        <Box sx={{ flexDirection: 'column' }}>
+          {
             isDataLoading || isDone ? (<>
-
-            <DataTableValuation data={dataz} />
-           
+              <DataTableValuation data={dataz} />
             </>) : (<></>)
-}
-          </Box>
-        </Card>
-    { 
-    // )
-
-     // }
-      }
+          }
+        </Box>
+      </Card>
     </>
   );
 };

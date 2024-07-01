@@ -24,6 +24,12 @@ const DataTableValuation = ({ data }) => {
   const [columnPinning, setColumnPinning] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
 
+  const imgsize = {
+    'sm':'25',
+    'md':'65',
+    'lg':'120'
+  }
+
   const columns = useMemo(
     () => [
       {
@@ -37,7 +43,13 @@ const DataTableValuation = ({ data }) => {
             ms: '10px',
           }
         },
-        muiTableBodyCellProps: { align: 'center' },
+        muiTableBodyCellProps: { 
+          align: 'center',
+          paddingTop:'0 !important'
+         },
+         enableColumnActions: false,
+         grow: false,
+         size: density === 'compact' ? '30px': density === 'comfortable' ? '60px' : '90px',
         Cell: ({ renderedCellValue, row }) => (
           <a href={"https://ufcstrike.com/v2/moment/" + row.original.nft_id} target="_blank">
             <Image
@@ -46,18 +58,14 @@ const DataTableValuation = ({ data }) => {
               quality={100}
               alt={row.original.moment_name}
               className={'moment-image fade-in'}
-              /*  height={
-                  density === 'comfortable' ? '25' : '85'
-                }
-                width={
-                  density === 'comfortable' ? '25' : '85'
-                }
-                sizes={
-                  density === 'comfortable' ? '25' : '85'
-                }*/
-              height={'100'}
-              width={'100'}
-              sizes={'100'}
+              //fill={true}
+              height={table.getState().density === 'compact' ? imgsize.sm: table.getState().density === 'comfortable' ? imgsize.md : imgsize.lg}
+              width={table.getState().density === 'compact' ? imgsize.sm: table.getState().density === 'comfortable' ? imgsize.md : imgsize.lg}
+              sizes={table.getState().density === 'compact' ? imgsize.sm: table.getState().density === 'comfortable' ? imgsize.md : imgsize.lg}
+              style={{
+                objectFit: "contain",
+                borderRadius: "5px"
+              }}
               src={`/images/moments/${renderedCellValue}.jpg`}
             /></a>
         ),

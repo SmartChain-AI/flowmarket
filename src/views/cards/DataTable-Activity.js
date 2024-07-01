@@ -2,35 +2,29 @@ import { useMemo, useState, useRef } from 'react';
 import {
   MaterialReactTable,
   useMaterialReactTable,
-  MRT_TableFooter,
-  MRT_TableContainer,
-  MRT_TableHeadCellFilterContainer,
+ MRT_ToggleDensePaddingButton,
+ MRT_ToggleFullScreenButton,
 } from 'material-react-table';
 import { Paper, Stack, useMediaQuery } from '@mui/material';
 import Image from 'next/image'
 import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
-import IconButton from '@mui/material/IconButton'
-import DotsVertical from 'mdi-material-ui/DotsVertical'
+import { Button, IconButton } from '@mui/material';
+import PrintIcon from '@mui/icons-material/Print';
 
 const DataTableActivity = ({ data }) => {
-
+//data=[]
   //const isMobile = useMediaQuery('(max-width: 1000px)');
   const isFirstRender = useRef(true);
-
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnOrder, setColumnOrder] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
-  //const [density, setDensity] = useState({});
   const [globalFilter, setGlobalFilter] = useState(undefined);
   const [showGlobalFilter, setShowGlobalFilter] = useState(false);
   const [showColumnFilters, setShowColumnFilters] = useState(false);
   const [sorting, setSorting] = useState([]);
   const [columnPinning, setColumnPinning] = useState([]);
   //const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-
+  //const [density, setDensity] = useState({});
 
   const columns = useMemo(
     () => [
@@ -41,12 +35,12 @@ const DataTableActivity = ({ data }) => {
         enableSorting: false,
         Cell: ({ renderedCellValue, row }) => (
           renderedCellValue ? (
-      
+
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '1rem',
+                //gap: '1rem',
               }}
             >
               <a href={"https://ufcstrike.com/v2/moment/" + row.original.nftID} target="_blank">
@@ -54,11 +48,14 @@ const DataTableActivity = ({ data }) => {
                   rel="preload"
                   loading="lazy"
                   quality={100}
-                  alt={row.original.mname}
+                  alt={table.getState().density}
                   className={'moment-image fade-in'}
-                  height={'85'}
-                  width={'85'}
-                  sizes="85px"
+                  height={table.getState().density === 'compact' ? '25':'85'}
+                  width={table.getState().density === 'compact' ? '25':'85'}
+                  sx={{
+                    borderRadius: table.getState().density === 'compact' ? '5px':'15px'
+                  }}
+                  //sizes="85px"
                   src={`/images/moments/${renderedCellValue}.jpg`}
                 />
               </a>
@@ -121,7 +118,7 @@ const DataTableActivity = ({ data }) => {
     ],
     [],
   );
-//{table.getState().density !== 'compact' ? '85':'15'}
+  //{table.getState().density !== 'comfortable' ? '85':'15'}
   const table = useMaterialReactTable({
     columns,
     data,
@@ -133,33 +130,61 @@ const DataTableActivity = ({ data }) => {
         }
       ],
     },
-    state:{ 
-      isLoading: data.length ? false:true
+    state: {
+      isLoading: data.length ? false : true
     },
-    muiCircularProgressProps:{
+    muiCircularProgressProps: {
       color: 'secondary',
       thickness: 5,
       size: 55,
     },
-    muiSkeletonProps:{
+    muiSkeletonProps: {
       animation: 'pulse',
       height: 28,
     },
+    columnFilterDisplayMode: 'popover', //filter inputs will show in a popover (like excel)
     //onPaginationChange: setPagination,
     //onDensityChange:setDensity,
     muiPaginationProps: {
       showRowsPerPage: true,
       shape: 'rounded',
     },
-    enableStickyHeader: true,
+   // enableStickyHeader: true,
     enableColumnOrdering: true,
-    muiTableContainerProps: { 
-      sx: { 
-       // maxHeight: '500px'
-      } 
-    },
-   // density,
-  //  pagination,
+    renderTopToolbarCustomActions: ({ table }) => (
+      <Box sx={{ display: 'flex', gap: '1rem', p: '4px' }}>
+        <Button
+          color="secondary"
+          onClick={() => {
+           // alert('Create New Account');
+          }}
+          variant="contained"
+        >
+          Listed
+        </Button>
+      </Box>
+    ),
+    renderToolbarInternalActions: ({ table }) => (
+      <Box>
+        <IconButton
+          onClick={() => {
+            window.print();
+          }}
+        >
+          <PrintIcon />
+        </IconButton>
+        {/* along-side built-in buttons in whatever order you want them */}
+        <MRT_ToggleDensePaddingButton table={table} />
+        <MRT_ToggleFullScreenButton table={table} />
+      </Box>
+    ),
+   // muiTableContainerProps: {
+   //   sx: {
+        // maxHeight: '500px'
+   //   }
+   // },
+    // density,
+    //  pagination,
     // columnFilterDisplayMode: 'custom',
     // muiFilterTextFieldProps: ({ column }) => ({
     //    label: `Filter by ${column.columnDef.header}`,
@@ -167,9 +192,9 @@ const DataTableActivity = ({ data }) => {
   });
 
   return (
-      <MaterialReactTable 
+    <MaterialReactTable
       table={table}
-       />
+    />
   );
 };
 
