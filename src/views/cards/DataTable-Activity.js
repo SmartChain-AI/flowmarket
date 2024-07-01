@@ -100,15 +100,20 @@ const DataTableActivity = ({ data }) => {
         filterFn: 'equals',
         filterSelectOptions: ['Sold', 'Listed', 'Delisted'],
         filterVariant: 'select',
+        grow: false,
+        maxSize: '70'
       },
       {
         accessorKey: 'mname',
         header: 'Moment Name',
+        grow: false,
+       // size: '100'
       },
       {
         accessorKey: 'price',
         header: 'Price',
         filterVariant: 'range',
+        maxSize: '70',
         Cell: ({ renderedCellValue, row }) => (
           renderedCellValue ? (
             <>{"$" + renderedCellValue}</>
@@ -120,6 +125,7 @@ const DataTableActivity = ({ data }) => {
       {
         accessorKey: 'serial',
         header: 'Serial',
+        maxSize: '70'
       },
       {
         accessorKey: 'seller',
@@ -173,8 +179,9 @@ const DataTableActivity = ({ data }) => {
    // enableStickyHeader: true,
     enableColumnOrdering: true,
     renderTopToolbarCustomActions: ({ table }) => (
-      <Box sx={{ display: 'flex', gap: '1rem', p: '4px' }}>
-        <Button
+    
+     <Box sx={{ display: 'flex', gap: '1rem', p: '4px' }}>
+     {/*    <Button
           color="secondary"
           onClick={() => {
            // alert('Create New Account');
@@ -182,8 +189,10 @@ const DataTableActivity = ({ data }) => {
           variant="contained"
         >
           Listed
-        </Button>
+        </Button>*/
+     }
       </Box>
+
     ),
     renderToolbarInternalActions: ({ table }) => (
       <Box>
