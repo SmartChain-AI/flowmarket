@@ -167,7 +167,9 @@ const DataTableActivity = ({ data }) => {
   });
 
   return (
-      <MaterialReactTable table={table} />
+      <MaterialReactTable 
+      table={table}
+       />
   );
 };
 
