@@ -73,7 +73,7 @@ export default async function circulation(req, res) {
 
     insertto.insertOne(
       {
-        date: date,
+        date: startDate,
         totalmomentsvalue: tmvresult[0].tmvtotal,
         momentsalesdaytotal: result[0].total,
         momentsalesdaycount: result[0].count,

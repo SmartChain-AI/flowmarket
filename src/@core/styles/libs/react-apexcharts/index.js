@@ -78,7 +78,7 @@ const ApexChartWrapper = styled('div')(({ theme }) => ({
       margin: `${theme.spacing(0.75, 2)} !important`,
       '& .apexcharts-legend-text': {
         marginLeft: theme.spacing(0.75),
-        color: `${theme.palette.text.primary} !important`
+        color: `${theme.palette.highlight.main} !important`
       }
     },
     '& .apexcharts-xcrosshairs, & .apexcharts-ycrosshairs, & .apexcharts-gridline': {
