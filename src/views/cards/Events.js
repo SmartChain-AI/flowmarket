@@ -1,10 +1,11 @@
-import { styled } from '@mui/material/styles'
 import { useState, useEffect } from 'react'
 import * as fcl from '@onflow/fcl';
 import { block } from "@onflow/fcl"
 import "../../flow/config"
 import DataTableActivity from './DataTable-Activity'
 import { useSettings } from 'src/@core/hooks/useSettings'
+import DailySales from './DailySales'
+import Grid from '@mui/material/Grid'
 
 export default function Events() {
   const [sevnts, setSEvnts] = useState([])
@@ -297,6 +298,13 @@ export default function Events() {
   }, [])
 
   return (
-    <DataTableActivity data={sevnts} />
+    <Grid container spacing={4}>
+    <Grid item xs={12} md={6} sx={{ paddingBottom: 0 }}>
+      <DailySales />
+    </Grid>
+    <Grid item xs={12} sx={{ paddingBottom: 2 }}>
+      <DataTableActivity data={sevnts} />
+    </Grid>
+  </Grid>
   )
 }

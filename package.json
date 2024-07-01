@@ -16,8 +16,12 @@
   },
   "homepage": "https://flowmarket.io",
   "keywords": [
-    "react",
-    "javascript"
+    "flowmarket",
+    "flow",
+    "blockchain",
+    "market",
+    "ufc",
+    "ufc strike"
   ],
   "scripts": {
     "dev": "next dev",

@@ -9,7 +9,11 @@ import {
 import { Paper, Stack, useMediaQuery } from '@mui/material';
 import Image from 'next/image'
 import Box from '@mui/material/Box'
-import { Suspense } from 'react';
+import Card from '@mui/material/Card'
+import CardHeader from '@mui/material/CardHeader'
+import CardContent from '@mui/material/CardContent'
+import IconButton from '@mui/material/IconButton'
+import DotsVertical from 'mdi-material-ui/DotsVertical'
 
 const DataTableActivity = ({ data }) => {
 
@@ -149,7 +153,11 @@ const DataTableActivity = ({ data }) => {
     },
     enableStickyHeader: true,
     enableColumnOrdering: true,
-    muiTableContainerProps: { sx: { maxHeight: '500px' } },
+    muiTableContainerProps: { 
+      sx: { 
+       // maxHeight: '500px'
+      } 
+    },
    // density,
   //  pagination,
     // columnFilterDisplayMode: 'custom',
@@ -159,16 +167,7 @@ const DataTableActivity = ({ data }) => {
   });
 
   return (
-    <Stack
-  //    direction={
-  //      isMobile ? 'column-reverse' : 'row'
- //     }
-      gap="8px"
-    >
-      <MaterialReactTable
-       table={table} 
-       />
-    </Stack>
+      <MaterialReactTable table={table} />
   );
 };
 
