@@ -9,6 +9,7 @@ import CardContent from '@mui/material/CardContent'
 import DotsVertical from 'mdi-material-ui/DotsVertical'
 import ReactApexcharts from 'src/@core/components/react-apexcharts'
 import React, { useState, useEffect } from "react";
+import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 const DailySales = () => {
 
@@ -42,7 +43,8 @@ const DailySales = () => {
 
         data.map((element) => {
           // let newdate = element.date.split('T');
-          xaxis.push(element.date)
+          let localdate = new Date(element.date); 
+          xaxis.push(localdate.toDateString())
           lineseries.push(element.momentsalesdaytotal)
           barseries.push(element.momentsalesdaycount)
         });
@@ -59,6 +61,43 @@ const DailySales = () => {
                 opacity: 1,
               }
             },
+            xaxis: {
+              categories: xaxis,
+              labels: {
+                show: true,
+                rotate: -45,
+                rotateAlways: false,
+                hideOverlappingLabels: true,
+                type: 'datetime'
+              },
+              dataLabels: {
+                formatter: function (value) {
+                  return "$" + value
+                }
+              },
+            },
+            yaxis: [
+              {
+                dataLabels: {
+                  enabled: true,
+                  enabledOnSeries: [1],
+                  formatter: (value) => {
+                    return `$${parseInt(value)}`;
+                  },
+                },
+              },
+              {
+                opposite: true,
+                title: {
+                  text: 'Total Sales'
+                },
+                labels: {
+                  formatter: (value) => {
+                    return `$${parseInt(value)}`;
+                  },
+                }
+              }
+            ],
             grid: {
               show: true,
               padding: {
@@ -80,47 +119,10 @@ const DailySales = () => {
               hover: {
                 size: 9
               },
-              shape: "rect" // "circle" | "square" | "rect"
+              shape: "square" // "circle" | "square" | "rect"
             },
-            xaxis: {
-              categories: xaxis,
-              labels: {
-                show: true,
-                rotate: -45,
-                rotateAlways: false,
-                hideOverlappingLabels: true,
-                type: 'datetime'
-              },
-              dataLabels: {
-                formatter: function (value) {
-                  return "$" + value
-                }
-              },
-            },
-            yaxis: [
-              {
- dataLabels: {
-              enabled: true,
-              enabledOnSeries: [1],
-              formatter: (value) => {
-                return `$${parseInt(value)}`;
-              },
-            },
-              },
-              {
-                opposite: true,
-                title: {
-                  text: 'Total Sales'
-                },
-                labels: {
-                  formatter: (value) => {
-                    return `$${parseInt(value)}`;
-                  },
-                }
-              }
-            ],
             stroke: {
-              width: 3,
+              width: 2,
               colors: [theme.palette.highlight.main]
             },
           },
@@ -137,15 +139,7 @@ const DailySales = () => {
             formatter: function (value) {
               return "$" + value
             }
-          },
-          colors: [
-            theme.palette.background.default,
-            theme.palette.background.default,
-            theme.palette.background.default,
-            theme.palette.primary.main,
-            theme.palette.background.default,
-            theme.palette.background.default
-          ]
+          }
         })
       })
       .catch(console.error)
@@ -166,12 +160,14 @@ const DailySales = () => {
         }
       />
       <CardContent sx={{ '& .apexcharts-xcrosshairs.apexcharts-active': { opacity: 0 } }}>
+      <ApexChartWrapper>
         <ReactApexcharts
           options={chartstate.options}
           series={chartstate.series}
           height="250"
           type="bar"
         />
+        </ApexChartWrapper>
         <Box sx={{ mb: 7, display: 'flex', alignItems: 'center' }}>
           <Typography variant='h5' sx={{ mr: 4 }}>
 

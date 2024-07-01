@@ -9,7 +9,6 @@ import TotalEarning from 'src/views/dashboard/TotalEarning'
 import Stack from '@mui/material/Stack';
 import React, { useState, useEffect } from "react";
 import DataTableValuation from "./DataTable-Valuation"
-import WeeklyOverview from './WeeklyOverview'
 //import * as fcl from '@onflow/fcl';
 import "../../flow/config"
 import { useSettings } from 'src/@core/hooks/useSettings'
@@ -235,7 +234,6 @@ const OwnedMoments = props => {
             md: '50%', // 48em-80em,
             // xl: '25%', // 80em+
           }}>
-            <WeeklyOverview />
           </Box>
           <Box width={{
             base: '100%', // 0-48em
