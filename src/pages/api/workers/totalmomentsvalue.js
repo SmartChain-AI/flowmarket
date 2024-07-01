@@ -42,8 +42,12 @@ export default async function circulation(req, res) {
     const tmvresult = await collection1.aggregate(totalmomentvalue).toArray();
 
     // Get sale count
-    const endDate = new Date();
-    const startDate = dayjs(endDate).subtract(24, 'hour').toDate();
+    let startDate = dayjs().subtract(1, 'days').startOf('day').toString() 
+    let endDate = dayjs().subtract(1, 'days').endOf('day').toString() 
+    let newstartdate = new Date(startDate).setUTCHours(0,0,0,0)
+    let newenddate = new Date(startDate).setUTCHours(23,59,59,0)
+    newenddate = new Date(newenddate)
+    newstartdate = new Date(newstartdate)
 
     const pipeline = [
       {
@@ -56,7 +60,7 @@ export default async function circulation(req, res) {
       },
       {
         $match: {
-          convertedDate: { $gte: startDate, $lte: endDate }
+          convertedDate: { $gte: newstartdate, $lte: newenddate }
         }
       },
       {
@@ -73,7 +77,7 @@ export default async function circulation(req, res) {
 
     insertto.insertOne(
       {
-        date: startDate,
+        date: newstartdate,
         totalmomentsvalue: tmvresult[0].tmvtotal,
         momentsalesdaytotal: result[0].total,
         momentsalesdaycount: result[0].count,

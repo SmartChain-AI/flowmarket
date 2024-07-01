@@ -24,7 +24,12 @@ const DataTableActivity = ({ data }) => {
   const [sorting, setSorting] = useState([]);
   const [columnPinning, setColumnPinning] = useState([]);
   //const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-  //const [density, setDensity] = useState({});
+  const [density, setDensity] = useState({});
+  const imgsize = {
+    'sm':'25',
+    'md':'65',
+    'lg':'120'
+  }
 
   const columns = useMemo(
     () => [
@@ -33,9 +38,20 @@ const DataTableActivity = ({ data }) => {
         header: '',
         enableColumnFilter: false,
         enableSorting: false,
+        enableColumnActions: false,
+        muiTableHeadCellProps: {
+          align: 'center',
+          sx: {
+            ms: '10px',
+          }
+        },
+        muiTableBodyCellProps: { 
+          align: 'center',
+         },
+        grow: false,
+        size: density === 'compact' ? '30px': density === 'comfortable' ? '60px' : '90px',
         Cell: ({ renderedCellValue, row }) => (
           renderedCellValue ? (
-
             <Box
               sx={{
                 display: 'flex',
@@ -50,8 +66,13 @@ const DataTableActivity = ({ data }) => {
                   quality={100}
                   alt={table.getState().density}
                   className={'moment-image fade-in'}
-                  height={table.getState().density === 'compact' ? '25':'85'}
-                  width={table.getState().density === 'compact' ? '25':'85'}
+                  height={table.getState().density === 'compact' ? imgsize.sm: table.getState().density === 'comfortable' ? imgsize.md : imgsize.lg}
+                  width={table.getState().density === 'compact' ? imgsize.sm: table.getState().density === 'comfortable' ? imgsize.md : imgsize.lg}
+                  sizes={table.getState().density === 'compact' ? imgsize.sm: table.getState().density === 'comfortable' ? imgsize.md : imgsize.lg}
+                  style={{
+                    objectFit: "contain",
+                    borderRadius: "5px"
+                  }}
                   sx={{
                     borderRadius: table.getState().density === 'compact' ? '5px':'15px'
                   }}
@@ -166,13 +187,16 @@ const DataTableActivity = ({ data }) => {
     ),
     renderToolbarInternalActions: ({ table }) => (
       <Box>
-        <IconButton
+       {/*
+       } <IconButton
           onClick={() => {
             window.print();
           }}
         >
           <PrintIcon />
         </IconButton>
+        */
+}
         {/* along-side built-in buttons in whatever order you want them */}
         <MRT_ToggleDensePaddingButton table={table} />
         <MRT_ToggleFullScreenButton table={table} />

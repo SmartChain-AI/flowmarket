@@ -45,7 +45,6 @@ const DataTableValuation = ({ data }) => {
         },
         muiTableBodyCellProps: { 
           align: 'center',
-          paddingTop:'0 !important'
          },
          enableColumnActions: false,
          grow: false,

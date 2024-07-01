@@ -155,9 +155,9 @@ export default function Events() {
                     buyer.found
                     // && settings.addr
                   ) {
-                    bresults = buyer.username + " " + result.proposalKey.address
+                    bresults = buyer.username + " 0x" + result.proposalKey.address
                   } else {
-                    bresults = result.proposalKey.address
+                    bresults = "0x" + result.proposalKey.address
                   }
 
                   seller = await fetchaccinf(result.args[1].value)
@@ -166,9 +166,9 @@ export default function Events() {
                     seller.found
                                         // && settings.addr
                   ) {
-                    sresults = seller.username + " 0x" + result.args[1].value
+                    sresults = seller.username + " " + result.args[1].value
                   } else {
-                    sresults = "0x" + result.args[1].value
+                    sresults = result.args[1].value
                   }
 
                   price = Number(result.args[result.args.length - 1].value)
