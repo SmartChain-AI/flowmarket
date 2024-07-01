@@ -44,8 +44,8 @@ const DailySales = () => {
         data.map((element) => {
           // let newdate = element.date.split('T');
           let localdate = new Date(element.date); 
-          xaxis.push(localdate.toString())
-       //   xaxis.push(localdate.toDateString())
+          //xaxis.push(localdate.toString())
+          xaxis.push(localdate.toDateString())
           lineseries.push(element.momentsalesdaytotal)
           barseries.push(element.momentsalesdaycount)
         });

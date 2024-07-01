@@ -47,7 +47,7 @@ export default async function circulation(req, res) {
 
     const pipeline = [
       {
-        $unwind: "$sales" // Unwind the array of objects
+        $unwind: "$sales"
       },
       {
         $addFields: {
